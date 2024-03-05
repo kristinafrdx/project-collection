@@ -1,1 +1,106 @@
-@import '~bootstrap/dist/css/bootstrap.min.css'
+@import '~bootstrap/dist/css/bootstrap.min.css';
+.btn {
+  border: none;
+}
+
+.btn-light {
+  background-color: #464da7;
+  color: #fff;
+}
+
+.btn:hover {
+  background-color: #373c85;
+  color: #ffffffcf;
+}
+
+.button-dark:hover {
+  background-color: #1c1a1dd4;
+  color: #ffffffda;
+}
+
+header {
+  height: 60px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 50px;
+  position: absolute;
+}
+
+.createColl {
+  margin: 0;
+  color: #fff;
+  letter-spacing: .1rem;
+}
+
+.themes {
+  gap: 10px;
+  display: flex;
+  justify-content: end;
+}
+
+.header-light {
+  background-color: #464da7;
+}
+
+.dark-theme {
+  background-color: #241a2ae7;
+  color: #fff;;
+}
+
+.inner-dark {
+  background-color: #c2bac62e;
+  color: #fff;
+}
+
+.login-container {
+  width: 500px;
+  height: 500px;
+  position: relative;
+  border-radius: 3%;
+}
+
+.button-dark {
+  background-color: #252326d4;
+  color: #fff;
+} 
+
+.create-light {
+  text-decoration: none;
+  color: #464da7;
+  font-weight: 600;
+}
+
+.create-dark {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 600;
+}
+
+.account {
+  opacity: 60%;
+  font-size: 15px;
+}
+
+.input-dark {
+  background-color: #e2dfe399;
+  border: 1px solid #646464d4;
+}
+
+.input-dark::placeholder {
+  color: #fff;
+}
+
+.header-dark {
+  background-color: #252326d4;
+}
+
+.form-check-input:checked {
+  border: none;
+  background-color: black;
+}
+
+.logo-themes-dark {
+  transform: scaleX(-1);
+}
