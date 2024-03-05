@@ -1,7 +1,9 @@
 import axios from "axios";
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Form } from 'react-bootstrap';
 import theme from '../logo/theme.svg';
+import { useNavigate } from 'react-router-dom';
+// import { useAuth } from "../App.js";
 
 const Login = () => {
   const [login, setLogin] = useState('');
@@ -9,16 +11,20 @@ const Login = () => {
   const [err, setError] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
-  const fetchUser = async (data) => {
+  const navigate = useNavigate();
+  
+    const fetchUser = async (data) => {
     try {
       const resp = await axios.post('http://localhost:3030/login', data)
      if (resp.data.message) {
        setError(true);
+     } else {
+       const coll = resp.data.usersCollections
+       navigate('/collections', { state: { coll, darkMode }})
      }
-     console.log(resp.data)
-     return resp;
+      return;
     } catch (e) {
-      console.error('Network error');
+      console.error(`Network error: ${e}`);
     }
   }
 
@@ -72,7 +78,7 @@ const Login = () => {
           </div>
           {err && <p className="text-danger mb-0">Incorrect username or password.</p>}
         <div className="d-flex justify-content-between mt-4 flex-row gap-2">
-          <button type="button" className={`btn w-100 ${darkMode ? 'button-dark' : 'btn-light'}`} >I'm guest</button>
+          <button type="button" onClick={() => navigate('/collections')}className={`btn w-100 ${darkMode ? 'button-dark' : 'btn-light'}`}>I'm guest</button>
           <button type="submit" className={`btn w-100 ${darkMode ? 'button-dark' : 'btn-light'}`}>Sign in</button>
         </div>
         <div className="d-flex align-items-center mt-4 flex-column">

@@ -36,16 +36,15 @@ app.get('/items', async (req, res) => {
 app.post('/login', async (req, res) => {
   const login = req.body.login;
   const password = req.body.password;
-
   const isCorrectData = await isCorrectDataUser(login, password);
   if (isCorrectData) {
     const user = await getUser(login, password);
     const userId = user[0].id;
     const collections = await getCollection(userId);
     const admin = await isAdmin(login, password);
-    res.send({isAdmin: admin, usersCollections: collections});
+    return res.json({isAdmin: admin, usersCollections: collections});
   }
-    res.send({message: "data is't correct"});
+    return res.json({message: "data is't correct"});
 })
 
 app.listen(PORT, () => {
