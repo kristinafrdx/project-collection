@@ -76,13 +76,13 @@ export const getUsers = async () => {
   return users;
 }
 
-// export const isAlreadyExistUser = async (login) => {
-//   const [result] = await pool.query(
-//    `SELECT * FROM users
-//     WHERE login = ?`,
-//     [login])
-//     return result.length > 0 ? true : false
-// }
+export const isAlreadyExistUser = async (login) => {
+  const [result] = await pool.query(
+   `SELECT * FROM users
+    WHERE login = ?`,
+    [login])
+    return result.length > 0 ? true : false
+}
 
 export const isCorrectDataUser = async (login, password) => {
  const [result] = await pool.query(
@@ -112,14 +112,12 @@ export const isAdmin = async (login, password) => {
   return result.length > 0 ? true : false
 }
 
-
-
-// export const createUser = async (login, password) => {
-//   const [newUser] = await pool.query(
-//     `INSERT INTO users (name, login, password)
-//    VALUES (?, ?, ?, ?)`,
-//     [name, login, status, password])
-//    return newUser;
-// // }
+export const createUser = async (login, password, admin, name) => {
+  const [newUser] = await pool.query(
+    `INSERT INTO users (login, password, admin, name)
+   VALUES (?, ?, ?, ?)`,
+    [login, password, admin, name])
+   return newUser;
+}
 // const collections = await getCollections();
 // const items = await getItems();

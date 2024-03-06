@@ -2,25 +2,24 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Form } from 'react-bootstrap';
 import theme from '../logo/theme.svg';
+import { useTheme } from './ThemeContext';
 import { useNavigate } from 'react-router-dom';
-// import { useAuth } from "../App.js";
 
 const Login = () => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [err, setError] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
-
+  const { darkMode, toggleDarkMode } = useTheme();
   const navigate = useNavigate();
-  
-    const fetchUser = async (data) => {
+ 
+  const fetchUser = async (data) => {
     try {
       const resp = await axios.post('http://localhost:3030/login', data)
      if (resp.data.message) {
        setError(true);
      } else {
        const coll = resp.data.usersCollections
-       navigate('/collections', { state: { coll, darkMode }})
+       navigate('/collections', { state: { coll }})
      }
       return;
     } catch (e) {
@@ -45,9 +44,9 @@ const Login = () => {
     setPassword(event.target.value)
   }
 
-  const handleDarkMode = () => {
-    setDarkMode(!darkMode);
-  };
+  const handleCreate = () => {
+    navigate('/registration')
+  }
 
   return (
     <div className="d-flex flex-column">
@@ -60,11 +59,10 @@ const Login = () => {
               type="switch"
               id="custom-switch"
               checked={darkMode}
-              onChange={handleDarkMode}
+              onChange={toggleDarkMode}
             />
           </Form>
         </div>
-        
       </header>
       <div className={`d-flex justify-content-center align-items-center vh-100 ${darkMode ? 'dark-theme' : 'light-theme'}`}> 
       <div className={`login-container p-4 shadow-lg ${darkMode ? 'inner-dark' : 'light-theme'}`}>
@@ -83,7 +81,7 @@ const Login = () => {
         </div>
         <div className="d-flex align-items-center mt-4 flex-column">
            <h5 className="account">Don't have an account?</h5>
-           <a href="!#" className={`${darkMode ? 'create-dark' : 'create-light'}`}value="create">Create</a>
+           <a onClick={handleCreate} href='#' className={`${darkMode ? 'create-dark' : 'create-light'}`}value="create">Create</a>
         </div>
         </form>
       </div>

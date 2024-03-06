@@ -3,6 +3,7 @@ import React from "react";
 import Login from "./components/Login";
 import Collections from "./components/Collections";
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
+import Registration from "./components/Registration";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/collections" element={<Collections />} />
+            <Route path="/registration" element={<Registration />} />
           </Routes>
         </Router>
     </div>
