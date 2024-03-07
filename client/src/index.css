@@ -1,21 +1,9 @@
 @import '~bootstrap/dist/css/bootstrap.min.css';
+@import './styles/dark.css';
+@import './styles/light.css';
+
 .btn {
   border: none;
-}
-
-.btn-light {
-  background-color: #464da7;
-  color: #fff;
-}
-
-.btn:hover {
-  background-color: #373c85;
-  color: #ffffffcf;
-}
-
-.button-dark:hover {
-  background-color: #1c1a1dd4;
-  color: #ffffffda;
 }
 
 header {
@@ -24,15 +12,14 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 50px;
-  position: absolute;
+  padding: 0 20px;
 }
 
 .createColl {
   margin: 0;
   color: #fff;
   letter-spacing: .1rem;
-}
+} 
 
 .themes {
   gap: 10px;
@@ -40,42 +27,10 @@ header {
   justify-content: flex-end;
 }
 
-.header-light {
-  background-color: #464da7;
-}
-
-.dark-theme {
-  background-color: #241a2ae7;
-  color: #fff;;
-}
-
-.inner-dark {
-  background-color: #c2bac62e;
-  color: #fff;
-}
-
 .login-container {
   width: 500px;
   height: 500px;
-  position: relative;
   border-radius: 3%;
-}
-
-.button-dark {
-  background-color: #252326d4;
-  color: #fff;
-} 
-
-.create-light {
-  text-decoration: none;
-  color: #464da7;
-  font-weight: 600;
-}
-
-.create-dark {
-  text-decoration: none;
-  color: #fff;
-  font-weight: 600;
 }
 
 .account {
@@ -83,24 +38,46 @@ header {
   font-size: 15px;
 }
 
-.input-dark {
-  background-color: #e2dfe399;
-  border: 1px solid #646464d4;
+ul, li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
 }
 
-.input-dark::placeholder {
-  color: #fff;
+.coll {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
 }
 
-.header-dark {
-  background-color: #252326d4;
+.card {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.form-check-input:checked {
-  border: none;
-  background-color: black;
+.wrap {
+  display: flex;
+  justify-content: space-around;
+  max-width: 80%;
 }
 
-.logo-themes-dark {
-  transform: scaleX(-1);
+.collections-wrapper {
+  padding: 50px 20px;
+}
+
+li {
+  font-size: 12px;
+}
+
+a {
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
 }

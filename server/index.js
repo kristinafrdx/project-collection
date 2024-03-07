@@ -21,6 +21,10 @@ app.get('/items', async (req, res) => {
   res.send(items);
 })
 
+app.get('/collections', async (req, res) => {
+  const colllections = await getCollections();
+  res.json(colllections)
+})
 app.post('/login', async (req, res) => {
   const login = req.body.login;
   const password = req.body.password;
@@ -28,9 +32,8 @@ app.post('/login', async (req, res) => {
   if (isCorrectData) {
     const user = await getUser(login, password);
     const userId = user[0].id;
-    const collections = await getCollection(userId);
     const admin = await isAdmin(login, password);
-    return res.json({isAdmin: admin, usersCollections: collections});
+    return res.json({isAdmin: admin, usersId: userId});
   }
     return res.json({message: "data is't correct"});
 })
@@ -41,12 +44,12 @@ app.post('/registration', async (req, res) => {
   const name = req.body.name;
   const isAlreadyExist = await isAlreadyExistUser(login);
   await createUser(login, password, false, name);
-  const allCollections = await getCollections();
   if (isAlreadyExist) {
-    res.json(`${isAlreadyExist}`) 
+    res.json({ message: 'exist'} );
   } else {
-    res.json({message: 'success', collections: allCollections})
+    res.json({ message: 'notExist'} );
   }
+  res.end()
 });
 
 app.listen(PORT, () => {

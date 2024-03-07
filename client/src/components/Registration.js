@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Form } from 'react-bootstrap';
 import theme from '../logo/theme.svg';
@@ -23,13 +23,13 @@ const Registration = () => {
       password,
     };
     const resp = await axios.post('http://localhost:3030/registration', dataUser);
-    const coll = resp.data.collections;
-    if (resp.data) {
+    if (resp.data.message === 'exist') {
       setError(true)
       setEmail("");
       setPassword("");
-    }
-    navigate('/collections', { state: { coll }})
+    } else {
+      navigate('/collections');
+    } 
   };
 
   const handleName = (event) => {
@@ -49,7 +49,7 @@ const Registration = () => {
       <header className={`header ${darkMode ? 'header-dark' : 'header-light'}`}>
         <h5 className="text-center createColl">Create your collections!</h5>
         <div className="themes">
-          <img className={`${darkMode ? 'logo-themes-dark' : 'light-theme'}`} src={theme} alt="mode"/>
+          <img className={`${darkMode ? 'logo-themes-dark' : ''}`} src={theme} alt="mode"/>
           <Form>
             <Form.Check
               type="switch"

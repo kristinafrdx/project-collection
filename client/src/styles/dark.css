@@ -1,0 +1,68 @@
+/* LINK */ 
+.create-dark {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 600;
+}
+
+.create-dark:hover {
+  color: #252326d4;
+}
+
+
+/* LI */
+.li-dark {
+  color: #ffffffcf;
+}
+
+
+/* LOGO */
+.logo-themes-dark {
+  transform: scaleX(-1);
+}
+
+
+/* INPUT CHANGE MODE */
+.form-check-input:checked {
+  border: none;
+  background-color: #241a2ae7;
+}
+
+
+/* INPUT FIELD */
+.input-dark {
+  background-color: #e2dfe399;
+  border: 1px solid #646464d4;
+}
+.input-dark::placeholder {
+  color: #fff;
+}
+
+/* HEADER */
+.header-dark {
+  background-color: #252326d4;
+}
+
+
+/* BUTTON */
+.button-dark {
+  background-color: #252326d4;
+  color: #fff;
+} 
+
+.button-dark:hover {
+  background-color: #1c1a1dd4;
+  color: #ffffffda;
+}
+
+
+/* CONTAINER */
+.dark-theme {
+  background-color: #241a2ae7;
+  color: #fff;;
+}
+.inner-dark {
+  background-color: #c2bac62e;
+  color: #fff;
+}
+

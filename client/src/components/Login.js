@@ -18,8 +18,9 @@ const Login = () => {
      if (resp.data.message) {
        setError(true);
      } else {
-       const coll = resp.data.usersCollections
-       navigate('/collections', { state: { coll }})
+       const isAdmin = resp.data.isAdmin;
+       const usersId = resp.data.usersId;
+       navigate('/collections', { state: { isAdmin, usersId }})
      }
       return;
     } catch (e) {
@@ -50,10 +51,10 @@ const Login = () => {
 
   return (
     <div className="d-flex flex-column">
-      <header className={`header ${darkMode ? 'header-dark' : 'header-light'}`}>
+      <header className={`header m-0 ${darkMode ? 'header-dark' : 'header-light'}`}>
         <h5 className="text-center createColl">Create your collections!</h5>
         <div className="themes">
-          <img className={`${darkMode ? 'logo-themes-dark' : 'light-theme'}`} src={theme} alt="mode"/>
+          <img className={`${darkMode ? 'logo-themes-dark' : ''}`} src={theme} alt="mode"/>
           <Form>
             <Form.Check
               type="switch"
@@ -76,12 +77,12 @@ const Login = () => {
           </div>
           {err && <p className="text-danger mb-0">Incorrect username or password.</p>}
         <div className="d-flex justify-content-between mt-4 flex-row gap-2">
-          <button type="button" onClick={() => navigate('/collections')}className={`btn w-100 ${darkMode ? 'button-dark' : 'btn-light'}`}>I'm guest</button>
+          <button type="button" onClick={() => navigate('/collections', {state: { isGuest: true}})}className={`btn w-100 ${darkMode ? 'button-dark' : 'btn-light'}`}>I'm guest</button>
           <button type="submit" className={`btn w-100 ${darkMode ? 'button-dark' : 'btn-light'}`}>Sign in</button>
         </div>
         <div className="d-flex align-items-center mt-4 flex-column">
            <h5 className="account">Don't have an account?</h5>
-           <a onClick={handleCreate} href='#' className={`${darkMode ? 'create-dark' : 'create-light'}`}value="create">Create</a>
+           <a onClick={handleCreate} href='!#' className={`${darkMode ? 'create-dark' : 'create-light'}`}value="create">Create</a>
         </div>
         </form>
       </div>
