@@ -15,8 +15,9 @@ header {
   padding: 0 20px;
 }
 
-.createColl {
+.createColl { 
   margin: 0;
+  margin-right: 5px;
   color: #fff;
   letter-spacing: .1rem;
 } 
@@ -25,6 +26,7 @@ header {
   gap: 10px;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
 }
 
 .login-container {
@@ -50,8 +52,11 @@ ul, li {
   gap: 30px;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
-  max-width: 100%;
+  padding-top: 30px;
+  justify-content: flex-start;
+  margin-left: 50px;
+  width: 100%;
+  height: fit-content;
 }
 
 .card {
@@ -60,16 +65,18 @@ ul, li {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .wrap {
   display: flex;
-  justify-content: space-around;
-  max-width: 80%;
+  width: 100%;
+  padding-bottom: 80px;
+  min-height: 100vh;
 }
 
 .collections-wrapper {
-  padding: 50px 20px;
+  padding: 20px 20px;
 }
 
 li {
@@ -81,3 +88,58 @@ a {
   font-weight: 600;
   font-size: 15px;
 }
+
+.registration-logo {
+  cursor: pointer;
+}
+
+select {
+  height: 20px;
+  border: none;
+  font-size: 12px;
+  border-radius: 7%;
+  color: #d5d5d5;
+  cursor: pointer;
+}
+
+select:focus-visible {
+  outline-color: gray;
+  outline-width: 1px;
+  outline-style: solid;
+}
+
+.linkButton {
+  border: none;
+  background-color: inherit;
+  padding: 0;
+  margin: 0;
+}
+
+#custom-switch {
+  cursor: pointer;
+}
+
+.link {
+  padding-top: 30px;
+  display: flex;
+  align-items: center;
+  min-width: 150px;
+  margin-left: 20px;
+  font-size: 18px;
+  flex-direction: column;
+}
+
+.nameColl {
+  font-size: 18px;
+}
+
+.text-coll {
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+  flex-direction: column;
+}
+
+.coll-height {
+  height: 100vh;
+} 

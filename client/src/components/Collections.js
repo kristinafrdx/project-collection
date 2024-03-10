@@ -1,65 +1,75 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useLocation } from "react-router-dom";
-import { Form } from 'react-bootstrap';
-import theme from '../logo/theme.svg';
-import { useTheme } from './ThemeContext';
+import { useLocation, useNavigate } from "react-router-dom";
+import { useTheme } from './context/ThemeContext';
+import Header from './Header';
+import { useTranslation } from 'react-i18next';
 
 const Collections = () => {
-  const { darkMode, toggleDarkMode} = useTheme();
+  const { darkMode } = useTheme();
   const [collections, setCollections] = useState([]);
   const location = useLocation();
+  const [ setGuest ] = useState(false);
+  const [admin, setAdmin] = useState(false);
+  const [user, setUser] = useState(false);
+  const { t } = useTranslation();
 
   const isGuest = location?.state?.isGuest;
-  // const isAdmin = location?.state?.isAdmin;
-  // const usersId = location?.state?.usersId;
+  const isAdmin = location?.state?.isAdmin;
 
   useEffect(() => {
-    if (isGuest) {
-      const getCollections = async () => {
-        try {
-          const resp = await axios.get('http://localhost:3030/collections');
-          setCollections(resp.data)
-        } catch (e) {
-          console.error(e)
-        }
+    const getCollections = async () => {
+      try {
+        const resp = await axios.get('http://localhost:3030/collections');
+        const allColl = resp.data.collections;
+        setCollections(allColl);
+      } catch (e) {
+        console.error(e)
       }
-      getCollections()
     }
-  })
- 
+    getCollections();
+    
+    if (isGuest) {
+      setGuest(true);
+    } else if (isAdmin) {
+      setAdmin(true);
+      setUser(true)
+    } else {
+      setUser(true);
+    }
+  }, [isAdmin, isGuest, setGuest])
+
+  const navigate = useNavigate();
+
   return (
-    <div className='d-flex flex-column align-items-center'>
-      <header className={`header ${darkMode ? 'header-dark' : 'header-light'}`}>
-          <h5 className="text-center createColl">Create your collections!</h5>
-          <div className="themes">
-            <img className={`${darkMode ? 'logo-themes-dark' : ''}`} src={theme} alt="mode"/>
-            <Form>
-              <Form.Check
-                type="switch"
-                id="custom-switch"
-                checked={darkMode}
-                onChange={toggleDarkMode}
-              />
-            </Form>
-          </div>
-      </header>
-      <div className={`collections-wrapper d-flex justify-content-center ${darkMode ? 'dark-theme' : 'light-theme'}`}>
-        <div className='wrap'>
+    <div className='d-flex flex-column align-items-end'>
+      <Header showRegistration={isGuest} showExit={user}/>
+        <div className={`wrap ${darkMode ? 'dark-theme' : '' }`}>
+          {admin || user ? (
+            <div className='link'>
+              <button type="button" className={`pb-2 linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`}>
+                {t("collections.create")}
+              </button>
+              <button type="button" className={`linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} onClick={() => navigate('/mycollections')}>
+                {t("collections.my")}
+              </button>
+            </div>
+          ): null}
           <div className="coll">
-            {collections.map((el) => (
-              <div className={`card shadow-lg ${darkMode ? 'inner-dark' : 'light-theme'}`} key={el.id}>
-                <ul>
-                  <li><a className={`${darkMode ? 'create-dark' : 'create-light'}`} href='!#'>{el.name}</a></li>
-                  <li className={`${darkMode ? 'li-dark' : 'li-light'}`}>{el.description}</li>
-                  <li className={`${darkMode ? 'li-dark' : 'li-light'}`}>{el.topic}</li>
-                </ul>
-              </div>
-            ))}
+            {collections ? (
+              collections.map((el) => (
+                <div className={`card shadow-lg ${darkMode ? 'inner-dark linkButton-dark' : 'linkButton-light light-theme'}`} onClick={() => alert('collection')} key={el.id}>
+                  <ul className='text-coll'>
+                    <li className='nameColl'>{el.name}</li>
+                    <div><li className={`${darkMode ? 'li-dark' : 'li-light'}`}>{el.description}</li>
+                    <li className={`${darkMode ? 'li-dark' : 'li-light'}`}>{el.topic}</li></div>
+                  </ul>
+                </div>
+              ))
+            ) : null}
           </div>
-        </div> 
-      </div>
-  </div>
+        </div>
+    </div>
 )
 }
 

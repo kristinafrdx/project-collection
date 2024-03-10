@@ -2,16 +2,19 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Form } from 'react-bootstrap';
-import theme from '../logo/theme.svg';
-import { useTheme } from './ThemeContext';
+import { useTheme } from './context/ThemeContext';
+import Header from "./Header";
+import { useTranslation } from 'react-i18next';
+import { useAuth } from "../App";
 
 const Registration = () => {
   const [name, setName] = useState("");
   const [login, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [err, setError] = useState(false);
-  const { darkMode, toggleDarkMode } = useTheme();
+  const { darkMode } = useTheme();
+  const { t } = useTranslation();
+  const { setLogged } = useAuth();
 
   const navigate = useNavigate();
   
@@ -28,6 +31,7 @@ const Registration = () => {
       setEmail("");
       setPassword("");
     } else {
+      setLogged(true);
       navigate('/collections');
     } 
   };
@@ -46,29 +50,16 @@ const Registration = () => {
 
   return (
     <div className="d-flex flex-column">
-      <header className={`header ${darkMode ? 'header-dark' : 'header-light'}`}>
-        <h5 className="text-center createColl">Create your collections!</h5>
-        <div className="themes">
-          <img className={`${darkMode ? 'logo-themes-dark' : ''}`} src={theme} alt="mode"/>
-          <Form>
-            <Form.Check
-              type="switch"
-              id="custom-switch"
-              checked={darkMode}
-              onChange={toggleDarkMode}
-            />
-          </Form>
-        </div>
-      </header>
+      <Header />
        <div className={`d-flex justify-content-center align-items-center vh-100 ${darkMode ? 'dark-theme' : 'light-theme'}`} >
       <div
         className={`login-container p-4 rounded shadow-lg ${darkMode ? 'inner-dark' : 'light-theme'}`}
         style={{ width: "500px", height: "500px" }}>
-        <h2 className="text-center mb-4 fs-5 mt-5 upper">Sign Up</h2>
+        <h2 className="text-center mb-4 fs-5 mt-5 upper">{t('registration.signUp')}</h2>
         <form className="p-4 pt-2" onSubmit={handleSubmit}>
           <div className="form-group mb-3">
             <label htmlFor="username" className="fw-bold mb-2">
-              Your name:
+              {t('registration.name')}
             </label>
             <input
               type="text"
@@ -81,7 +72,7 @@ const Registration = () => {
               required
             />
             <label htmlFor="username" className="fw-bold mb-2 mt-2">
-              Your email:
+            {t('registration.email')}
             </label>
             <input
               type="text"
@@ -93,7 +84,7 @@ const Registration = () => {
               required
             />
             <label htmlFor="password" className="fw-bold mb-2 mt-2">
-              Your password:
+            {t('registration.password')}
             </label>
             <input
               type="password"
@@ -107,20 +98,20 @@ const Registration = () => {
           </div>
           {err && (
             <p className="text-danger">
-              That email is already taken. Try enother.
+              {t('registration.errorAlreadyExist')}
             </p>
           )}
           <div className="d-flex justify-content-between mt-4 flex-row gap-2">
             <button
               type="submit"
               className={`btn w-100 ${darkMode? 'button-dark' : 'btn-light'} `}>
-              Sign Up
+              {t('registration.signUp')}
             </button>
             <button
               type="button"
               onClick={() => navigate("/")}
               className={`btn ${darkMode ? 'button-dark' : 'btn-light'}  w-100`}>
-              Back
+              {t('registration.back')}
             </button>
           </div>
         </form>

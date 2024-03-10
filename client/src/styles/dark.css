@@ -51,7 +51,7 @@
 } 
 
 .button-dark:hover {
-  background-color: #1c1a1dd4;
+  background-color: #3b408e;
   color: #ffffffda;
 }
 
@@ -61,8 +61,29 @@
   background-color: #241a2ae7;
   color: #fff;;
 }
+
 .inner-dark {
   background-color: #c2bac62e;
   color: #fff;
 }
 
+/* SELECT */
+.select-dark {
+  background-color: #241a2ae7;
+  color: #fff;
+  border: none;
+}
+
+/* LINK-dark */
+.linkButton-dark {
+  color: #fff;
+}
+
+.linkButton-dark:hover {
+  font-weight: 500;
+  color: #868282;
+}
+
+.empty-coll-dark {
+  color: #fff;
+}
