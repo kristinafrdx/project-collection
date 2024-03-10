@@ -21,7 +21,7 @@ export const getCollections = async () => {
   return collections;
 }
 
-export const getCollection = async (idUser) => {
+export const getMyCollections = async (idUser) => {
     const [collection] = await pool.query(`
     SELECT * 
     FROM collections 

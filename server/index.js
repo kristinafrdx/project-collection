@@ -3,7 +3,7 @@ import cors from 'cors';
 import { 
   getItems,
   getCollections, 
-  getCollection,
+  getMyCollections,
   createUser,
   getUser,
   isAdmin, 
@@ -22,9 +22,19 @@ app.get('/items', async (req, res) => {
 })
 
 app.get('/collections', async (req, res) => {
-  const colllections = await getCollections();
-  res.json(colllections)
+  // const idUser = req.body.id
+  const collections = await getCollections();
+
+  // const getMy = await getMyCollections(idUser);
+  res.json({collections});
 })
+
+app.post('/myCollections', async (req, res) => {
+  const idUser = req.body.userId
+  const getMy = await getMyCollections(idUser);
+  res.json({ getMy });
+})
+
 app.post('/login', async (req, res) => {
   const login = req.body.login;
   const password = req.body.password;
