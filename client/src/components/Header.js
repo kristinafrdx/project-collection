@@ -22,7 +22,7 @@ const Header = ({ showRegistration, showExit }) => {
 
   return (
     <header className={`header m-0 ${darkMode ? 'header-dark' : 'header-light'}`}>
-        <h5 className="text-center createColl">{t('header.createCollections')}</h5>
+        <h5 className="text-left createColl">{t('header.createCollections')}</h5>
         <div className="themes">
           {showRegistration && (
             <div>

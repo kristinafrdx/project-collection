@@ -25,6 +25,7 @@ const translation = {
       "create": "Crear",
       "my": "Mis colecciones",
       "empty": "No tienes colecciones.",
+      "delete": "Borrar"
     }
   }
 };

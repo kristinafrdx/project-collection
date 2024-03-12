@@ -4,6 +4,7 @@ import Collections from "./components/Collections";
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import Registration from "./components/Registration";
 import MyCollections from "./components/MyCollections";
+import CreateColl from './components/CreateColl'
 
 const AuthContext = createContext(); 
 
@@ -18,6 +19,7 @@ function App() {
             <Route path="/collections" element={<Collections />} />
             <Route path="/registration" element={<Registration />} />
             <Route path="/myCollections" element={isLogged ? <MyCollections /> : <Login />} />
+            <Route path="/createColl" element={<CreateColl />}></Route>
           </Routes>
         </Router>
         </AuthContext.Provider>

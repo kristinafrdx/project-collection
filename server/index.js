@@ -8,7 +8,7 @@ import {
   getUser,
   isAdmin, 
   isAlreadyExistUser,
-  isCorrectDataUser} from './database.js';
+  isCorrectDataUser, deleteCollection} from './database.js';
 
 const app = express();
 const PORT = 3030;
@@ -22,10 +22,7 @@ app.get('/items', async (req, res) => {
 })
 
 app.get('/collections', async (req, res) => {
-  // const idUser = req.body.id
   const collections = await getCollections();
-
-  // const getMy = await getMyCollections(idUser);
   res.json({collections});
 })
 
@@ -62,6 +59,12 @@ app.post('/registration', async (req, res) => {
   res.end()
 });
 
+app.post('/deleteColl', async (req, res) => {
+  const { id } = req.body
+  await deleteCollection(id);
+  const updateColl = await getCollections();
+  res.json({message: 'ok', updateColl});
+})
 app.listen(PORT, () => {
   console.log(`SERVER IS LISTENING ON PORT: ${PORT}`)
 })

@@ -24,7 +24,8 @@ const translation = {
     "collections": {
       "create": "Create",
       "my": "My collections",
-      "empty": "You have no collections."
+      "empty": "You have no collections.",
+      "delete": "Delete"
     }
   }
 } 
