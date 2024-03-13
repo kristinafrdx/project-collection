@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { 
+import {
   getItems,
   getCollections, 
   getMyCollections,

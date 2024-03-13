@@ -83,7 +83,7 @@ const Login = () => {
           <button type="submit" className={`btn w-100 ${darkMode ? 'button-dark' : 'btn-light'}`}>
             {t('login.signIn')}
           </button> 
-          <button type="button" onClick={() => navigate('/collections', {state: { isGuest: true}})}className={`btn w-100 ${darkMode ? 'button-dark' : 'btn-light'}`}>{
+          <button type="button" onClick={() => navigate('/collections', {state: { isGuest: true}})} className={`btn w-100 ${darkMode ? 'button-dark' : 'btn-light'}`}>{
           t('login.guest')}
           </button>
         </div>

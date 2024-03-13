@@ -146,3 +146,16 @@ select:focus-visible {
 .checkbox:checked:before {
   background-color: rgb(24, 24, 44);
 }
+
+.nameColl, .remove {
+  cursor: pointer;
+}
+
+.addedField:active, .addedField:focus, .addedField:focus-visible {
+  /* border: none; */
+  box-shadow: none;
+}
+
+.addedField {
+  cursor: auto;
+}
