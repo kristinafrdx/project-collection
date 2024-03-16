@@ -26,6 +26,19 @@ const translation = {
       "my": "Mis colecciones",
       "empty": "No tienes colecciones.",
       "delete": "Borrar"
+    },
+    "create": {
+      "add": "Agregar colección",
+      "name": "Nombre de la colección:",
+      "category": "Categoría:",
+      "description": "Descripción:",
+      "addedFieldName": "Introduzca el nombre del campo:",
+      "addField": "Agregar",
+      "exampleDescr": "Jack London",
+      "exampleName": "Autor",
+      "create": "Crear",
+      "success": "¡Exitosamente!",
+      "seeMy": "Ver mi colección"
     }
   }
 };

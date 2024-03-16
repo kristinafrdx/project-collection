@@ -8,7 +8,10 @@ import {
   getUser,
   isAdmin, 
   isAlreadyExistUser,
-  isCorrectDataUser, deleteCollection} from './database.js';
+  isCorrectDataUser,
+  deleteCollection,
+  createCollection,
+  getCollection } from './database.js';
 
 const app = express();
 const PORT = 3030;
@@ -40,9 +43,9 @@ app.post('/login', async (req, res) => {
     const user = await getUser(login, password);
     const userId = user[0].id;
     const admin = await isAdmin(login, password);
-    return res.json({isAdmin: admin, usersId: userId});
+    return res.json({isAdmin: admin, userId: userId});
   }
-    return res.json({message: "data is't correct"});
+  return res.json({message: "data is't correct"});
 })
 
 app.post('/registration', async (req, res) => {
@@ -51,10 +54,12 @@ app.post('/registration', async (req, res) => {
   const name = req.body.name;
   const isAlreadyExist = await isAlreadyExistUser(login);
   await createUser(login, password, false, name);
+  const user = await getUser(login, password);
+  const userId = user[0].id;
   if (isAlreadyExist) {
     res.json({ message: 'exist'} );
   } else {
-    res.json({ message: 'notExist'} );
+    res.json({ message: 'notExist', id: userId} );
   }
   res.end()
 });
@@ -65,6 +70,30 @@ app.post('/deleteColl', async (req, res) => {
   const updateColl = await getCollections();
   res.json({message: 'ok', updateColl});
 })
+
+app.post('/createcoll', async (req, res) => {
+  const id = req.body.userId;
+  const name = req.body.name;
+  const descr = req.body.description;
+  const category = req.body.category;
+
+  const arrKey = ['userId', 'name', 'description', 'category']
+  // const newColumn = Object.keys(req.body).filter((el) => !arrKey.includes(el))
+  
+  // const [field1, field2, field3] = newColumn;
+  // const values = [req.body[field1], req.body[field2], req.body[field3]];
+  
+  const result = await createCollection(name, descr, category, id)
+  res.json({message: 'ok'})
+})
+
+app.post('/getcollection', async (req, res) => {
+  const idCollection = req.body.idColl;
+  const items = await getItems(idCollection);
+  const collection = await getCollection(idCollection);
+  res.json({items, collection});
+})
+
 app.listen(PORT, () => {
   console.log(`SERVER IS LISTENING ON PORT: ${PORT}`)
 })

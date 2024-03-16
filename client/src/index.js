@@ -8,6 +8,7 @@ import { I18nextProvider } from 'react-i18next';
 import i18next from 'i18next';
 import { LanguageProvider } from './components/context/LangContext';
 import { UserProvider } from './components/context/UserContext';
+import { IsLoggedProvider } from './components/context/IsloggedContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -16,7 +17,9 @@ root.render(
     <LanguageProvider>
       <ThemeProvider>
        <UserProvider>
+        <IsLoggedProvider>
          <App />
+        </IsLoggedProvider>
        </UserProvider>
       </ThemeProvider>
     </LanguageProvider>

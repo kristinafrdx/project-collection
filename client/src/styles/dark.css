@@ -19,6 +19,7 @@
 /* LOGO */
 .logo-themes-dark {
   transform: scaleX(-1);
+  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%); 
 }
 
 
@@ -79,11 +80,15 @@
   color: #fff;
 }
 
-.linkButton-dark:hover {
+.nameColl:hover {
   font-weight: 500;
   color: #868282;
 }
 
 .empty-coll-dark {
   color: #fff;
+}
+
+.logo-done-dark {
+    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
 }

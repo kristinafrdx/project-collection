@@ -159,3 +159,15 @@ select:focus-visible {
 .addedField {
   cursor: auto;
 }
+
+.text-underline {
+  text-decoration: underline;
+}
+
+.haventItems {
+  justify-content: flex-start;
+}
+
+.haveItems {
+  justify-content: space-between;
+}

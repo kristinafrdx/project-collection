@@ -1,31 +1,37 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import Login from "./components/Login";
 import Collections from "./components/Collections";
-import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
+import { Route, Routes, BrowserRouter as Router, Navigate } from "react-router-dom";
 import Registration from "./components/Registration";
 import MyCollections from "./components/MyCollections";
 import CreateColl from './components/CreateColl'
+import PageCollection from "./components/PageCollection";
+import SuccessColl from "./components/SuccessColl";
+import { IsLoggedProvider } from "./components/context/IsloggedContext";
+import { useAuth } from "./components/context/IsloggedContext";
+import { useNavigate } from "react-router-dom";
 
-const AuthContext = createContext(); 
+// const AuthContext = createContext(); 
 
 function App() {
-  const [isLogged, setLogged] = useState(false);
+  const { isLogged, setLogged } = useAuth();
+  
   return (
     <div className="App">
-       <AuthContext.Provider value={{ isLogged, setLogged }}>
         <Router>
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/collections" element={<Collections />} />
             <Route path="/registration" element={<Registration />} />
-            <Route path="/myCollections" element={isLogged ? <MyCollections /> : <Login />} />
-            <Route path="/createColl" element={isLogged ? <CreateColl /> : <Login />} />
+            <Route path="/myCollections" element={isLogged ? <MyCollections /> : <Navigate to={"/"} />} />
+            <Route path="/createColl" element={isLogged ? <CreateColl /> : <Navigate to='/'/>} />
+            <Route path="/page" element={<PageCollection /> }/>
+            <Route path="/success" element={isLogged ? <SuccessColl /> : <Navigate to='/'/>} />
           </Routes>
         </Router>
-        </AuthContext.Provider>
     </div>
   );
 }
-export const useAuth = () => useContext(AuthContext);
+// export const useAuth = () => useContext(AuthContext);
 
 export default App;

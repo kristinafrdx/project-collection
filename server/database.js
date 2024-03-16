@@ -11,13 +11,24 @@ const pool = mysql.createPool({
   database: process.env.MYSQL_DATABASE
 }).promise();
 
-export const getItems = async () => {
-  const [items] = await pool.query("SELECT * FROM items");
-  return items
+export const getItems = async (id) => {
+  const [items] = await pool.query(`
+  SELECT * FROM items
+  WHERE idCollection = ?`,
+  [id]);
+  return items;
 }
 
 export const getCollections = async () => {
   const [collections] = await pool.query("SELECT * FROM collections");
+  return collections;
+}
+
+export const getCollection = async (id) => {
+  const [collections] = await pool.query(`
+  SELECT * FROM collections
+  WHERE id = ?`,
+  [id]);
   return collections;
 }
 
@@ -39,7 +50,28 @@ export const getItem = async (id) => {
   return item[0];
 }
 
-export const addCollection = async (name, descr, topic, createdBy) => {
+export const renameColumn = async (field, index) => {
+  const [newColumn] = await pool.query(`
+  ALTER TABLE collections
+  RENAME COLUMN field${index + 1} to ${field}`)
+  return newColumn;
+}
+// export const addColumn2 = async (field) => {
+//   const [newColumn] = await pool.query(`
+//   ALTER TABLE collections
+//   CHANGE COLUMN field2 to ?`,
+//   field)
+//   return newColumn;
+// }
+// export const addColumn3 = async (field) => {
+//   const [newColumn] = await pool.query(`
+//   ALTER TABLE collections
+//   RENAME COLUMN field3 to ${field}`)
+//   // return newColumn;
+// }
+
+
+export const createCollection = async (name, descr, topic, createdBy) => {
   const [newCollection] = await pool.query(`
     INSERT INTO collections (name, description, topic, createdBy)
     VALUES (?, ?, ?, ?)`,
@@ -47,21 +79,21 @@ export const addCollection = async (name, descr, topic, createdBy) => {
   return newCollection;
   }
 
-export const addItem = async (name, tag) => {
-  const [newItem] = await pool.query(`
-    INSERT INTO items (name, tag)
-    VALUES (?, ?)`,
-    [name, tag]);
-  return newItem;
-}
+// export const addItem = async (name, tag) => {
+//   const [newItem] = await pool.query(`
+//     INSERT INTO items (name, tag)
+//     VALUES (?, ?)`,
+//     [name, tag]);
+//   return newItem;
+// }
 
-export const deleteItem = async (id) => {
-  await pool.query(`
-  DELETE FROM items
-  WHERE id = ?`,
-  [id])
-  return;
-}
+// export const deleteItem = async (id) => {
+//   await pool.query(`
+//   DELETE FROM items
+//   WHERE id = ?`,
+//   [id])
+//   return;
+// }
 
 export const deleteCollection = async (id) => {
   await pool.query(`
@@ -119,5 +151,14 @@ export const createUser = async (login, password, admin, name) => {
     [login, password, admin, name])
    return newUser;
 }
+
+export const createItem = async (name, tag, idCollection) => {
+  const [newItem] = await pool.query(
+    `INSERT INTO items (name, tag, idCollection)
+   VALUES (?, ?, ?)`,
+    [name, tag, idCollection])
+   return newItem;
+}
+
 // const collections = await getCollections();
 // const items = await getItems();
