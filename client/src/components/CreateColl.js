@@ -22,11 +22,13 @@ const CreateColl = () => {
   const [description, setDescr] = useState('');
   const [category, setCategory] = useState('');
   const [success, setSuccss] = useState(false);
+  const [showText, setShowText] = useState(false);
 
   const maxFields = 3;
   const navigate = useNavigate();
 
   const addField = () => {
+    setShowText(true);
     if (inputs.length < maxFields) {
       setInputs([...inputs, nameField ])
       setValues([...values, valueField]);
@@ -42,6 +44,9 @@ const CreateColl = () => {
   const handleRemoveField = (index) => {
     setInputs(inputs.filter((_, i) => i!== index));
     setValues(values.filter((_, i) => i!== index));
+    if (inputs.length < 2) {
+      setShowText(false);
+    }
   }
 
   const handleValue = (e) => {
@@ -67,7 +72,7 @@ const CreateColl = () => {
       data[key] = values[index];
     });
     try {
-      const resp = await axios.post('http://localhost:3030/createcoll', data);
+      const resp = await axios.post('http://localhost:3030/createcoll', { data, inputs });
       if (resp.data.message === 'ok') {
         setSuccss(true);
       }
@@ -90,7 +95,6 @@ const CreateColl = () => {
 
   return (
     <div>
-      <Header showExit={true}></Header>
       { success ? <SuccessColl /> : (
         <div className={`d-flex align-items-center flex-column ${darkMode ? 'dark-theme' : 'light-theme'}`} style={{height: '100%', paddingBottom: '100px'}}>
           <h2 className="pb-3 pt-4">
@@ -111,12 +115,13 @@ const CreateColl = () => {
               {t('create.description')}
             </label>
             <input onChange={handleDescr} id="description" type="text" className='form-control last-input mb-4' maxLength={'100'} size={'100'}></input>
-            
+            {showText ? (
+            <h5 style={{margin: '0', fontSize: '1rem'}} className="fw-bold mb-2">New fields for items:</h5>
+            ) : null}
             { inputs.map((el, index) => (
               <div key={index}>
-                <label className="fw-bold mb-2" htmlFor={el}>{el}</label>
-                <div key={index} className="d-flex align-items-center mb-4">
-                  <input id={el} onChange={(e) => newValue(e, index)} className="addedField form-control" style={{width: '100%'}} value={values[index]}></input>
+                 <div key={index} className="d-flex align-items-center mb-4 justify-content-between pt-2">
+                  <h5 className="addedField form-control fw-bold" style={{margin: '0'}}>{el}</h5>
                   <button type="button" className="linkButton" onClick={() => handleRemoveField(index)}>
                     <img className="remove" src={remove} alt="remove"></img>
                   </button> 
@@ -126,15 +131,15 @@ const CreateColl = () => {
 
             {/* <label htmlFor="avatar" className="fw-bold mb-2">Choose a profile picture:</label>
             <input type="file" id="avatar" accept="image/png, image/jpeg" className="mb-5" placeholder="Choose a file"/> */}
-            { inputs.length < 5 ? (
+            { inputs.length < maxFields ? (
               <div>
                 <label className="mb-2 fw-bold">
                   {t('create.addedFieldName')}
                 </label>
                 <div className="d-flex flex-row justify-content-between mb-2" style={{gap: '5px'}}>
                   <input id="nameField" value={nameField} className="form-control" onChange={handleName} placeholder={t('create.exampleName')} style={{width: '100%', marginRight: '10px'}}></input>
-                  <label htmlFor="value"></label>
-                  <input value={valueField} id="value" className="form-control" onChange={handleValue} placeholder={t('create.exampleDescr')} style={{width: '100%', marginRight: "5px"}}></input>
+                  {/* <label htmlFor="value"></label>
+                  <input value={valueField} id="value" className="form-control" onChange={handleValue} placeholder={t('create.exampleDescr')} style={{width: '100%', marginRight: "5px"}}></input> */}
                   <button onClick={addField} className={`btn ${darkMode ? 'button-dark' : 'btn-light'}`} style={{height: '40px'}}>
                     {t('create.addField')}
                   </button>

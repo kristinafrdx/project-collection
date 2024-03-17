@@ -39,6 +39,12 @@ const translation = {
       "create": "Crear",
       "success": "¡Exitosamente!",
       "seeMy": "Ver mi colección"
+    },
+    "page": {
+      "edit": "Editar",
+      "add": "Agregar",
+      "notFound": "Artículos no encontrados.",
+      "addItem": "Añadir artículo"
     }
   }
 };

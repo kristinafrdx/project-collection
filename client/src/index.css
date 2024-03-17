@@ -171,3 +171,13 @@ select:focus-visible {
 .haveItems {
   justify-content: space-between;
 }
+
+/* .addItem {
+  width: 70%;
+}
+
+.addItem-cont {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+} */

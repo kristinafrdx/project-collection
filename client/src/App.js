@@ -10,6 +10,7 @@ import SuccessColl from "./components/SuccessColl";
 import { IsLoggedProvider } from "./components/context/IsloggedContext";
 import { useAuth } from "./components/context/IsloggedContext";
 import { useNavigate } from "react-router-dom";
+import AddItem from "./components/AddItem";
 
 // const AuthContext = createContext(); 
 
@@ -27,6 +28,7 @@ function App() {
             <Route path="/createColl" element={isLogged ? <CreateColl /> : <Navigate to='/'/>} />
             <Route path="/page" element={<PageCollection /> }/>
             <Route path="/success" element={isLogged ? <SuccessColl /> : <Navigate to='/'/>} />
+            <Route path="/addItem" element={<AddItem />} />
           </Routes>
         </Router>
     </div>

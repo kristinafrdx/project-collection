@@ -11,7 +11,10 @@ import {
   isCorrectDataUser,
   deleteCollection,
   createCollection,
-  getCollection } from './database.js';
+  deleteItem,
+  getCollection,
+  addItem,
+  deleteItems } from './database.js';
 
 const app = express();
 const PORT = 3030;
@@ -68,30 +71,46 @@ app.post('/deleteColl', async (req, res) => {
   const { id } = req.body
   await deleteCollection(id);
   const updateColl = await getCollections();
+  await deleteItems(id);
   res.json({message: 'ok', updateColl});
+  
 })
 
 app.post('/createcoll', async (req, res) => {
-  const id = req.body.userId;
-  const name = req.body.name;
-  const descr = req.body.description;
-  const category = req.body.category;
+  const id = req.body.data.userId;
+  const name = req.body.data.name;
+  const descr = req.body.data.description;
+  const category = req.body.data.category;
+  const inputs = req.body.inputs;
 
   const arrKey = ['userId', 'name', 'description', 'category']
-  // const newColumn = Object.keys(req.body).filter((el) => !arrKey.includes(el))
-  
-  // const [field1, field2, field3] = newColumn;
-  // const values = [req.body[field1], req.body[field2], req.body[field3]];
-  
-  const result = await createCollection(name, descr, category, id)
+  const idColl = await createCollection(name, descr, category, id, inputs[0], inputs[1], inputs[2]);
+
   res.json({message: 'ok'})
 })
+
+app.post('/addItem', async (req, res) => {
+  const name = req.body.nameItem;
+  const id = req.body.idC;
+  const tag = req.body.tag;
+  await addItem(name, tag, id);
+  res.json({message: 'ok'});
+})
+
 
 app.post('/getcollection', async (req, res) => {
   const idCollection = req.body.idColl;
   const items = await getItems(idCollection);
   const collection = await getCollection(idCollection);
   res.json({items, collection});
+})
+
+app.post('/deleteItem', async (req, res) => {
+  const idItem = req.body.id;
+  const idColl = req.body.idC;
+  await deleteItem(idItem);
+  const update = await getItems(idColl)
+  res.json({message: 'ok', items: update});
 })
 
 app.listen(PORT, () => {

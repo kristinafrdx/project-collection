@@ -96,7 +96,8 @@ const Collections = () => {
             </div>
           ) : null}
           <div className="coll">
-            { collections.map((el) => (
+            { collections && collections.length > 0 ? (
+              collections.map((el) => (
               <div className={`card shadow-lg ${darkMode ? 'inner-dark linkButton-dark' : 'linkButton-light light-theme'}`} id={el.id} key={el.id} onClick={() => handleCard(el.id)}>
                 <ul className='text-coll' id={el.id}>
                   <li className='nameColl' onClick={() => navigate('/page', { state: { id: el.id }})}>{el.name}</li>
@@ -112,7 +113,8 @@ const Collections = () => {
                   </div>
                 ) : null }
               </div>
-            ))}
+              ))
+            ) : null }
           </div>
         </div>
     </div>

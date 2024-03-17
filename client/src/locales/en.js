@@ -39,6 +39,12 @@ const translation = {
       "create": "Create",
       "success": "Successfully!",
       "seeMy": "See my collection"
+    },
+    "page": {
+      "edit": "Edit",
+      "add": "Add",
+      "notFound": "Items didn't find.",
+      "addItem": "Add item"
     }
   }
 } 
