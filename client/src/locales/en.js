@@ -38,13 +38,26 @@ const translation = {
       "exampleName": "Author",
       "create": "Create",
       "success": "Successfully!",
-      "seeMy": "See my collection"
+      "seeMy": "See my collection",
+      "loading": "Loading...",
+      "newFields": "New fields for items:",
     },
     "page": {
       "edit": "Edit",
       "add": "Add",
-      "notFound": "Items didn't find.",
-      "addItem": "Add item"
+      "notFound": "Items not found.",
+      "addItem": "Add item",
+      "name": "Name:",
+      "category": "Category:",
+      "description": "Description:",
+      "yourItems": "Your items:",
+      "index": "№",
+      "tags": "Tags"
+    },
+    "addItem": {
+      "add": "Add item",
+      "name": "Name",
+      "tags": "Tags",
     }
   }
 } 

@@ -38,13 +38,26 @@ const translation = {
       "exampleName": "Autor",
       "create": "Crear",
       "success": "¡Exitosamente!",
-      "seeMy": "Ver mi colección"
+      "seeMy": "Ver mi colección",
+      "loading": "Cargando…",
+      "newFields": "Nuevos campos para artículos:",
     },
     "page": {
       "edit": "Editar",
       "add": "Agregar",
       "notFound": "Artículos no encontrados.",
-      "addItem": "Añadir artículo"
+      "addItem": "Añadir artículo",
+      "name": "Nombre",
+      "category": "Categoría:",
+      "description": "Descripción:",
+      "yourItems": "Tus cosas:",
+      "index": "№",
+      "tags": "Etiquetas",
+    },
+    "addItem": {
+      "add": "Añadir artículo",
+      "name": "Nombre",
+      "tags": "Etiquetas",
     }
   }
 };

@@ -18,7 +18,8 @@ const SuccessColl = () => {
   
   return (
     <div>
-      <Header showExit={true} />
+    <Header showExit={true} />
+    <div>
       <div className={` ${darkMode ? 'dark-theme' : 'light-theme' } d-flex align-items-center flex-column pt-3`} style={{height: '100vh'}}>
         <div className="d-flex align-items-center justify-content-center">
           <img alt="done" src={done} className={`${darkMode ? 'logo-done-dark' : ''}`}></img>
@@ -30,6 +31,7 @@ const SuccessColl = () => {
           {t("create.seeMy")}
         </button>
       </div>
+    </div>
     </div>
   )
 }

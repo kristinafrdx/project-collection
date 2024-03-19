@@ -10,8 +10,10 @@ const AddItem = () => {
   const { darkMode } = useTheme();
 
   const { t } = useTranslation();
-  const [name, setName] = useState("");
-  const [tags, setTags] = useState("");
+  const [name, setName] = useState('');
+  const [tags, setTags] = useState('');
+  const [valueField, setValueField] = useState([]);
+
   const [id, setId] = useState(null);
 
   const navigate = useNavigate();
@@ -31,6 +33,11 @@ const AddItem = () => {
   const handleTags = (event) => {
     setTags(event.target.value);
   };
+  
+  const handleField = (event) => {
+    const {name, value} = event.target;
+    setValueField({...valueField, [name]: value})
+  }
 
   const handleBack = () => {
     navigate('/mycollections')
@@ -38,7 +45,7 @@ const AddItem = () => {
 
     const fetchFields = async () => {
       try {
-        const resp = await axios.post('http://localhost:3030/addItem', { nameItem: name, tag: tags, idC: id });
+        const resp = await axios.post('http://localhost:3030/addItem', { nameItem: name, tag: tags, idC: id, valueField});
         if (resp.data.message === 'ok') {
           navigate('/success')
         }
@@ -55,13 +62,13 @@ const AddItem = () => {
           className={`p-4 rounded shadow-lg ${darkMode ? 'inner-dark' : 'light-theme'}`}
           style={{ width: "500px" }}
         >
-          <h2 className="text-center mb-4 fs-5 mt-5 upper">
-            Add item
+          <h2 className="text-center mb-4 fs-5 mt-4 upper">
+            {t('addItem.add')}
           </h2>
           <form className="p-4 pt-2">
             <div className="form-group mb-3">
               <label htmlFor="username" className="fw-bold mb-2">
-                Name
+              {t('addItem.name')}
               </label>
               <input
                 type="text"
@@ -73,7 +80,7 @@ const AddItem = () => {
                 required
               />
               <label htmlFor="username" className="fw-bold mb-2 mt-2">
-                Tags
+              {t('addItem.tags')}
               </label>
               <input
                 type="text"
@@ -84,22 +91,23 @@ const AddItem = () => {
                 required
               />
               { inputs ? (
-                inputs.map((el => (
-                  el == null ? null: (
+                inputs.map((el) => (
+                  el == null ? null : (
                     <div key={el}>
-                <label htmlFor={el} className="fw-bold mb-2 mt-2">
-                  {el}
-                </label>
-                <input
-                  type="text"
-                  className="form-control w-100 p-2"
-                  required
-                />
-             </div>
-                  )
-                )))
-              ): null}
-                
+                    <label htmlFor={el} className="fw-bold mb-2 mt-2">
+                      {el}
+                    </label>
+                    <input
+                      name={el}
+                      type="text"
+                      className="form-control w-100 p-2"
+                      required
+                      value={valueField[el] || ''}
+                      onChange={handleField}
+                    />
+                  </div>)
+                ))
+              ) : null}   
             </div>
             <div className="d-flex justify-content-between mt-4 flex-row gap-2">
               <button
@@ -107,7 +115,7 @@ const AddItem = () => {
                 className={`btn w-100 ${darkMode? 'button-dark' : 'btn-light'} `}
                 onClick={fetchFields}
               >
-                Add
+                {t('page.add')}
               </button>
               <button
                 type="button"

@@ -7,7 +7,7 @@ import remove from "../logo/remove.svg";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "./context/UserContext";
 import axios from "axios";
-import SuccessColl from '../components/SuccessColl'
+import SuccessColl from '../components/SuccessColl';
 
 const CreateColl = () => {
   const { t } = useTranslation();
@@ -23,6 +23,10 @@ const CreateColl = () => {
   const [category, setCategory] = useState('');
   const [success, setSuccss] = useState(false);
   const [showText, setShowText] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [imgLink, setImgLink] = useState(null);
+  const [err, setErr] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const maxFields = 3;
   const navigate = useNavigate();
@@ -49,28 +53,57 @@ const CreateColl = () => {
     }
   }
 
-  const handleValue = (e) => {
-    setValue(e.target.value)
-  }
+  // const handleValue = (e) => {
+  //   setValue(e.target.value)
+  // }
 
-  const newValue = (e, index) => {
-    const newValues = [...values];
-    newValues[index] = e.target.value;
-    setValues(newValues);
+  // const newValue = (e, index) => {
+  //   const newValues = [...values];
+  //   newValues[index] = e.target.value;
+  //   setValues(newValues);
+  // }
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
+  const handleUpload = async () => {
+    if (selectedFile) {
+      setLoading(true)
+      const formData = new FormData();
+      formData.append('file', selectedFile, selectedFile.name);
+      try {
+       const resp = await axios.post('http://localhost:3030/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        const link = resp.data.message;
+        setLoading(false)
+        return link
+      } catch (error) {
+        console.error('Error uploading file:', error);
+      }
+    } else {
+      setErr('Select a file')
+    }
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const lin = await handleUpload();
+    console.log(lin)
     const data = {
       name,
       category,
       description,
-      userId
+      userId,
+      lin
     };
 
     inputs.forEach((key, index)=> {
       data[key] = values[index];
     });
+
     try {
       const resp = await axios.post('http://localhost:3030/createcoll', { data, inputs });
       if (resp.data.message === 'ok') {
@@ -96,64 +129,82 @@ const CreateColl = () => {
   return (
     <div>
       { success ? <SuccessColl /> : (
-        <div className={`d-flex align-items-center flex-column ${darkMode ? 'dark-theme' : 'light-theme'}`} style={{height: '100%', paddingBottom: '100px'}}>
-          <h2 className="pb-3 pt-4">
-            {t('create.add')}
-          </h2>
-          <div className={`p-4 rounded shadow-lg ${darkMode ? 'inner-dark' : 'light-theme'} d-flex flex-column`} style={{ width: '50%'}}>
-            <label htmlFor="name" className="fw-bold mb-3">
-            {t('create.name')}
-            </label>
-            <input onChange={handleNameColl} className='mb-4 form-control' id="name" required autoFocus></input>
-
-            <label htmlFor="category" className="fw-bold mb-2">
-              {t('create.category')}
-            </label>
-            <input onChange={handleCategory} id="category" className='mb-4 form-control' required></input>
-
-            <label htmlFor="description" className="fw-bold mb-2">
-              {t('create.description')}
-            </label>
-            <input onChange={handleDescr} id="description" type="text" className='form-control last-input mb-4' maxLength={'100'} size={'100'}></input>
-            {showText ? (
-            <h5 style={{margin: '0', fontSize: '1rem'}} className="fw-bold mb-2">New fields for items:</h5>
-            ) : null}
-            { inputs.map((el, index) => (
-              <div key={index}>
-                 <div key={index} className="d-flex align-items-center mb-4 justify-content-between pt-2">
-                  <h5 className="addedField form-control fw-bold" style={{margin: '0'}}>{el}</h5>
-                  <button type="button" className="linkButton" onClick={() => handleRemoveField(index)}>
-                    <img className="remove" src={remove} alt="remove"></img>
-                  </button> 
-                </div>
-              </div>
-            ))}
-
-            {/* <label htmlFor="avatar" className="fw-bold mb-2">Choose a profile picture:</label>
-            <input type="file" id="avatar" accept="image/png, image/jpeg" className="mb-5" placeholder="Choose a file"/> */}
-            { inputs.length < maxFields ? (
-              <div>
-                <label className="mb-2 fw-bold">
-                  {t('create.addedFieldName')}
+        <div>
+          <Header showExit={true} />
+          <div className={`d-flex align-items-center vh-100 flex-column ${darkMode ? 'dark-theme' : 'light-theme'}`} style={{height: '100%', paddingBottom: '100px', padding: '10px'}}>
+            <h2 className="pb-3 pt-4">
+              {t('create.add')}
+            </h2>
+            <div className={`p-4 rounded shadow-lg ${darkMode ? 'inner-dark' : 'light-theme'} d-flex flex-column`} style={{ maxWidth: '600px', height: 'auto'}}>
+              <form onSubmit={(e) => handleSubmit(e)}>
+                <label htmlFor="name" className="fw-bold mb-3">
+                {t('create.name')}
                 </label>
-                <div className="d-flex flex-row justify-content-between mb-2" style={{gap: '5px'}}>
-                  <input id="nameField" value={nameField} className="form-control" onChange={handleName} placeholder={t('create.exampleName')} style={{width: '100%', marginRight: '10px'}}></input>
-                  {/* <label htmlFor="value"></label>
-                  <input value={valueField} id="value" className="form-control" onChange={handleValue} placeholder={t('create.exampleDescr')} style={{width: '100%', marginRight: "5px"}}></input> */}
-                  <button onClick={addField} className={`btn ${darkMode ? 'button-dark' : 'btn-light'}`} style={{height: '40px'}}>
-                    {t('create.addField')}
-                  </button>
+                <input onChange={handleNameColl} className='mb-4 form-control' id="name" required autoFocus></input>
+
+                <label htmlFor="category" className="fw-bold mb-2">
+                  {t('create.category')}
+                </label>
+                <input onChange={handleCategory} id="category" className='mb-4 form-control'></input>
+
+                <label htmlFor="description" className="fw-bold mb-2">
+                  {t('create.description')}
+                </label>
+                <input onChange={handleDescr} id="description" type="text" className='form-control last-input mb-4' maxLength={'300'} size={'300'}></input>
+                
+                {showText ? (
+                  <h5 style={{margin: '0', fontSize: '1rem'}} className="fw-bold mb-2">
+                    {t('create.newFields')}
+                  </h5>
+                ) : null}
+                { inputs.map((el, index) => (
+                  <div key={index}>
+                    <div key={index} className="d-flex align-items-center mb-4 justify-content-between pt-2">
+                      <h5 className="addedField form-control" style={{margin: '0'}}>{el}</h5>
+                      <button type="button" className="linkButton" onClick={() => handleRemoveField(index)}>
+                        <img className="remove" src={remove} alt="remove" />
+                      </button> 
+                    </div>
+                  </div>
+                ))}
+                
+                <div className="mb-3">
+                  <input type="file" name='file' onChange={handleFileChange} />
+                  {!loading ? null : (
+                    <p>
+                      {t('create.loading')}
+                    </p>
+                  )}
+                  {err ? (<p>{err}</p>) : (
+                    imgLink ? (
+                      <img src={imgLink} style={{width: '300px', height:'auto'}} alt='uploaded' />
+                    ) : null
+                  )}  
                 </div>
-              </div>
-            ) : null}
-            <div className="d-flex justify-content-center" style={{marginTop: '20px'}}>
-              <button onClick={handleSubmit} className={` btn ${darkMode ? 'button-dark' : 'btn-light'} mt-2`} style={{minWidth: '100px', marginRight: '10px'}}>
-                {t('create.create')}
-              </button>
-              <button onClick={() => navigate('/collections')} className={`btn mt-2 ${darkMode ? 'button-dark' : 'btn-light'}`} style={{minWidth: '100px'}}>
-                {t('registration.back')}
-              </button>
-            </div> 
+
+                { inputs.length < maxFields ? (
+                  <div>
+                    <label className="mb-2 fw-bold">
+                      {t('create.addedFieldName')}
+                    </label>
+                    <div className="d-flex flex-row justify-content-between mb-2" style={{gap: '5px'}}>
+                      <input id="nameField" value={nameField} className="form-control" onChange={handleName} placeholder={t('create.exampleName')} style={{width: '100%', marginRight: '10px'}}></input>
+                      <button type='button' onClick={addField} className={`btn ${darkMode ? 'button-dark' : 'btn-light'}`} style={{height: '40px'}}>
+                        {t('create.addField')}
+                      </button>
+                    </div>
+                  </div>
+                ) : null}
+                <div className="d-flex justify-content-center flex-wrap" style={{marginTop: '20px', gap: '10px'}}>
+                  <button type="submit" className={` btn ${darkMode ? 'button-dark' : 'btn-light'} mt-2`} style={{minWidth: '100px'}}>
+                    {t('create.create')}
+                  </button>
+                  <button onClick={() => navigate('/collections')} className={`btn mt-2 ${darkMode ? 'button-dark' : 'btn-light'}`} style={{minWidth: '100px'}}>
+                    {t('registration.back')}
+                  </button>
+                </div> 
+              </form>   
+            </div>
           </div>
         </div>
       )}

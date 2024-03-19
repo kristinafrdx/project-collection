@@ -1,5 +1,7 @@
 import express from 'express';
 import cors from 'cors';
+import multer from "multer";
+import { Dropbox } from 'dropbox';
 import {
   getItems,
   getCollections, 
@@ -15,12 +17,53 @@ import {
   getCollection,
   addItem,
   deleteItems } from './database.js';
+  import fs from 'fs';
+  import dotenv from 'dotenv';
+
+dotenv.config()
 
 const app = express();
 const PORT = 3030;
 
+const dbx = new Dropbox({accessToken: process.env.ACCESS_TOKEN});
+const upload = multer({dest: 'project-collection'});
+
 app.use(cors());
 app.use(express.json());
+
+app.post('/upload', upload.single('file'), async (req, res) => {
+  if (req.file) {
+    try {
+      const fileData = await fs.promises.readFile(req.file.path);
+      const resp = await dbx.filesUpload({
+        path: `/${req.file.originalname}`,
+        contents: fileData,
+      });
+      const fileId = resp.result.id;
+      try {
+        const response = await dbx.sharingCreateSharedLinkWithSettings({
+          path: fileId,
+        });
+        const sharedLink = response.result.url.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('?dl=0', '');
+        // console.log(sharedLink)
+        res.json({message: sharedLink})
+      } catch (error) {
+        console.log(error);
+      } finally {
+        fs.unlink(req.file.path, (err) => {
+          if (err) {
+            console.log(err)
+          } else {
+            console.log('file deleted')
+          }
+        });
+      }
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({ error: 'Failed to upload' });
+    }
+  }
+})
 
 app.get('/items', async (req, res) => {
   const items = await getItems();
@@ -82,10 +125,8 @@ app.post('/createcoll', async (req, res) => {
   const descr = req.body.data.description;
   const category = req.body.data.category;
   const inputs = req.body.inputs;
-
-  const arrKey = ['userId', 'name', 'description', 'category']
-  const idColl = await createCollection(name, descr, category, id, inputs[0], inputs[1], inputs[2]);
-
+  const linkToImg = req.body.data.lin;
+  const idColl = await createCollection(name, descr, category, id, inputs[0], inputs[1], inputs[2], linkToImg);
   res.json({message: 'ok'})
 })
 
@@ -93,7 +134,9 @@ app.post('/addItem', async (req, res) => {
   const name = req.body.nameItem;
   const id = req.body.idC;
   const tag = req.body.tag;
-  await addItem(name, tag, id);
+  const valueField = req.body.valueField;
+  const values = Object.values(valueField);
+  await addItem(name, tag, id, values[0], values[1], values[2]);
   res.json({message: 'ok'});
 })
 

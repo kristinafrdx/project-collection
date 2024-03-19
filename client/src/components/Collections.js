@@ -45,7 +45,7 @@ const Collections = () => {
       }
     }
     getCollections();
-  })
+  }, [])
 
   const navigate = useNavigate();
 
@@ -76,20 +76,33 @@ const Collections = () => {
     setShowDelete(false);
   }
 
+  console.log(collections)
   return (
     <div className='d-flex flex-column align-items-end'>
       <Header showRegistration={guest} showExit={isLogged}/>
         <div className={`wrap ${darkMode ? 'dark-theme' : '' }`} onClick={(e) => handleReset(e)}>
           {!guest ? (
             <div className='link'>
-              <button type="button" className={`pb-2 linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} onClick={() => navigate('/createColl')}>
+              <button 
+                type="button" 
+                className={`pb-2 linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} 
+                onClick={() => navigate('/createColl')}
+              >
                 {t("collections.create")}
               </button>
-              <button type="button" className={`pb-2 linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} onClick={() => navigate('/mycollections')}>
+              <button 
+                type="button" 
+                className={`pb-2 linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} 
+                onClick={() => navigate('/mycollections')}
+              >
                 {t("collections.my")}
               </button>
               {showDeleteButton ? (
-                <button type='button' className={`linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} onClick={(e) => deleteColl(selectedColl)}>
+                <button 
+                  type='button' 
+                  className={`linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} 
+                  onClick={(e) => deleteColl(selectedColl)}
+                >
                   {t("collections.delete")}
                 </button>
               ): null}
@@ -98,20 +111,35 @@ const Collections = () => {
           <div className="coll">
             { collections && collections.length > 0 ? (
               collections.map((el) => (
-              <div className={`card shadow-lg ${darkMode ? 'inner-dark linkButton-dark' : 'linkButton-light light-theme'}`} id={el.id} key={el.id} onClick={() => handleCard(el.id)}>
-                <ul className='text-coll' id={el.id}>
-                  <li className='nameColl' onClick={() => navigate('/page', { state: { id: el.id }})}>{el.name}</li>
-                  <div id={el.id}>
-                    <li id={el.id} className={`${darkMode ? 'li-dark' : 'li-light'}`}>{el.description}</li>
-                    <li id={el.id} className={`${darkMode ? 'li-dark' : 'li-light'}`}>{el.topic}</li>
-                  </div>
-                </ul>
+              <div key={el.id}>
+              <div 
+                className={`card shadow-lg ${darkMode ? 'inner-dark linkButton-dark' : 'linkButton-light light-theme'}`} 
+                style={{width: '200px', height: '200px'}} 
+                id={el.id} 
+                key={el.id} 
+                onClick={() => handleCard(el.id)}
+              >
+                {el.linkToImage ? (<img style={{width: '200px', height: '200px'}} src={el.linkToImage} alt=''></img>) : null} 
                 { userRole === 'admin' ? (
-                  <div className='d-flex justify-content-end' style={{width: '100%', padding: '10px'}} id={el.id}>
+                  <div 
+                    className='d-flex justify-content-end' 
+                    style={{width: '100%', padding: '10px', position:'absolute'}} 
+                    id={el.id}
+                  >
                     <label htmlFor={el.id}></label>
-                    <input className={'checkbox'} id={el.id} type="radio" checked={selectedColl === el.id} onChange={() => handleCard(el.id)}/>
+                    <input 
+                      className={'checkbox'} 
+                      id={el.id} 
+                      type="radio" 
+                      checked={selectedColl === el.id} 
+                      onChange={() => handleCard(el.id)}
+                    />
                   </div>
                 ) : null }
+              </div>
+              <ul className='text-coll' id={el.id}>
+                <li className='nameColl' onClick={() => navigate('/page', { state: { id: el.id }})}>{el.name}</li>
+              </ul>
               </div>
               ))
             ) : null }

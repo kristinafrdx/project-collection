@@ -72,19 +72,19 @@ export const getItem = async (id) => {
 // }
 
 
-export const createCollection = async (name, descr, topic, createdBy, field1, field2, field3) => {
+export const createCollection = async (name, descr, topic, createdBy, field1, field2, field3, linkToImage) => {
   const [newCollection] = await pool.query(`
-    INSERT INTO collections (name, description, topic, createdBy, field1, field2, field3)
-    VALUES (?, ?, ?, ?, ?, ?, ?)`,
-    [name, descr, topic, createdBy, field1, field2, field3]);
+    INSERT INTO collections (name, description, topic, createdBy, field1, field2, field3, linkToImage)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    [name, descr, topic, createdBy, field1, field2, field3, linkToImage]);
     return newCollection.insertId;
   }
 
-export const addItem = async (name, tag, id) => {
+export const addItem = async (name, tag, id, field1 = null, field2 = null, field3 = null) => {
   const [newItem] = await pool.query(`
-    INSERT INTO items (name, tag, idCollection)
-    VALUES (?, ?, ?)`,
-    [name, tag, id]);
+    INSERT INTO items (name, tag, idCollection, field1, field2, field3)
+    VALUES (?, ?, ?, ?, ?, ?)`,
+    [name, tag, id, field1, field2, field3]);
   return newItem.insertId;
 }
 

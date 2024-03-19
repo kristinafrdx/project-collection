@@ -6,7 +6,6 @@ import { useTheme } from './context/ThemeContext';
 import Header from "./Header";
 import { useTranslation } from 'react-i18next';
 import { useAuth } from "./context/IsloggedContext";
-// import { useAuth } from "../App";
 import { useUser } from "./context/UserContext";
 
 const Registration = () => {

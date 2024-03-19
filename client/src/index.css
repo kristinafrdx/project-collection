@@ -55,7 +55,6 @@ ul, li {
   padding-top: 30px;
   justify-content: flex-start;
   margin-left: 50px;
-  width: 100%;
   height: fit-content;
 }
 
@@ -64,7 +63,6 @@ ul, li {
   height: 200px;
   display: flex;
   align-items: center;
-  justify-content: center;
 }
 
 .wrap {
@@ -172,12 +170,14 @@ select:focus-visible {
   justify-content: space-between;
 }
 
-/* .addItem {
-  width: 70%;
+thead {
+  text-align: center;
 }
 
-.addItem-cont {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-} */
+td, th {
+  padding: 10px;
+}
+
+tr:first-child {
+  width: 50px;
+}
