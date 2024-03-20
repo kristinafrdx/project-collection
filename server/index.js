@@ -16,8 +16,9 @@ import {
   deleteItem,
   getCollection,
   addItem,
-  deleteItems } from './database.js';
-  import fs from 'fs';
+  deleteItems, 
+  getUsers, deleteUser, makeAdminMakeUser} from './database.js';
+  import fs, { stat } from 'fs';
   import dotenv from 'dotenv';
 
 dotenv.config()
@@ -139,7 +140,6 @@ app.post('/addItem', async (req, res) => {
   res.json({message: 'ok'});
 })
 
-
 app.post('/getcollection', async (req, res) => {
   const idCollection = req.body.idColl;
   const items = await getItems(idCollection);
@@ -154,6 +154,26 @@ app.post('/deleteItem', async (req, res) => {
   await deleteItem(idItem);
   const update = await getItems(idColl)
   res.json({message: 'ok', items: update});
+})
+
+app.get('/admin', async (req, res) => {
+  const users = await getUsers();
+  res.json({users: users})
+})
+
+app.post('/deleteUsers', async (req, res) => {
+  const id = req.body.selected;
+  await deleteUser(id);
+  const updateUsers = await getUsers();
+  res.json({ new: updateUsers})
+})
+
+app.post('/makeAdmin', async (req, res) => {
+  const id = req.body.id;
+  const status = req.body.status
+  await makeAdminMakeUser(status, id);
+  const update = await getUsers();
+  res.json({ update })
 })
 
 app.listen(PORT, () => {

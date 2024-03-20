@@ -62,7 +62,7 @@ const Registration = () => {
           style={{ width: "500px", height: "500px" }}
         >
           <h2 className="text-center mb-4 fs-5 mt-5 upper">{t('registration.signUp')}</h2>
-          <form className="p-4 pt-2" onSubmit={handleSubmit}>
+          <form className="p-4 pt-2" onSubmit={handleSubmit} name="registrationForm">
             <div className="form-group mb-3">
               <label htmlFor="username" className="fw-bold mb-2">
                 {t('registration.name')}

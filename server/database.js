@@ -141,6 +141,14 @@ export const deleteCollection = async (id) => {
   return;
 }
 
+export const deleteCollections = async (createdBy) => {
+  await pool.query(`
+    DELETE FROM collections
+    WHERE createdBy IN (?)`, 
+    [createdBy]);
+  return;
+}
+
 export const getUsers = async () => {
   const [users] = await pool.query(`SELECT * FROM users`)
   return users;
@@ -185,11 +193,30 @@ export const isAdmin = async (login, password) => {
 export const createUser = async (login, password, admin, name) => {
   const [newUser] = await pool.query(
     `INSERT INTO users (login, password, admin, name)
-   VALUES (?, ?, ?, ?)`,
+    VALUES (?, ?, ?, ?)`,
     [login, password, admin, name])
    return newUser;
 }
 
+export const deleteUser = async (user) => {
+  await pool.query(`
+    DELETE FROM users
+    WHERE id = ?`, 
+    [user]);
+  return;
+}
+
+// export const makeAdmin = async (id) => {
+//   await pool.query(`
+//   `)
+// }
+
+export const makeAdminMakeUser = async (status, usersId) => {
+  await pool.execute(`
+  UPDATE users SET admin = ?
+  WHERE id = ?`, 
+  [status, usersId]);
+}
 // export const createItem = async (name, tag, idCollection) => {
 //   const [newItem] = await pool.query(
 //     `INSERT INTO items (name, tag, idCollection)

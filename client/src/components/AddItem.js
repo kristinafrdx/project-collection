@@ -5,10 +5,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import { useState } from "react";
 import axios from "axios";
+import { useUser } from "./context/UserContext";
 
 const AddItem = () => {
   const { darkMode } = useTheme();
-
+  const { userRole } = useUser();
   const { t } = useTranslation();
   const [name, setName] = useState('');
   const [tags, setTags] = useState('');
@@ -56,7 +57,7 @@ const AddItem = () => {
     
   return (
     <div className="d-flex flex-column">
-      <Header />
+      <Header showExit={true} app={userRole === 'admin'} path={'/admin'}/>
       <div className={`d-flex justify-content-center align-items-center vh-100 ${darkMode ? 'dark-theme' : 'light-theme'}`} >
         <div
           className={`p-4 rounded shadow-lg ${darkMode ? 'inner-dark' : 'light-theme'}`}

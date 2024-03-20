@@ -78,7 +78,7 @@ const Collections = () => {
 
   return (
     <div className='d-flex flex-column align-items-end'>
-      <Header showRegistration={guest} showExit={isLogged}/>
+      <Header showRegistration={guest} showExit={isLogged} app={admin} path={'/admin'}/>
         <div className={`wrap ${darkMode ? 'dark-theme' : '' }`} onClick={(e) => handleReset(e)}>
           {!guest ? (
             <div className='link'>
@@ -96,7 +96,7 @@ const Collections = () => {
               >
                 {t("collections.my")}
               </button>
-              {showDeleteButton ? (
+              {admin ? (
                 <button 
                   type='button' 
                   className={`linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} 
@@ -115,7 +115,6 @@ const Collections = () => {
                 className={`card shadow-lg ${darkMode ? 'inner-dark linkButton-dark' : 'linkButton-light light-theme'}`} 
                 style={{width: '200px', height: '200px'}} 
                 id={el.id} 
-                key={el.id} 
                 onClick={() => handleCard(el.id)}
               >
                 {el.linkToImage ? (<img style={{width: '200px', height: '200px'}} src={el.linkToImage} alt=''></img>) : null} 
@@ -123,12 +122,10 @@ const Collections = () => {
                   <div 
                     className='d-flex justify-content-end' 
                     style={{width: '100%', padding: '10px', position:'absolute'}} 
-                    id={el.id}
                   >
                     <label htmlFor={el.id}></label>
                     <input 
                       className={'checkbox'} 
-                      id={el.id} 
                       type="radio" 
                       checked={selectedColl === el.id} 
                       onChange={() => handleCard(el.id)}

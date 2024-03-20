@@ -8,7 +8,7 @@ import { useTranslation} from "react-i18next";
 
 const MyCollections = () => {
   const { darkMode } = useTheme();
-  const { userId } = useUser();
+  const { userId, userRole } = useUser();
 
   const navigate = useNavigate();
   const [myColl, setMyColl] = useState([]);
@@ -60,7 +60,7 @@ const MyCollections = () => {
 
   return (
     <div className='d-flex flex-column align-items-end'>
-      <Header showExit={true}/>
+      <Header showExit={true} app={userRole === 'admin'} path={'/admin'}/>
       <div 
         className={`wrap ${myColl.length < 1 ? 'coll-height' : ''} ${darkMode ? 'dark-theme' : '' }`} 
         onClick={(e) => handleReset(e)}
@@ -97,15 +97,12 @@ const MyCollections = () => {
                 <div key={el.id}>
                 <div 
                   className={`card shadow-lg ${darkMode ? 'inner-dark linkButton-dark' : 'linkButton-light light-theme'}`} 
-                  id={el.id} 
-                  key={el.id} 
                   onClick={() => handleCard(el.id)}
                 >
                   {el.linkToImage ? (
                     <img style={{ width: '200px', height: '200px' }} src={ el.linkToImage } alt='imageColl' />
                   ) : null} 
                   <div 
-                    id={el.id} 
                     className='d-flex justify-content-end' 
                     style={{ width: '100%', padding: '10px', position: 'absolute' }}>
                     <label htmlFor={el.id}></label>
@@ -117,7 +114,7 @@ const MyCollections = () => {
                     />
                   </div>
                 </div>
-                <ul className='text-coll' id={el.id}>
+                <ul className='text-coll'>
                   <li 
                     className={`nameColl ${darkMode ? 'li-dark' : 'li-light'}}`} 
                     onClick={() => navigate('/page', { state: { id: el.id }})}

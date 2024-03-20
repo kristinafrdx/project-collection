@@ -11,6 +11,7 @@ import { IsLoggedProvider } from "./components/context/IsloggedContext";
 import { useAuth } from "./components/context/IsloggedContext";
 import { useNavigate } from "react-router-dom";
 import AddItem from "./components/AddItem";
+import Admin from "./components/Admin";
 
 // const AuthContext = createContext(); 
 
@@ -29,6 +30,7 @@ function App() {
             <Route path="/page" element={<PageCollection /> }/>
             <Route path="/success" element={isLogged ? <SuccessColl /> : <Navigate to='/'/>} />
             <Route path="/addItem" element={<AddItem />} />
+            <Route path="/admin" element={<Admin />} />
           </Routes>
         </Router>
     </div>

@@ -14,8 +14,7 @@ import ReactMarkdown from 'react-markdown'
 const CreateColl = () => {
   const { t } = useTranslation();
   const { darkMode } = useTheme();
-  const { userId } = useUser();
-
+  const { userId, userRole } = useUser();
   const [inputs, setInputs] = useState([])
   const [nameField, setNameField] = useState('');
   const [valueField, setValue] = useState('');
@@ -107,7 +106,6 @@ const CreateColl = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const lin = await handleUpload();
-    console.log(lin)
     const data = {
       name,
       category,
@@ -155,7 +153,7 @@ const CreateColl = () => {
     <div>
       { success ? <SuccessColl /> : (
         <div>
-          <Header showExit={true} />
+          <Header showExit={true} app={userRole === 'admin'} path={'/admin'}/>
           <div className={`d-flex align-items-center vh-100 flex-column ${darkMode ? 'dark-theme' : 'light-theme'}`} style={{height: '100%', paddingBottom: '100px', padding: '10px'}}>
             <h2 className="pb-3 pt-4">
               {t('create.add')}
@@ -170,7 +168,7 @@ const CreateColl = () => {
                <label htmlFor="category" className="fw-bold mb-2">
                   {t('create.category')}
                 </label>
-                <Select onChange={(e) => handleCategory(e)} id='category' className="mb-4" options={options}></Select>
+                <Select onChange={(e) => handleCategory(e)} className="mb-4" options={options}></Select>
                 {showInputCategory ? (
                   <div>
                     <label htmlFor="categoryOther" className="fw-bold mb-2">
@@ -203,7 +201,7 @@ const CreateColl = () => {
                 ) : null}
                 { inputs.map((el, index) => (
                   <div key={index}>
-                    <div key={index} className="d-flex align-items-center mb-4 justify-content-between pt-2">
+                    <div className="d-flex align-items-center mb-4 justify-content-between pt-2">
                       <h5 className="addedField form-control" style={{margin: '0'}}>{el}</h5>
                       <button type="button" className="linkButton" onClick={() => handleRemoveField(index)}>
                         <img className="remove" src={remove} alt="remove" />

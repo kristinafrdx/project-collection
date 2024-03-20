@@ -181,3 +181,11 @@ td, th {
 tr:first-child {
   width: 50px;
 }
+
+.th {
+  border: 1px solid rgba(178, 174, 174, 0.749)
+}
+
+.adminButton {
+  font-size: 13px;
+}

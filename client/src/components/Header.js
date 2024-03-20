@@ -9,8 +9,9 @@ import { useNavigate } from "react-router-dom";
 import logout from "../logo/logout.svg"
 import { useAuth } from "./context/IsloggedContext";
 import { useUser } from "./context/UserContext";
+import apps from "../logo/apps.svg";
 
-const Header = ({ showRegistration, showExit }) => {
+const Header = ({ showRegistration, showExit, app, path }) => {
   const {t, i18n} = useTranslation();
   const { darkMode, toggleDarkMode } = useTheme();
   const { language, setLanguage } = useLanguage();
@@ -32,6 +33,7 @@ const Header = ({ showRegistration, showExit }) => {
     navigation('/');
   }
 
+
   return (
     <header className={`header m-0 ${darkMode ? 'header-dark' : 'header-light'}`}>
       <h5 className="text-left createColl">{t('header.createCollections')}</h5>
@@ -47,6 +49,13 @@ const Header = ({ showRegistration, showExit }) => {
           <div>
             <button type="button" className="linkButton" onClick={handleResetLogged}>
               <img className={`logout ${darkMode ? 'logout-dark' : ''}`} src={logout} alt="logout"></img>
+            </button>
+          </div>
+        )}
+        {app && (
+          <div>
+            <button type="button" className="linkButton" onClick={() => navigation(path)}>
+              <img className={`apps ${darkMode ? 'logout-dark' : ''}`} src={apps} alt="apps"></img>
             </button>
           </div>
         )}

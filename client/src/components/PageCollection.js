@@ -25,12 +25,12 @@ const PageCollection = () => {
   
   const [loading, setLoading] = useState(true);
   const [showButtons, setShowButtons] = useState(false);
+
   const [field1, setField1] = useState(null);
   const [field2, setField2] = useState(null);
   const [field3, setField3] = useState(null);
   const [link, setLink] = useState(null)
 
-  const [showDeleteButton, setShowDelete] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [checkboxChecked, setCheckboxChecked] = useState(false);
   const navigate = useNavigate();
@@ -46,6 +46,7 @@ const PageCollection = () => {
       setGuest(true);
     } else if (userRole === 'admin') {
       setAdmin(true);
+      setShowButtons(true);
     } else {
       setUser(true);
     }
@@ -69,7 +70,6 @@ const PageCollection = () => {
     if (!isInsideCell || !isInsideRow || !isInsideTable) {
       setSelectedItem(null);
       setCheckboxChecked(false);
-      setShowDelete(false)
     }  
   }
 
@@ -86,8 +86,6 @@ const PageCollection = () => {
           const fiel3 = collection.field3;
           setCategory(collection.topic);
           setNameColl(collection.name);
-          // const d = marked(collection.description)
-          // console.log(d)
           setDescr(collection.description);
           setLink(linkToImage)
           if (fiel1) {
@@ -100,8 +98,12 @@ const PageCollection = () => {
             setField3(fiel3);
           }
           setItems(prev => [...prev, ...items])
-          if (collection.createdBy === userId) {
+          if (Number(collection.createdBy) === Number(userId)) {
             setShowButtons(true)
+          } else if (admin){
+            setShowButtons(true)
+          } else {
+            setShowButtons(false)
           }
         }
       } catch (e) {
@@ -121,11 +123,9 @@ const PageCollection = () => {
     if (selectedItem === id) {
       setSelectedItem(null);
       setCheckboxChecked(false)
-      setShowDelete(false)
     } else {
       setCheckboxChecked(!checkboxChecked);
       setSelectedItem(Number(id));
-      setShowDelete(true)
     }
   }
 
@@ -144,31 +144,29 @@ const PageCollection = () => {
     })
   }
 
+  console.log(showButtons)
     return (
     <div>
-      <Header showExit={admin || user} showRegistration={guest}/>
+      <Header showExit={admin || user} showRegistration={guest} app={admin}/>
       <div className={`${darkMode ? 'dark-theme' : ''}`} style={{padding: '20px 20px 0', minHeight: '100vh' }} onClick={(e) => handleReset(e)}>
         <div className="d-flex justify-content-end">
           <div className="cont_for_button d-flex justify-content-around align-items-start" style={{justifyContent: 'space-between', gap: '50px'}}>
-            {showButtons || admin ? (
               <div className="add/edit/delete d-flex" style={{gap: '50px'}}>
-                {showDeleteButton ? (
-                  <div className="d-flex" style={{gap: '50px'}}>
-                    <button type="button" className={`linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`}>
-                      {t('page.edit')}
-                    </button>
-                    <button type='button' className={`linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} onClick={(e) => deleteItem(selectedItem)}>
-                      {t("collections.delete")}
-                    </button>
+                { showButtons ? (
+                  <div className='d-flex' style={{gap: '50px'}}>
+                  <div>
+                      { selectedItem ? (
+                      <button type='button' className={`linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} onClick={() => deleteItem(selectedItem)}>
+                        {t("collections.delete")}
+                      </button>
+                    ) : null }
                   </div>
-                ) : null}
-                {guest ? null : (
                   <button type="button" className={`linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} onClick={handleAdd}>
                     {t('page.add')}
                   </button>
-                )}
+                  </div>
+                ) : null}
               </div>
-            ): null}
             <div className="back" style={{paddingLeft: '10px'}}>
               <button type="button" className={`linkButton pb-2 ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} onClick={() => navigate('/collections')}>
                 {t("registration.back")}
@@ -223,35 +221,35 @@ const PageCollection = () => {
                     <thead>
                       <tr>
                         <th className="firstColumn"></th>
-                        <th className={`${darkMode ? 'header-dark' : 'header-light'}`}style={{border: '1px solid black'}}>
+                        <th className={`th ${darkMode ? 'header-dark' : 'header-light'}`}>
                           №
                         </th>
-                        <th className={`${darkMode ? 'header-dark' : 'header-light'}`} style={{border: '1px solid black'}}>
+                        <th className={`th ${darkMode ? 'header-dark' : 'header-light'}`}>
                           {t('page.name')}
                         </th>
-                        <th className={`${darkMode ? 'header-dark' : 'header-light'}`} style={{border: '1px solid black'}}>
+                        <th className={`th ${darkMode ? 'header-dark' : 'header-light'}`}>
                           {t('page.tags')}
                         </th>
-                        {field1 ? (<th className={`${darkMode ? 'header-dark' : 'header-light'}`} style={{border: '1px solid black'}}>{field1}</th>) : null}
-                        {field2 ? (<th className={`${darkMode ? 'header-dark' : 'header-light'}`} style={{border: '1px solid black'}}>{field2}</th>) : null}
-                        {field3 ? (<th className={`${darkMode ? 'header-dark' : 'header-light'}`} style={{border: '1px solid black'}}>{field3}</th>) : null}
+                        {field1 ? (<th className={`th ${darkMode ? 'header-dark' : 'header-light'}`}>{field1}</th>) : null}
+                        {field2 ? (<th className={`th ${darkMode ? 'header-dark' : 'header-light'}`}>{field2}</th>) : null}
+                        {field3 ? (<th className={`th ${darkMode ? 'header-dark' : 'header-light'}`}>{field3}</th>) : null}
                       </tr>
                     </thead>
                     <tbody>
                       {itemsSt.map((el, index) => (
                         <tr key={el.id} onClick={() => handleCard(el.id)}>
-                          {showButtons || admin ? (
+                          { showButtons ? (
                             <td className={`${darkMode ? '' : 'light-theme'}`} style={{textAlign: 'end', width: '30px'}}>
-                              <input className={`checkbox ${darkMode ? 'select-dark' : ''}`} id={el.id} type="radio" checked={selectedItem === el.id} onChange={() => handleCard(el.id)}/>
+                              <input className={`checkbox ${darkMode ? 'select-dark' : ''}`} type="radio" checked={selectedItem === el.id} onChange={() => handleCard(el.id)}/>
                               <label htmlFor={el.id}></label>
                             </td>
                           ) : <td></td>}
-                          <td className={`${darkMode ? 'inner-dark' : 'light-theme'}`} style={{border: '1px solid black'}}>{index + 1}</td>
-                          <td className={`${darkMode ? 'inner-dark' : 'light-theme'}`} style={{border: '1px solid black'}}>{el.name}</td>
-                          <td className={`${darkMode ? 'inner-dark' : 'light-theme'}`} style={{border: '1px solid black'}}>{el.tag}</td>
-                          {field1 ? (<td className={`${darkMode ? 'inner-dark' : 'light-theme'}`} style={{border: '1px solid black'}}>{el.field1}</td>) : null}
-                          {field2 ? (<td className={`${darkMode ? 'inner-dark' : 'light-theme'}`} style={{border: '1px solid black'}}>{el.field2}</td>) : null}
-                          {field3 ? (<td className={`${darkMode ? 'inner-dark' : 'light-theme'}`} style={{border: '1px solid black'}}>{el.field3}</td>)  : null}
+                          <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>{index + 1}</td>
+                          <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>{el.name}</td>
+                          <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>{el.tag}</td>
+                          {field1 ? (<td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>{el.field1}</td>) : null}
+                          {field2 ? (<td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>{el.field2}</td>) : null}
+                          {field3 ? (<td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>{el.field3}</td>)  : null}
                         </tr> 
                       ))}
                     </tbody>
@@ -263,9 +261,11 @@ const PageCollection = () => {
                 <h5 className={`${darkMode ? 'empty-coll-dark' : 'empty-coll-light'}`}>
                   {t('page.notFound')}
                 </h5>
+              { admin ? (
                 <button type='button' className={`linkButton text-underline ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} onClick={handleAdd}>
                   {t('page.add')}
                 </button>
+              ) : null}
               </div>
             )
           )}
