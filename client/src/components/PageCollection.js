@@ -5,6 +5,8 @@ import { useTranslation} from "react-i18next";
 import Header from "./Header";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "./context/ThemeContext";
+// import { marked } from 'marked';
+import ReactMarkdown from 'react-markdown';
 
 const PageCollection = () => {
   const { t } = useTranslation();
@@ -84,6 +86,8 @@ const PageCollection = () => {
           const fiel3 = collection.field3;
           setCategory(collection.topic);
           setNameColl(collection.name);
+          // const d = marked(collection.description)
+          // console.log(d)
           setDescr(collection.description);
           setLink(linkToImage)
           if (fiel1) {
@@ -201,7 +205,7 @@ const PageCollection = () => {
                   <h3>
                     {t('page.description')}
                   </h3>
-                  <p>{descr}</p>
+                  <ReactMarkdown>{descr}</ReactMarkdown>
                 </div>
                 ) : null}
               </div>

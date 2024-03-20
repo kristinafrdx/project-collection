@@ -45,7 +45,6 @@ app.post('/upload', upload.single('file'), async (req, res) => {
           path: fileId,
         });
         const sharedLink = response.result.url.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('?dl=0', '');
-        // console.log(sharedLink)
         res.json({message: sharedLink})
       } catch (error) {
         console.log(error);
@@ -145,6 +144,7 @@ app.post('/getcollection', async (req, res) => {
   const idCollection = req.body.idColl;
   const items = await getItems(idCollection);
   const collection = await getCollection(idCollection);
+  // const descr = removeMarkdownSymbols(collection.description);
   res.json({items, collection});
 })
 

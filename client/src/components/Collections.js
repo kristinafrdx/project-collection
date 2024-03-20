@@ -76,7 +76,6 @@ const Collections = () => {
     setShowDelete(false);
   }
 
-  console.log(collections)
   return (
     <div className='d-flex flex-column align-items-end'>
       <Header showRegistration={guest} showExit={isLogged}/>

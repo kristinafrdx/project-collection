@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { useUser } from "./context/UserContext";
 import axios from "axios";
 import SuccessColl from '../components/SuccessColl';
+import Select from 'react-select';
+import ReactMarkdown from 'react-markdown'
 
 const CreateColl = () => {
   const { t } = useTranslation();
@@ -27,6 +29,7 @@ const CreateColl = () => {
   const [imgLink, setImgLink] = useState(null);
   const [err, setErr] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showInputCategory, setShowInputCategory] = useState(false);
 
   const maxFields = 3;
   const navigate = useNavigate();
@@ -45,6 +48,19 @@ const CreateColl = () => {
     setNameField(e.target.value)
   }
 
+  const options = [
+    {value: 'Art', label: 'Art'},
+    {value: 'Stamps', label: 'Stamps'},
+    {value: 'Cars', label: 'Cars'},
+    {value: 'Coins', label: 'Coins'},
+    {value: 'Films', label: 'Films'},
+    {value: 'Stickers', label: 'Stickers'},
+    {value: 'Candy wrapper', label: 'Candy wrapper'},
+    {value: 'Stones', label: 'Stones'},
+    {value: 'Books', label: 'Books'},
+    {value: 'Sings', label: 'Sings'},
+    {value: 'Other', label: 'Other'}
+  ]
   const handleRemoveField = (index) => {
     setInputs(inputs.filter((_, i) => i!== index));
     setValues(values.filter((_, i) => i!== index));
@@ -115,6 +131,15 @@ const CreateColl = () => {
   }
 
   const handleCategory = (e) => {
+    if (e.value === 'Other') {
+      setShowInputCategory(true)
+    } else {
+      setShowInputCategory(false)
+    }
+    setCategory(e.value);
+  }
+
+  const handleOtherCategory = (e) => {
     setCategory(e.target.value)
   }
 
@@ -142,15 +167,34 @@ const CreateColl = () => {
                 </label>
                 <input onChange={handleNameColl} className='mb-4 form-control' id="name" required autoFocus></input>
 
-                <label htmlFor="category" className="fw-bold mb-2">
+               <label htmlFor="category" className="fw-bold mb-2">
                   {t('create.category')}
                 </label>
-                <input onChange={handleCategory} id="category" className='mb-4 form-control'></input>
+                <Select onChange={(e) => handleCategory(e)} id='category' className="mb-4" options={options}></Select>
+                {showInputCategory ? (
+                  <div>
+                    <label htmlFor="categoryOther" className="fw-bold mb-2">
+                      Your category:
+                    </label>
+                  <input onChange={handleOtherCategory} id="categoryOther" className='mb-4 form-control'></input>
+                  </div>
+                ) : null}
 
                 <label htmlFor="description" className="fw-bold mb-2">
                   {t('create.description')}
                 </label>
-                <input onChange={handleDescr} id="description" type="text" className='form-control last-input mb-4' maxLength={'300'} size={'300'}></input>
+                {/* <div> */}
+                 <textarea
+                  onChange={handleDescr} 
+                  id="description" 
+                  type="text" 
+                  className='form-control last-input mb-4'
+                  value={description}
+                /> 
+                {/* </div> */}
+                <div>
+                  <ReactMarkdown>{description}</ReactMarkdown>
+                </div>
                 
                 {showText ? (
                   <h5 style={{margin: '0', fontSize: '1rem'}} className="fw-bold mb-2">
