@@ -1,11 +1,10 @@
-import React, { useState, useEffect, cloneElement } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useUser } from "./context/UserContext";
 import { useTranslation} from "react-i18next";
 import Header from "./Header";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "./context/ThemeContext";
-// import { marked } from 'marked';
 import ReactMarkdown from 'react-markdown';
 
 const PageCollection = () => {
@@ -29,10 +28,14 @@ const PageCollection = () => {
   const [field1, setField1] = useState(null);
   const [field2, setField2] = useState(null);
   const [field3, setField3] = useState(null);
-  const [link, setLink] = useState(null)
+
+  const [link, setLink] = useState(null);
+  const [likes, setLikes] = useState(null);
 
   const [selectedItem, setSelectedItem] = useState(null);
   const [checkboxChecked, setCheckboxChecked] = useState(false);
+  // const [editing, setEdit] = useState(null);
+
   const navigate = useNavigate();
 
   const id = location?.state?.id
@@ -84,6 +87,8 @@ const PageCollection = () => {
           const fiel1 = collection.field1;
           const fiel2 = collection.field2;
           const fiel3 = collection.field3;
+          const likes = collection.likes;
+          setLikes(likes)
           setCategory(collection.topic);
           setNameColl(collection.name);
           setDescr(collection.description);
@@ -115,6 +120,7 @@ const PageCollection = () => {
    getCollections(idColl)
   }, [idColl])
 
+
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
@@ -128,7 +134,6 @@ const PageCollection = () => {
       setSelectedItem(Number(id));
     }
   }
-
 
   const handleAdd = async () => {
     navigate('/addItem', 
@@ -144,8 +149,11 @@ const PageCollection = () => {
     })
   }
 
-  console.log(showButtons)
-    return (
+  // const handleEditItem = (e, id) => {
+  //   setEdit(id)
+  // }
+
+  return (
     <div>
       <Header showExit={admin || user} showRegistration={guest} app={admin}/>
       <div className={`${darkMode ? 'dark-theme' : ''}`} style={{padding: '20px 20px 0', minHeight: '100vh' }} onClick={(e) => handleReset(e)}>
@@ -207,6 +215,7 @@ const PageCollection = () => {
                 </div>
                 ) : null}
               </div>
+              <div><p>{t('page.likes')}{likes}</p></div>
             </div>
           </div>
 
@@ -233,6 +242,7 @@ const PageCollection = () => {
                         {field1 ? (<th className={`th ${darkMode ? 'header-dark' : 'header-light'}`}>{field1}</th>) : null}
                         {field2 ? (<th className={`th ${darkMode ? 'header-dark' : 'header-light'}`}>{field2}</th>) : null}
                         {field3 ? (<th className={`th ${darkMode ? 'header-dark' : 'header-light'}`}>{field3}</th>) : null}
+                        <th></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -247,9 +257,23 @@ const PageCollection = () => {
                           <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>{index + 1}</td>
                           <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>{el.name}</td>
                           <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>{el.tag}</td>
-                          {field1 ? (<td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>{el.field1}</td>) : null}
-                          {field2 ? (<td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>{el.field2}</td>) : null}
-                          {field3 ? (<td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>{el.field3}</td>)  : null}
+                          {field1 ? (
+                          <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>
+                            {el.field1}
+                          </td>) : null}
+                          {field2 ? (
+                          <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>
+                            {el.field2}
+                          </td>) : null}
+                          {field3 ? (
+                          <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>
+                            {el.field3}
+                            </td>)  : null}
+                          {/* <td className={`${darkMode ? 'logo-done-dark' : ''}`}>
+                            <button className="linkButton" onClick={(e) => handleEditItem(e, el.id)}>
+                              <img id={el.id} src={edit} alt="edit" />
+                            </button>
+                          </td> */}
                         </tr> 
                       ))}
                     </tbody>

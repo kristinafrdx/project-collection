@@ -4,19 +4,15 @@ import { useTranslation } from 'react-i18next';
 import Header from './Header';
 import axios from 'axios';
 import { useUser } from './context/UserContext';
-import { useNavigate } from 'react-router-dom';
 
 const Admin = () => {
   const [users, setUsers] = useState([]);
-  const [err, setError] = useState(false);
-  const { setUserRole, userRole, setUserId, userId } = useUser();
+  const { setUserRole } = useUser();
   const { t } = useTranslation();
   const { darkMode } = useTheme();
   const [selected, setSelected] = useState(null);
   const [checkboxChecked, setCheckboxChecked] = useState(false);
   const [showDeleteButton, setShowDelete] = useState(false);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -77,19 +73,19 @@ const Admin = () => {
           className={`btn adminButton ${darkMode ? 'button-dark' : 'btn-light'}`} 
           onClick={deleteUser} 
         >
-          DELETE
+          {t('admin.delete')}
         </button>
         <button 
           className={`btn adminButton ${darkMode ? 'button-dark' : 'btn-light'}`} 
           onClick={() => handleMakeAdmin(selected, true, 'admin')}
         >
-          Make admin
+          {t('admin.makeAdmin')}
         </button>
         <button 
           className={`btn adminButton ${darkMode ? 'button-dark' : 'btn-light'}`} 
           onClick={() => handleMakeAdmin(selected, false, 'user')}
         >
-          Make user
+          {t('admin.makeUser')}
         </button>
       </div>
     ) : null}
@@ -99,10 +95,10 @@ const Admin = () => {
         <thead>
           <tr>
             <th />
-            <th className={`th ${darkMode ? 'adminHeadTable-dark' : ''}`}>id</th>
-            <th className={`th ${darkMode ? 'adminHeadTable-dark' : ''}`}>name</th>
-            <th className={`th ${darkMode ? 'adminHeadTable-dark' : ''}`}>login</th>
-            <th className={`th ${darkMode ? 'adminHeadTable-dark' : ''}`}>status</th>
+            <th className={`th ${darkMode ? 'adminHeadTable-dark' : ''}`}>{t('admin.id')}</th>
+            <th className={`th ${darkMode ? 'adminHeadTable-dark' : ''}`}>{t('admin.name')}</th>
+            <th className={`th ${darkMode ? 'adminHeadTable-dark' : ''}`}>{t('admin.login')}</th>
+            <th className={`th ${darkMode ? 'adminHeadTable-dark' : ''}`}>{t('admin.status')}</th>
           </tr>
         </thead>
         <tbody>

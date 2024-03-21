@@ -52,12 +52,22 @@ const translation = {
       "description": "Description:",
       "yourItems": "Your items:",
       "index": "№",
-      "tags": "Tags"
+      "tags": "Tags",
+      "likes": "Likes: "
     },
     "addItem": {
       "add": "Add item",
       "name": "Name",
       "tags": "Tags",
+    },
+    "admin": {
+      "delete": "DELETE",
+      "makeAdmin": "Make admin",
+      "makeUser": "Make user",
+      "id": "ID",
+      "name": "Name",
+      "login": "Login",
+      "status": "Status"
     }
   }
 } 

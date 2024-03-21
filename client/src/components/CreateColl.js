@@ -25,7 +25,7 @@ const CreateColl = () => {
   const [success, setSuccss] = useState(false);
   const [showText, setShowText] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [imgLink, setImgLink] = useState(null);
+  // const [imgLink, setImgLink] = useState(null);
   const [err, setErr] = useState('');
   const [loading, setLoading] = useState(false);
   const [showInputCategory, setShowInputCategory] = useState(false);
@@ -181,7 +181,6 @@ const CreateColl = () => {
                 <label htmlFor="description" className="fw-bold mb-2">
                   {t('create.description')}
                 </label>
-                {/* <div> */}
                  <textarea
                   onChange={handleDescr} 
                   id="description" 
@@ -189,7 +188,6 @@ const CreateColl = () => {
                   className='form-control last-input mb-4'
                   value={description}
                 /> 
-                {/* </div> */}
                 <div>
                   <ReactMarkdown>{description}</ReactMarkdown>
                 </div>
@@ -217,11 +215,12 @@ const CreateColl = () => {
                       {t('create.loading')}
                     </p>
                   )}
-                  {err ? (<p>{err}</p>) : (
+                   {err ? (<p>{err}</p>) : null}
+                  {/* {err ? (<p>{err}</p>) : (
                     imgLink ? (
                       <img src={imgLink} style={{width: '300px', height:'auto'}} alt='uploaded' />
                     ) : null
-                  )}  
+                  )}   */}
                 </div>
 
                 { inputs.length < maxFields ? (

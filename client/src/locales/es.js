@@ -53,11 +53,21 @@ const translation = {
       "yourItems": "Tus cosas:",
       "index": "№",
       "tags": "Etiquetas",
+      "likes": "Gustos: "
     },
     "addItem": {
       "add": "Añadir artículo",
       "name": "Nombre",
       "tags": "Etiquetas",
+    },
+    "admin": {
+      "delete": "Borrar",
+      "makeAdmin": "hacer administrador",
+      "makeUser": "Hacer usuario",
+      "id": "ID",
+      "name": "Nombre",
+      "login": "Acceso",
+      "status": "Estado"
     }
   }
 };

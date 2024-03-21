@@ -22,6 +22,8 @@ const MyCollections = () => {
     const getCollections = async () => {
       try {
         const resp = await axios.post('http://localhost:3030/mycollections', { userId });
+        const likes = resp.data.getMy.likes
+        console.log(likes)
         setMyColl(resp.data.getMy);
       } catch (e) {
         console.error(e)
