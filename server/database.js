@@ -217,6 +217,49 @@ export const makeAdminMakeUser = async (status, usersId) => {
   WHERE id = ?`, 
   [status, usersId]);
 }
+
+export const makeLike = async (idUser, idColl) => {
+  await pool.execute(`
+  INSERT INTO likes (idUser, idCollection)
+  VALUES (?, ?)`,
+  [idUser, idColl])
+}
+
+export const deleteLike = async (id) => {
+  await pool.execute(`
+  DELETE FROM likes
+  WHERE id = ?`,
+  [id])
+}
+
+export const getLikes = async () => {
+  const [likes] = await pool.query(`
+  SELECT * FROM likes`)
+  return likes
+}
+
+export const addLike = async (idColl) => {
+  await pool.execute(`
+  UPDATE collections SET likes = likes + 1
+  WHERE id = ?`,
+  [idColl]);
+}
+
+export const deleteLikeColl = async (idColl) => {
+  await pool.execute(`
+  UPDATE collections SET likes = likes - 1
+  WHERE id = ?`,
+  [idColl]);
+}
+
+export const getLike = async (idUser, idColl) => {
+  const [like] = await pool.execute(`
+  SELECT * FROM likes
+  WHERE idUser = ?
+  && idCollection = ?`,
+  [idUser, idColl])
+  return like;
+}
 // export const createItem = async (name, tag, idCollection) => {
 //   const [newItem] = await pool.query(
 //     `INSERT INTO items (name, tag, idCollection)

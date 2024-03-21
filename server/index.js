@@ -2,22 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import multer from "multer";
 import { Dropbox } from 'dropbox';
-import {
-  getItems,
-  getCollections, 
-  getMyCollections,
-  createUser,
-  getUser,
-  isAdmin, 
-  isAlreadyExistUser,
-  isCorrectDataUser,
-  deleteCollection,
-  createCollection,
-  deleteItem,
-  getCollection,
-  addItem,
-  deleteItems, 
-  getUsers, deleteUser, makeAdminMakeUser} from './database.js';
+import * as database from './database.js';
   import fs, { stat } from 'fs';
   import dotenv from 'dotenv';
 
@@ -66,29 +51,51 @@ app.post('/upload', upload.single('file'), async (req, res) => {
 })
 
 app.get('/items', async (req, res) => {
-  const items = await getItems();
+  const items = await database.getItems();
   res.send(items);
 })
 
+app.post('/like', async (req, res) => {
+  const idUser = req.body.idU;
+  const idColl = req.body.idC;
+  const like = req.body.like;
+  if (like) {
+    await database.makeLike(idUser, idColl)
+    await database.addLike(idColl)
+    const updateColl = await database.getCollections();
+    res.json({updateColl})
+  } 
+  else {
+    const likeId = await database.getLike(idUser, idColl);
+    await database.deleteLike(likeId[0].id)
+    await database.deleteLikeColl(idColl);
+
+    const updateColl = await database.getCollections();
+    res.json({updateColl})
+  }
+  res.end();
+})
+
 app.get('/collections', async (req, res) => {
-  const collections = await getCollections();
-  res.json({collections});
+  const collections = await database.getCollections();
+  const likes = await database.getLikes();
+  res.json({collections, likes});
 })
 
 app.post('/myCollections', async (req, res) => {
   const idUser = req.body.userId
-  const getMy = await getMyCollections(idUser);
+  const getMy = await database.getMyCollections(idUser);
   res.json({ getMy });
 })
 
 app.post('/login', async (req, res) => {
   const login = req.body.login;
   const password = req.body.password;
-  const isCorrectData = await isCorrectDataUser(login, password);
+  const isCorrectData = await database.isCorrectDataUser(login, password);
   if (isCorrectData) {
-    const user = await getUser(login, password);
+    const user = await database.getUser(login, password);
     const userId = user[0].id;
-    const admin = await isAdmin(login, password);
+    const admin = await database.isAdmin(login, password);
     return res.json({isAdmin: admin, userId: userId});
   }
   return res.json({message: "data is't correct"});
@@ -98,9 +105,9 @@ app.post('/registration', async (req, res) => {
   const login = req.body.login;
   const password = req.body.password;
   const name = req.body.name;
-  const isAlreadyExist = await isAlreadyExistUser(login);
-  await createUser(login, password, false, name);
-  const user = await getUser(login, password);
+  const isAlreadyExist = await database.isAlreadyExistUser(login);
+  await database.createUser(login, password, false, name);
+  const user = await database.getUser(login, password);
   const userId = user[0].id;
   if (isAlreadyExist) {
     res.json({ message: 'exist'} );
@@ -112,9 +119,9 @@ app.post('/registration', async (req, res) => {
 
 app.post('/deleteColl', async (req, res) => {
   const { id } = req.body
-  await deleteCollection(id);
-  const updateColl = await getCollections();
-  await deleteItems(id);
+  await database.deleteCollection(id);
+  const updateColl = await database.getCollections();
+  await database.deleteItems(id);
   res.json({message: 'ok', updateColl});
   
 })
@@ -126,7 +133,7 @@ app.post('/createcoll', async (req, res) => {
   const category = req.body.data.category;
   const inputs = req.body.inputs;
   const linkToImg = req.body.data.lin;
-  const idColl = await createCollection(name, descr, category, id, inputs[0], inputs[1], inputs[2], linkToImg);
+  const idColl = await database.createCollection(name, descr, category, id, inputs[0], inputs[1], inputs[2], linkToImg);
   res.json({message: 'ok'})
 })
 
@@ -136,43 +143,42 @@ app.post('/addItem', async (req, res) => {
   const tag = req.body.tag;
   const valueField = req.body.valueField;
   const values = Object.values(valueField);
-  await addItem(name, tag, id, values[0], values[1], values[2]);
+  await database.addItem(name, tag, id, values[0], values[1], values[2]);
   res.json({message: 'ok'});
 })
 
 app.post('/getcollection', async (req, res) => {
   const idCollection = req.body.idColl;
-  const items = await getItems(idCollection);
-  const collection = await getCollection(idCollection);
-  // const descr = removeMarkdownSymbols(collection.description);
+  const items = await database.getItems(idCollection);
+  const collection = await database.getCollection(idCollection);
   res.json({items, collection});
 })
 
 app.post('/deleteItem', async (req, res) => {
   const idItem = req.body.id;
   const idColl = req.body.idC;
-  await deleteItem(idItem);
-  const update = await getItems(idColl)
+  await database.deleteItem(idItem);
+  const update = await database.getItems(idColl)
   res.json({message: 'ok', items: update});
 })
 
 app.get('/admin', async (req, res) => {
-  const users = await getUsers();
+  const users = await database.getUsers();
   res.json({users: users})
 })
 
 app.post('/deleteUsers', async (req, res) => {
   const id = req.body.selected;
-  await deleteUser(id);
-  const updateUsers = await getUsers();
+  await database.deleteUser(id);
+  const updateUsers = await database.getUsers();
   res.json({ new: updateUsers})
 })
 
 app.post('/makeAdmin', async (req, res) => {
   const id = req.body.id;
   const status = req.body.status
-  await makeAdminMakeUser(status, id);
-  const update = await getUsers();
+  await database.makeAdminMakeUser(status, id);
+  const update = await database.getUsers();
   res.json({ update })
 })
 
