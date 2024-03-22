@@ -59,6 +59,17 @@ const CreateColl = () => {
     {value: 'Songs', label: 'Songs'},
     {value: 'Other', label: 'Other'}
   ]
+
+  const customDarkStyles = {
+    menu: (provided, state) => ({
+      ...provided,
+      backgroundColor: '#4a3f51'
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isFocused ? '#6d6d6d' :'transporant' 
+    })
+  }
   const handleRemoveField = (index) => {
     setInputs(inputs.filter((_, i) => i!== index));
     setValues(values.filter((_, i) => i!== index));
@@ -144,7 +155,7 @@ const CreateColl = () => {
       { success ? <SuccessColl /> : (
         <div>
           <Header showExit={true} app={userRole === 'admin'} path={'/admin'}/>
-          <div className={`d-flex align-items-center vh-100 flex-column ${darkMode ? 'dark-theme' : 'light-theme'}`} style={{height: '100%', paddingBottom: '100px', padding: '10px'}}>
+          <div className={`d-flex align-items-center flex-column ${darkMode ? 'dark-theme' : 'light-theme'}`} style={{height: '100%', paddingBottom: '100px', padding: '10px', height: '100%'}}>
             <h2 className="pb-3 pt-4">
               {t('create.add')}
             </h2>
@@ -158,7 +169,7 @@ const CreateColl = () => {
                <label htmlFor="category" className="fw-bold mb-2">
                   {t('create.category')}
                 </label>
-                <Select onChange={(e) => handleCategory(e)} className="mb-4" options={options}></Select>
+                <Select styles={darkMode ? customDarkStyles : ''} onChange={(e) => handleCategory(e)} className="mb-4 darkCategory" options={options}></Select>
                 {showInputCategory ? (
                   <div>
                     <label htmlFor="categoryOther" className="fw-bold mb-2">

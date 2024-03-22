@@ -217,14 +217,14 @@ const PageCollection = () => {
           {loading ? null : (
             itemsSt && itemsSt.length > 0 ? (
               <div>
-                <h2 style={{marginLeft: '30px', fontSize: '15px', textDecorationLine: 'underline'}}>
+                <h2 style={{fontSize: '15px', textDecorationLine: 'underline'}}>
                   {t('page.yourItems')}
                 </h2>   
                 <div className="d-flex mt-3" style={{paddingBottom: '20px', overflow: 'hidden'}}>
                   <table style={{width: '90%'}}>
                     <thead>
                       <tr>
-                        <th className="firstColumn"></th>
+                      { showButtons || admin ? (<th className="firstColumn"></th>) : null}
                         <th className={`th ${darkMode ? 'header-dark' : 'header-light'}`}>
                           №
                         </th>
@@ -248,10 +248,10 @@ const PageCollection = () => {
                               <input className={`checkbox ${darkMode ? 'select-dark' : ''}`} type="radio" checked={selectedItem === el.id} onChange={() => handleCard(el.id)}/>
                               <label htmlFor={el.id}></label>
                             </td>
-                          ) : <td></td>}
+                          ) : null }
                           <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>{index + 1}</td>
                           <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>{el.name}</td>
-                          <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`} style={{color: '#464da7'}}>{el.tag}</td>
+                          <td className={`th ${darkMode ? 'inner-dark dark-theme-tags' : 'light-theme light-theme-tags'}`}>{el.tag}</td>
                           {field1 ? (
                           <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>
                             {el.field1}

@@ -47,7 +47,7 @@ const Collections = () => {
         const idC = likeIdCurrentUser.map((el) => el.idCollection);
         const lastItems = resp.data.last;
         setLastItems([...lastItems]);
-        setLikes([...likesSt, ...idC])
+        setLikes([...likesSt, ...idC]);
         setCollections(allColl);
       } catch (e) {
         console.error(e)
@@ -101,8 +101,8 @@ const Collections = () => {
     <div className='d-flex flex-column align-items-end'>
       <Header showRegistration={guest} showExit={isLogged} app={admin} path={'/admin'}/>
         <div className={`wrap ${darkMode ? 'dark-theme' : '' }`} onClick={(e) => handleReset(e)}>
+          {!guest ? (
             <div className='link'>
-            {!guest ? (
               <div className='d-flex flex-column align-items-center'>
                 <button 
                   type="button" 
@@ -127,7 +127,7 @@ const Collections = () => {
                     {t("collections.delete")}
                   </button>
                 ): null}
-                <h5 className={`${darkMode ? 'lastItems-dark-text' : 'lastItems-light-text'}`} style={{textAlign: 'center', fontWeight: '300'}}>{t('collections.last')}</h5>
+                <h5 className={`${darkMode ? 'lastItems-dark-text' : 'lastItems-light-text'}`} style={{textAlign: 'center', fontWeight: '300', marginBottom: '10px'}}>{t('collections.last')}</h5>
                 { items.length > 0 ? (
                     items.map((el) => (
                       <ul key={el.id} className={`${darkMode ? 'lastItems-dark' : 'lastItems-light'}`}style={{marginBottom:'10px'}}>
@@ -141,9 +141,8 @@ const Collections = () => {
                 ) : 
                 <p>{t('page.notFound')}</p>}
               </div>
-              ) : null}
              </div>
-          
+           ) : null}
           
           <div className="coll">
             { collections && collections.length > 0 ? (
