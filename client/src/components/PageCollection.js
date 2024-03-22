@@ -256,7 +256,7 @@ const PageCollection = () => {
                           ) : <td></td>}
                           <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>{index + 1}</td>
                           <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>{el.name}</td>
-                          <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>{el.tag}</td>
+                          <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`} style={{color: '#464da7'}}>{el.tag}</td>
                           {field1 ? (
                           <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>
                             {el.field1}

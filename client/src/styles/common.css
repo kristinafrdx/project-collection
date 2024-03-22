@@ -196,3 +196,122 @@ tr:first-child {
   width: 100%;
   height: 30px;
 }
+
+
+.ReactTags__tags {
+  position: relative;
+}
+
+.ReactTags__clearAll {
+  cursor: pointer;
+  padding: 10px;
+  margin: 10px;
+  color: #fff;
+  border: none;
+}
+
+.ReactTags__tagInput {
+  border-radius: 2px;
+  display: inline-block; 
+  min-height: 40px;
+}
+
+.ReactTags__tagInputField {
+  padding: .5rem;
+  min-height: 42px;
+  border: var(--bs-border-width) solid var(--bs-border-color);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  border-radius: var(--bs-border-radius);
+  color: var(--bs-body-color);
+}
+
+.ReactTags__tags {
+  margin: 0;
+  padding: 0;
+}
+
+.tag-wrapper {
+  padding: 0;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-left: 0;
+  border-radius: 30%;
+}
+.ReactTags__tagInput input.ReactTags__tagInputField,
+.ReactTags__tagInput input.ReactTags__tagInputField:focus {
+  height: 31px;
+  margin: 0;
+  font-size: 12px;
+  width: 100%;
+}
+
+.ReactTags__editInput {
+  border-radius: 1px;
+}
+
+.ReactTags__editTagInput {
+  display: inline-flex;
+}
+
+.ReactTags__tagInputField:focus {
+  box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25);
+  border-color: #86b7fe;
+  outline: 0;
+}
+
+.ReactTags__tagInput {
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.ReactTags__selected span.ReactTags__tag {
+  text-align: left;
+  width: fit-content;
+  background-color: #7f86e687;
+  color: #fff;
+  border-radius: 5%;
+  padding: 5px 10px;
+  font-size: 15px;
+  margin-right: 10px;
+}
+
+.ReactTags__selected {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.ReactTags__selected a.ReactTags__remove {
+  color: #aaa;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.ReactTags__suggestions ul {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 10px;
+}
+
+.ReactTags__suggestions li mark {
+  background-color: unset;
+  padding: 0;
+  margin: 0;
+  color: #545252;
+}
+.ReactTags__suggestions li {
+  text-align: left;
+  width: fit-content;
+  color: #545252;
+  border-radius: 20%;
+  padding: 3px 5px;
+  text-decoration: underline;
+}
+
+.ReactTags__remove {
+  border: none;
+  cursor: pointer;
+  background: none;
+  color: white;
+}

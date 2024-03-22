@@ -6,13 +6,15 @@ import { useTranslation } from 'react-i18next';
 import { useState } from "react";
 import axios from "axios";
 import { useUser } from "./context/UserContext";
+import { WithContext as ReactTags } from 'react-tag-input';
+import options from "./tags";
 
 const AddItem = () => {
   const { darkMode } = useTheme();
   const { userRole } = useUser();
   const { t } = useTranslation();
   const [name, setName] = useState('');
-  const [tags, setTags] = useState('');
+  const [tags, setTags] = useState([]);
   const [valueField, setValueField] = useState([]);
 
   const [id, setId] = useState(null);
@@ -23,6 +25,21 @@ const AddItem = () => {
   const objFields = location?.state?.fields;
   const inputs = Object.values(objFields)
 
+  const handleDelete = i => {
+    setTags(tags.filter((tag, index) => index !== i));
+  };
+
+  const handleAddition = tag => {
+    setTags([...tags, tag]);
+  };
+
+  const suggestions = options.map((option) => {
+    return {
+      id: option,
+      text: option,
+    };
+  });
+
   useEffect(() => {
     setId(idColl)
   }, [idColl])
@@ -31,10 +48,6 @@ const AddItem = () => {
     setName(event.target.value);
   };
 
-  const handleTags = (event) => {
-    setTags(event.target.value);
-  };
-  
   const handleField = (event) => {
     const {name, value} = event.target;
     setValueField({...valueField, [name]: value})
@@ -83,13 +96,14 @@ const AddItem = () => {
               <label htmlFor="username" className="fw-bold mb-2 mt-2">
               {t('addItem.tags')}
               </label>
-              <input
-                type="text"
-                className="form-control w-100 p-2"
-                id="tags"
-                value={tags}
-                onChange={handleTags}
-                required
+              <ReactTags
+                suggestions={suggestions}
+                handleDelete={handleDelete}
+                handleAddition={handleAddition}
+                inputFieldPosition="top"
+                autocomplete
+                tags={tags}
+                placeholder=""
               />
               { inputs ? (
                 inputs.map((el) => (

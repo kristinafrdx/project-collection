@@ -143,7 +143,9 @@ app.post('/addItem', async (req, res) => {
   const tag = req.body.tag;
   const valueField = req.body.valueField;
   const values = Object.values(valueField);
-  await database.addItem(name, tag, id, values[0], values[1], values[2]);
+  const tagText = tag.map((el) => el.text)
+  const tags = tagText.map((el) => el.startsWith('#') ? el : `#${el}`)
+  await database.addItem(name, tags.join(' '), id, values[0], values[1], values[2]);
   res.json({message: 'ok'});
 })
 

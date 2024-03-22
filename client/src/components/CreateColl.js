@@ -57,7 +57,7 @@ const CreateColl = () => {
     {value: 'Candy wrapper', label: 'Candy wrapper'},
     {value: 'Stones', label: 'Stones'},
     {value: 'Books', label: 'Books'},
-    {value: 'Sings', label: 'Sings'},
+    {value: 'Songs', label: 'Songs'},
     {value: 'Other', label: 'Other'}
   ]
   const handleRemoveField = (index) => {
@@ -68,15 +68,6 @@ const CreateColl = () => {
     }
   }
 
-  // const handleValue = (e) => {
-  //   setValue(e.target.value)
-  // }
-
-  // const newValue = (e, index) => {
-  //   const newValues = [...values];
-  //   newValues[index] = e.target.value;
-  //   setValues(newValues);
-  // }
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
   };
