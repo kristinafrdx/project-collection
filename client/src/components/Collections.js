@@ -56,7 +56,6 @@ const Collections = () => {
     getCollections();
   }, [])
 
-  console.log(items)
   const navigate = useNavigate();
  
   const handleCard = (e, id) => {
@@ -131,7 +130,7 @@ const Collections = () => {
                 <h5 className={`${darkMode ? 'lastItems-dark-text' : 'lastItems-light-text'}`} style={{textAlign: 'center', fontWeight: '300'}}>{t('collections.last')}</h5>
                 { items.length > 0 ? (
                     items.map((el) => (
-                      <ul className={`${darkMode ? 'lastItems-dark' : 'lastItems-light'}`}style={{marginBottom:'10px'}}>
+                      <ul key={el.id} className={`${darkMode ? 'lastItems-dark' : 'lastItems-light'}`}style={{marginBottom:'10px'}}>
                         <li>{t('page.name')} {el.name}</li>
                         <li>{t('page.tags')}: {el.tag}</li>
                         <li>{t('collections.collection')}{el.idCollection}</li>

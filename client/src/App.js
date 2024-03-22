@@ -15,7 +15,7 @@ import { useUser } from "./components/context/UserContext";
 
 function App() {
   const { isLogged } = useAuth();
-  const { useRole } = useUser();
+  const { userRole } = useUser();
   
   return (
     <div className="App">
@@ -29,8 +29,8 @@ function App() {
             <Route path="/page" element={<PageCollection /> }/>
             <Route path="/success" element={isLogged ? <SuccessColl /> : <Navigate to='/'/>} />
             <Route path="/addItem" element={isLogged ? <AddItem /> : <Navigate to='/registration' />}/>
-            <Route path="/admin" element={useRole === 'admin' ? <Admin /> : <Navigate to='/collections' />} />
-            <Route path="/user_page" element={useRole === 'admin' ? <UserPage /> : <Navigate to='/collections' />} />
+            <Route path="/admin" element={userRole === 'admin' ? <Admin /> : <Navigate to='/collections' />} />
+            <Route path="/user_page" element={userRole === 'admin' ? <UserPage /> : <Navigate to='/collections' />} />
           </Routes>
         </Router>
     </div>

@@ -23,7 +23,6 @@ const Login = () => {
   const fetchUser = async (data) => {
     try {
       const resp = await axios.post('http://localhost:3030/login', data)
-      console.log(resp.data)
       if (resp.data.message === "data is't correct") {
        setError(true);
        setErrorBlock(false)
