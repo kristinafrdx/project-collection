@@ -178,12 +178,12 @@ const PageCollection = () => {
           </div>
         </div>
         <div>
-          <div className="leftSide mb-4" style={{paddingLeft: '30px'}}>
+          <div className="leftSide mb-4">
             <div className="cont_For_Collection">
               <div className="d-flex flex-wrap align-items-start" style={{padding: '0', margin: '0', alignItems: 'start'}}>
                 { link ? (
                   <div style={{maxWidth: '100%'}}>
-                  <img style={{maxWidth: '400px', width: '100%', margin: '0 auto 10px', paddingRight: '20px'}} src={link} alt='imageColl' />
+                  <img style={{maxWidth: '400px', width: '100%', margin: '0 auto 10px', paddingRight: '20px', minWidth: '150px'}} src={link} alt='imageColl' />
                   </div>
                 ) : null}
                 <div className="d-flex flex-column" style={{paddingRight: '30px'}}>

@@ -58,11 +58,11 @@ export const createCollection = async (name, descr, topic, createdBy, field1, fi
     return newCollection.insertId;
   }
 
-export const addItem = async (name, tag, id, field1 = null, field2 = null, field3 = null) => {
+export const addItem = async (name, tag, id, field1 = null, field2 = null, field3 = null, login) => {
   const [newItem] = await pool.query(`
-    INSERT INTO items (name, tag, idCollection, field1, field2, field3)
-    VALUES (?, ?, ?, ?, ?, ?)`,
-    [name, tag, id, field1, field2, field3]);
+    INSERT INTO items (name, tag, idCollection, field1, field2, field3, createdBy)
+    VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    [name, tag, id, field1, field2, field3, login]);
   return newItem.insertId;
 }
 

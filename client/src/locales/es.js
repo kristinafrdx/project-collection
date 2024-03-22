@@ -29,7 +29,8 @@ const translation = {
       "delete": "Borrar",
       "collection": "Recopilación: #",
       "date": "Fecha:",
-      "last": "Últimos artículos:"
+      "last": "Últimos artículos:",
+      "createdBy": "Creado por:"
     },
     "create": {
       "add": "Agregar colección",

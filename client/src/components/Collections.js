@@ -132,8 +132,9 @@ const Collections = () => {
                     items.map((el) => (
                       <ul key={el.id} className={`${darkMode ? 'lastItems-dark' : 'lastItems-light'}`}style={{marginBottom:'10px'}}>
                         <li>{t('page.name')} {el.name}</li>
-                        <li>{t('page.tags')}: {el.tag}</li>
+                        {el.tag ? (<li>{t('page.tags')}: {el.tag}</li>) : null}
                         <li>{t('collections.collection')}{el.idCollection}</li>
+                        <li>{t('collections.createdBy')} {el.createdBy}</li>
                         <li>{t('collections.date')} {new Date(el.date).toLocaleString()}</li>
                       </ul>
                     ))

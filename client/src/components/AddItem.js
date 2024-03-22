@@ -11,7 +11,7 @@ import options from "./tags";
 
 const AddItem = () => {
   const { darkMode } = useTheme();
-  const { userRole } = useUser();
+  const { userRole, userId } = useUser();
   const { t } = useTranslation();
   const [name, setName] = useState('');
   const [tags, setTags] = useState([]);
@@ -59,7 +59,7 @@ const AddItem = () => {
 
     const fetchFields = async () => {
       try {
-        const resp = await axios.post('http://localhost:3030/addItem', { nameItem: name, tag: tags, idC: id, valueField});
+        const resp = await axios.post('http://localhost:3030/addItem', { nameItem: name, tag: tags, idC: id, valueField, userId});
         if (resp.data.message === 'ok') {
           navigate('/success')
         }

@@ -73,7 +73,6 @@ app.get('/collections', async (req, res) => {
   const collections = await database.getCollections();
   const likes = await database.getLikes();
   const last = await database.lastFiveItems();
-
   res.json({collections, likes, last});
 })
 
@@ -144,10 +143,13 @@ app.post('/addItem', async (req, res) => {
   const id = req.body.idC;
   const tag = req.body.tag;
   const valueField = req.body.valueField;
+  const userId = req.body.userId;
+  const user = await database.getUserById(userId)
+  const login = user[0].login
   const values = Object.values(valueField);
-  const tagText = tag.map((el) => el.text)
-  const tags = tagText.map((el) => el.startsWith('#') ? el : `#${el}`)
-  await database.addItem(name, tags.join(' '), id, values[0], values[1], values[2]);
+  const tagText = tag.map((el) => el.text);
+  const tags = tagText.map((el) => el.startsWith('#') ? el : `#${el}`);
+  await database.addItem(name, tags.join(' '), id, values[0], values[1], values[2], login);
   res.json({message: 'ok'});
 })
 
