@@ -80,6 +80,10 @@
   color: #fff;
 }
 
+.linkButton-dark:hover {
+  color: #868282;
+}
+
 .nameColl:hover {
   font-weight: 500;
   color: #868282;

@@ -67,7 +67,16 @@ const translation = {
       "id": "ID",
       "name": "Nombre",
       "login": "Acceso",
-      "status": "Estado"
+      "permissions": "Permisos",
+      "status": "Estado",
+      "users": "Usuarios:"
+    },
+    "userPage": {
+      "category": "Categoría",
+      "likes": "Gustos",
+      "notFound": "El usuario no tiene ninguna colección.",
+      "password": "Contraseña",
+      "collOfUser": "Colecciones de usuario #"
     }
   }
 };

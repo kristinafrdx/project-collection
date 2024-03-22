@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React from "react";
 import Login from "./components/Login";
 import Collections from "./components/Collections";
 import { Route, Routes, BrowserRouter as Router, Navigate } from "react-router-dom";
@@ -7,16 +7,15 @@ import MyCollections from "./components/MyCollections";
 import CreateColl from './components/CreateColl'
 import PageCollection from "./components/PageCollection";
 import SuccessColl from "./components/SuccessColl";
-import { IsLoggedProvider } from "./components/context/IsloggedContext";
 import { useAuth } from "./components/context/IsloggedContext";
-import { useNavigate } from "react-router-dom";
 import AddItem from "./components/AddItem";
 import Admin from "./components/Admin";
-
-// const AuthContext = createContext(); 
+import UserPage from "./components/UserPage";
+import { useUser } from "./components/context/UserContext";
 
 function App() {
-  const { isLogged, setLogged } = useAuth();
+  const { isLogged } = useAuth();
+  const { useRole } = useUser();
   
   return (
     <div className="App">
@@ -29,8 +28,9 @@ function App() {
             <Route path="/createColl" element={isLogged ? <CreateColl /> : <Navigate to='/'/>} />
             <Route path="/page" element={<PageCollection /> }/>
             <Route path="/success" element={isLogged ? <SuccessColl /> : <Navigate to='/'/>} />
-            <Route path="/addItem" element={<AddItem />} />
-            <Route path="/admin" element={<Admin />} />
+            <Route path="/addItem" element={isLogged ? <AddItem /> : <Navigate to='/registration' />}/>
+            <Route path="/admin" element={useRole === 'admin' ? <Admin /> : <Navigate to='/collections' />} />
+            <Route path="/user_page" element={useRole === 'admin' ? <UserPage /> : <Navigate to='/collections' />} />
           </Routes>
         </Router>
     </div>

@@ -50,28 +50,6 @@ export const getItem = async (id) => {
   return item[0];
 }
 
-// export const addColumns = (field, index) => {
-//   return field.map(async (el) => {
-//     const [newColumn] = await pool.query(`
-//     ALTER TABLE items
-//     ADD COLUMN ${el} VARCHAR(255)`)
-//   })
-// }
-// export const addColumn2 = async (field) => {
-//   const [newColumn] = await pool.query(`
-//   ALTER TABLE collections
-//   CHANGE COLUMN field2 to ?`,
-//   field)
-//   return newColumn;
-// }
-// export const addColumn3 = async (field) => {
-//   const [newColumn] = await pool.query(`
-//   ALTER TABLE collections
-//   RENAME COLUMN field3 to ${field}`)
-//   // return newColumn;
-// }
-
-
 export const createCollection = async (name, descr, topic, createdBy, field1, field2, field3, linkToImage) => {
   const [newCollection] = await pool.query(`
     INSERT INTO collections (name, description, topic, createdBy, field1, field2, field3, linkToImage)
@@ -87,35 +65,6 @@ export const addItem = async (name, tag, id, field1 = null, field2 = null, field
     [name, tag, id, field1, field2, field3]);
   return newItem.insertId;
 }
-
-// export const changeItemsFields1 = async (field, id) => {
-//   const res = await pool.query(`
-//   UPDATE items SET field1 = ? WHERE idCollection = ?`,
-//   [field, id])
-// }
-
-// export const changeItemsFields2 = async (field, id) => {
-//   const res = await pool.query(`
-//   UPDATE items SET field1 = ? WHERE idCollection = ?`,
-//   [field, id])
-// }
-
-// export const changeItemsFields3 = async (field, id) => {
-//   const res = await pool.query(`
-//   UPDATE items SET field1 = ? WHERE idCollection = ?`,
-//   [field, id])
-// }
-// export const changeItemName = async (field, id) => {
-//   const res = await pool.query(`
-//   UPDATE items SET name = ? WHERE idCollection = ?`,
-//   [field, id])
-// }
-
-// export const changeItemTags = async (field, id) => {
-//   const res = await pool.query(`
-//   UPDATE items SET tag = ? WHERE idCollection = ?`,
-//   [field, id])
-// }
 
 export const deleteItem = async (id) => {
   await pool.query(`
@@ -180,6 +129,14 @@ export const getUser = async (login, password) => {
   return user[0];
 }
 
+export const getUserById = async (id) => {
+  const user = await pool.query(`
+  SELECT * FROM users 
+  WHERE id = ?`,
+  [id])
+  return user[0];
+}
+
 export const isAdmin = async (login, password) => {
   const [result] = await pool.query(
     `SELECT * FROM users
@@ -190,11 +147,11 @@ export const isAdmin = async (login, password) => {
   return result.length > 0 ? true : false
 }
 
-export const createUser = async (login, password, admin, name) => {
+export const createUser = async (login, password, admin, name, status) => {
   const [newUser] = await pool.query(
-    `INSERT INTO users (login, password, admin, name)
-    VALUES (?, ?, ?, ?)`,
-    [login, password, admin, name])
+    `INSERT INTO users (login, password, admin, name, status)
+    VALUES (?, ?, ?, ?, ?)`,
+    [login, password, admin, name, status])
    return newUser;
 }
 
@@ -205,11 +162,6 @@ export const deleteUser = async (user) => {
     [user]);
   return;
 }
-
-// export const makeAdmin = async (id) => {
-//   await pool.query(`
-//   `)
-// }
 
 export const makeAdminMakeUser = async (status, usersId) => {
   await pool.execute(`
@@ -260,13 +212,21 @@ export const getLike = async (idUser, idColl) => {
   [idUser, idColl])
   return like;
 }
-// export const createItem = async (name, tag, idCollection) => {
-//   const [newItem] = await pool.query(
-//     `INSERT INTO items (name, tag, idCollection)
-//    VALUES (?, ?, ?)`,
-//     [name, tag, idCollection])
-//    return newItem;
-// }
 
-// const collections = await getCollections();
-// const items = await getItems();
+
+export const changeStatus = async (idUser, newStatus) => {
+  await pool.execute(`
+  UPDATE users SET status = ?
+  WHERE id = ?`,
+  [newStatus, idUser]);
+}
+
+export const isBlock = async (idUser, status) => {
+    const [data] = await pool.query(
+      `SELECT * 
+      FROM users
+      WHERE id = ? 
+      && status = ?`
+      , [idUser, status])
+      return data;
+}

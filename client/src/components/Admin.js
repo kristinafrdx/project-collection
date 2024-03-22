@@ -4,15 +4,22 @@ import { useTranslation } from 'react-i18next';
 import Header from './Header';
 import axios from 'axios';
 import { useUser } from './context/UserContext';
+import lock from '../logo/lock.svg';
+import unlock from '../logo/unlock.svg';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from './context/IsloggedContext';
 
 const Admin = () => {
   const [users, setUsers] = useState([]);
-  const { setUserRole } = useUser();
+  const { setUserRole, userId } = useUser();
+  const { setLogged } = useAuth();
   const { t } = useTranslation();
   const { darkMode } = useTheme();
   const [selected, setSelected] = useState(null);
   const [checkboxChecked, setCheckboxChecked] = useState(false);
   const [showDeleteButton, setShowDelete] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -60,6 +67,30 @@ const Admin = () => {
     setSelected(null);
   }
 
+  const handleBlock = async (selected, newStatus) => {
+    if (newStatus === 'block') {
+      try {
+        const resp = await axios.post('http://localhost:3030/block', { selected, newStatus })
+        const updateUsers = resp.data.updateUsers;
+        setUsers(updateUsers);
+        if (Number(userId) === Number(selected)) {
+          setLogged(false)
+          navigate('/')
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    } else if (newStatus === 'unblock') {
+      const resp = await axios.post('http://localhost:3030/block', { selected, newStatus })
+      const updateUsers = resp.data.updateUsers;
+      setUsers(updateUsers)
+    }
+  }
+  
+  const handleUserPage = (e) => {
+    const id = e.target.id;
+    navigate('/user_page', { state: id})
+  }
   return (
   <div>
     <Header showExit={true} app={true} path={'/collections'}></Header>
@@ -75,22 +106,45 @@ const Admin = () => {
         >
           {t('admin.delete')}
         </button>
+
         <button 
           className={`btn adminButton ${darkMode ? 'button-dark' : 'btn-light'}`} 
           onClick={() => handleMakeAdmin(selected, true, 'admin')}
         >
           {t('admin.makeAdmin')}
         </button>
+
         <button 
           className={`btn adminButton ${darkMode ? 'button-dark' : 'btn-light'}`} 
           onClick={() => handleMakeAdmin(selected, false, 'user')}
         >
           {t('admin.makeUser')}
         </button>
+
+        <button
+          className={`btn adminButton ${darkMode ? 'button-dark' : 'btn-light'}`}
+          onClick={() => handleBlock(selected, 'block')}
+        >
+          <img className='logo-done-dark' src={lock} alt='lock'/>
+        </button>
+
+        <button
+          className={`btn adminButton ${darkMode ? 'button-dark' : 'btn-light'}`}
+          onClick={() => handleBlock(selected, 'unblock')}
+          type='button'
+        >
+          <img className='logo-done-dark' src={unlock} alt='unlock'/>
+        </button>
+        
       </div>
     ) : null}
-
-    <div className='d-flex justify-content-center container'>
+    <div>
+      <div className='container'>
+        <h2 style={{paddingLeft: '30px', fontSize: '20px', marginBottom: '0'}}>
+          {t('admin.users')}
+        </h2>
+      </div>
+      <div className='d-flex justify-content-center container'>
       <table style={{width: '100%', marginTop: '20px', paddingLeft: '0', paddingRight: '0'}}>
         <thead>
           <tr>
@@ -98,6 +152,7 @@ const Admin = () => {
             <th className={`th ${darkMode ? 'adminHeadTable-dark' : ''}`}>{t('admin.id')}</th>
             <th className={`th ${darkMode ? 'adminHeadTable-dark' : ''}`}>{t('admin.name')}</th>
             <th className={`th ${darkMode ? 'adminHeadTable-dark' : ''}`}>{t('admin.login')}</th>
+            <th className={`th ${darkMode ? 'adminHeadTable-dark' : ''}`}>{t('admin.permissions')}</th>
             <th className={`th ${darkMode ? 'adminHeadTable-dark' : ''}`}>{t('admin.status')}</th>
           </tr>
         </thead>
@@ -109,13 +164,21 @@ const Admin = () => {
                 <label></label>
               </td>
               <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>{user.id}</td>
-              <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>{user.name}</td>
+              <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>
+                <button 
+                  id={user.id} 
+                  className={`pb-2 linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} 
+                  type='button' 
+                  onClick={(e) => handleUserPage(e)}>{user.name}</button>
+              </td>
               <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>{user.login}</td>
               <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>{user.admin === 1 ? 'Admin' : 'User'}</td>
+              <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>{user.status}</td>
             </tr>
           ))}
         </tbody>
       </table>
+      </div>
     </div>
     </div>
   </div>

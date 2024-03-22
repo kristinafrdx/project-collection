@@ -16,14 +16,20 @@ const Login = () => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [err, setError] = useState(false);
+  const [errBlock, setErrorBlock] = useState(false);
 
   const navigate = useNavigate();
 
   const fetchUser = async (data) => {
     try {
       const resp = await axios.post('http://localhost:3030/login', data)
-      if (resp.data.message) {
+      console.log(resp.data)
+      if (resp.data.message === "data is't correct") {
        setError(true);
+       setErrorBlock(false)
+      } else if (resp.data.message === 'blocked') {
+        setErrorBlock(true)
+        setError(false)
       } else {
         const isAdmin = resp.data.isAdmin;
         const id = resp.data.userId;
@@ -92,6 +98,11 @@ const Login = () => {
               <p className="text-danger mb-0">
               {t('login.errorIncorrect')}
               </p>)}
+            {errBlock && (
+              <p className="text-danger mb-0">
+                You are blocked.
+              </p>
+            )}
             <div className="d-flex justify-content-between mt-4 flex-row gap-2">
               <button type="submit" className={`btn w-100 ${darkMode ? 'button-dark' : 'btn-light'}`}>
                 {t('login.signIn')}

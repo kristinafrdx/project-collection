@@ -1,17 +1,22 @@
 import express from 'express';
 import cors from 'cors';
 import multer from "multer";
-import { Dropbox } from 'dropbox';
 import * as database from './database.js';
-  import fs, { stat } from 'fs';
-  import dotenv from 'dotenv';
+import fs from 'fs';
+import dotenv from 'dotenv';
+import {v2 as cloudinary} from 'cloudinary';
+          
+cloudinary.config({ 
+  cloud_name: process.env.CLOUD_NAME, 
+  api_key: process.env.MY_KEY, 
+  api_secret: process.env.MY_SECRET
+});
 
 dotenv.config()
 
 const app = express();
 const PORT = 3030;
 
-const dbx = new Dropbox({accessToken: process.env.ACCESS_TOKEN});
 const upload = multer({dest: 'project-collection'});
 
 app.use(cors());
@@ -20,21 +25,13 @@ app.use(express.json());
 app.post('/upload', upload.single('file'), async (req, res) => {
   if (req.file) {
     try {
-      const fileData = await fs.promises.readFile(req.file.path);
-      const resp = await dbx.filesUpload({
-        path: `/${req.file.originalname}`,
-        contents: fileData,
-      });
-      const fileId = resp.result.id;
-      try {
-        const response = await dbx.sharingCreateSharedLinkWithSettings({
-          path: fileId,
-        });
-        const sharedLink = response.result.url.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('?dl=0', '');
-        res.json({message: sharedLink})
-      } catch (error) {
-        console.log(error);
-      } finally {
+      const result = await cloudinary.uploader.upload(req.file.path)
+      const imageUrl = result.secure_url
+      res.json({message: imageUrl})
+    } catch (e) {
+      console.log(e)
+      res.status(500).json({ error: 'failed to upload' });
+    } finally {
         fs.unlink(req.file.path, (err) => {
           if (err) {
             console.log(err)
@@ -43,11 +40,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
           }
         });
       }
-    } catch (error) {
-      console.log(error)
-      res.status(500).json({ error: 'Failed to upload' });
-    }
-  }
+  } 
 })
 
 app.get('/items', async (req, res) => {
@@ -95,23 +88,30 @@ app.post('/login', async (req, res) => {
   if (isCorrectData) {
     const user = await database.getUser(login, password);
     const userId = user[0].id;
-    const admin = await database.isAdmin(login, password);
-    return res.json({isAdmin: admin, userId: userId});
+    const isBlock = await database.isBlock(userId, 'blocked');
+    if (isBlock.length > 0) {
+      res.json({message: 'blocked'})
+    } else {
+      const admin = await database.isAdmin(login, password);
+      return res.json({isAdmin: admin, userId: userId});
+    }
+  } else {
+      return res.json({message: "data is't correct"});
   }
-  return res.json({message: "data is't correct"});
 })
 
 app.post('/registration', async (req, res) => {
   const login = req.body.login;
   const password = req.body.password;
   const name = req.body.name;
+  const status = 'active'
   const isAlreadyExist = await database.isAlreadyExistUser(login);
-  await database.createUser(login, password, false, name);
-  const user = await database.getUser(login, password);
-  const userId = user[0].id;
   if (isAlreadyExist) {
     res.json({ message: 'exist'} );
   } else {
+    await database.createUser(login, password, false, name, status);
+  const user = await database.getUser(login, password);
+  const userId = user[0].id;
     res.json({ message: 'notExist', id: userId} );
   }
   res.end()
@@ -182,6 +182,28 @@ app.post('/makeAdmin', async (req, res) => {
   res.json({ update })
 })
 
+app.post('/block', async (req, res) => {
+  const newStatus = req.body.newStatus;
+  const idUser = req.body.selected;
+  if (newStatus === 'block') {
+    await database.changeStatus(idUser, 'blocked')
+
+  } else {
+    await database.changeStatus(idUser, 'active')
+  }
+  const updateUsers = await database.getUsers();
+  res.json({updateUsers});
+})
+
+app.post('/userPage', async (req, res) => {
+  const id = req.body.id;
+  const collections = await database.getMyCollections(id);
+  // const items = await database.getItem(id)
+  // console.log(collections)
+  const dataUser = await database.getUserById(id);
+  res.json({collections, dataUser})
+  res.end()
+})
 app.listen(PORT, () => {
   console.log(`SERVER IS LISTENING ON PORT: ${PORT}`)
 })
