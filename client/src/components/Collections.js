@@ -19,6 +19,7 @@ const Collections = () => {
   const [guest, setGuest ] = useState(false);
   const [admin, setAdmin] = useState(false);
   const [, setUser] = useState(false);
+  const [items, setLastItems] = useState([]);
   
   const [selectedColl, setSelectedColl] = useState(null)
   const [checkboxChecked, setCheckboxChecked] = useState(false);
@@ -44,6 +45,8 @@ const Collections = () => {
         const likes = resp.data.likes;
         const likeIdCurrentUser = likes.filter((el) => Number(el.idUser) === Number(userId));
         const idC = likeIdCurrentUser.map((el) => el.idCollection);
+        const lastItems = resp.data.last;
+        setLastItems([...lastItems]);
         setLikes([...likesSt, ...idC])
         setCollections(allColl);
       } catch (e) {
@@ -53,6 +56,7 @@ const Collections = () => {
     getCollections();
   }, [])
 
+  console.log(items)
   const navigate = useNavigate();
  
   const handleCard = (e, id) => {
@@ -98,33 +102,49 @@ const Collections = () => {
     <div className='d-flex flex-column align-items-end'>
       <Header showRegistration={guest} showExit={isLogged} app={admin} path={'/admin'}/>
         <div className={`wrap ${darkMode ? 'dark-theme' : '' }`} onClick={(e) => handleReset(e)}>
-          {!guest ? (
             <div className='link'>
-              <button 
-                type="button" 
-                className={`pb-2 linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} 
-                onClick={() => navigate('/createColl')}
-              >
-                {t("collections.create")}
-              </button>
-              <button 
-                type="button" 
-                className={`pb-2 linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} 
-                onClick={() => navigate('/mycollections')}
-              >
-                {t("collections.my")}
-              </button>
-              {selectedColl ? (
+            {!guest ? (
+              <div className='d-flex flex-column align-items-center'>
                 <button 
-                  type='button' 
-                  className={`linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} 
-                  onClick={(e) => deleteColl(selectedColl)}
+                  type="button" 
+                  className={`pb-2 linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} 
+                  onClick={() => navigate('/createColl')}
                 >
-                  {t("collections.delete")}
+                  {t("collections.create")}
                 </button>
-              ): null}
-            </div>
-          ) : null}
+                <button 
+                  type="button" 
+                  className={`pb-2 linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} 
+                  onClick={() => navigate('/mycollections')}
+                >
+                  {t("collections.my")}
+                </button>
+                {selectedColl ? (
+                  <button 
+                    type='button' 
+                    className={`pb-2 linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} 
+                    onClick={(e) => deleteColl(selectedColl)}
+                  >
+                    {t("collections.delete")}
+                  </button>
+                ): null}
+                <h5 className={`${darkMode ? 'lastItems-dark-text' : 'lastItems-light-text'}`} style={{textAlign: 'center', fontWeight: '300'}}>{t('collections.last')}</h5>
+                { items.length > 0 ? (
+                    items.map((el) => (
+                      <ul className={`${darkMode ? 'lastItems-dark' : 'lastItems-light'}`}style={{marginBottom:'10px'}}>
+                        <li>{t('page.name')} {el.name}</li>
+                        <li>{t('page.tags')}: {el.tag}</li>
+                        <li>{t('collections.collection')}{el.idCollection}</li>
+                        <li>{t('collections.date')} {new Date(el.date).toLocaleString()}</li>
+                      </ul>
+                    ))
+                ) : 
+                <p>{t('page.notFound')}</p>}
+              </div>
+              ) : null}
+             </div>
+          
+          
           <div className="coll">
             { collections && collections.length > 0 ? (
               collections.map((el) => (
@@ -152,7 +172,12 @@ const Collections = () => {
                       />
                     </div>
                   ) : null }
-                    { userRole !== 'guest' ? (
+                  </div>
+                </div>
+              </div>
+              <ul className='d-flex justify-content-between' id={el.id}>
+                <li className='nameColl' onClick={() => navigate('/page', { state: { id: el.id }})}>{el.name}</li>
+                <li>{ userRole !== 'guest' ? (
                     <div className='containerLikes d-flex align-items-baseline'>
                     <button className='linkButton d-flex' type="button" onClick={(e) => handleLike(e, userId, el.id)}>
                      {likesSt.includes(el.id) ? (
@@ -169,12 +194,7 @@ const Collections = () => {
                       {el.likes}
                     </h5>
                     </div>
-                    ) : null}
-                  </div>
-                </div>
-              </div>
-              <ul className='text-coll' id={el.id}>
-                <li className='nameColl' onClick={() => navigate('/page', { state: { id: el.id }})}>{el.name}</li>
+                    ) : null}</li>
               </ul>
               </div>
               ))

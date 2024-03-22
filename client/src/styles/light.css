@@ -52,3 +52,12 @@
 .empty-coll-light {
   color: rgb(26, 23, 56);
 }
+
+.lastItems-light {
+  box-shadow: var(--bs-box-shadow-lg);
+  border: 1px solid #dadada;
+}
+
+.lastItems-light-text {
+  color: #464da7;
+}

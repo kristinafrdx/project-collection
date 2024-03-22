@@ -104,3 +104,11 @@
 .adminHeadTable-dark {
   background-color: #252326d4;
 }
+
+.lastItems-dark {
+  border: 1px solid #c2bac62e;
+}
+
+.lastItems-dark-text {
+  color: #fff;
+}

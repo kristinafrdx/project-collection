@@ -72,7 +72,9 @@ app.post('/like', async (req, res) => {
 app.get('/collections', async (req, res) => {
   const collections = await database.getCollections();
   const likes = await database.getLikes();
-  res.json({collections, likes});
+  const last = await database.lastFiveItems();
+
+  res.json({collections, likes, last});
 })
 
 app.post('/myCollections', async (req, res) => {
@@ -200,8 +202,6 @@ app.post('/block', async (req, res) => {
 app.post('/userPage', async (req, res) => {
   const id = req.body.id;
   const collections = await database.getMyCollections(id);
-  // const items = await database.getItem(id)
-  // console.log(collections)
   const dataUser = await database.getUserById(id);
   res.json({collections, dataUser})
   res.end()

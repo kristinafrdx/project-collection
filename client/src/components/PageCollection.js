@@ -34,7 +34,6 @@ const PageCollection = () => {
 
   const [selectedItem, setSelectedItem] = useState(null);
   const [checkboxChecked, setCheckboxChecked] = useState(false);
-  // const [editing, setEdit] = useState(null);
 
   const navigate = useNavigate();
 
@@ -59,7 +58,7 @@ const PageCollection = () => {
   const deleteItem = async (id) => {
     try {
       const resp = await axios.post('http://localhost:3030/deleteItem', { id, idC: idColl });
-      const updateItems = resp.data.idColl;
+      const updateItems = resp.data.items;
       setItems(updateItems)
     } catch (e) {
       console.log(e)
@@ -149,10 +148,6 @@ const PageCollection = () => {
     })
   }
 
-  // const handleEditItem = (e, id) => {
-  //   setEdit(id)
-  // }
-
   return (
     <div>
       <Header showExit={admin || user} showRegistration={guest} app={admin}/>
@@ -160,7 +155,7 @@ const PageCollection = () => {
         <div className="d-flex justify-content-end">
           <div className="cont_for_button d-flex justify-content-around align-items-start" style={{justifyContent: 'space-between', gap: '50px'}}>
               <div className="add/edit/delete d-flex" style={{gap: '50px'}}>
-                { showButtons ? (
+                { showButtons || admin ? (
                   <div className='d-flex' style={{gap: '50px'}}>
                   <div>
                       { selectedItem ? (
@@ -248,7 +243,7 @@ const PageCollection = () => {
                     <tbody>
                       {itemsSt.map((el, index) => (
                         <tr key={el.id} onClick={() => handleCard(el.id)}>
-                          { showButtons ? (
+                          { showButtons || admin ? (
                             <td className={`${darkMode ? '' : 'light-theme'}`} style={{textAlign: 'end', width: '30px'}}>
                               <input className={`checkbox ${darkMode ? 'select-dark' : ''}`} type="radio" checked={selectedItem === el.id} onChange={() => handleCard(el.id)}/>
                               <label htmlFor={el.id}></label>
@@ -269,11 +264,6 @@ const PageCollection = () => {
                           <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>
                             {el.field3}
                             </td>)  : null}
-                          {/* <td className={`${darkMode ? 'logo-done-dark' : ''}`}>
-                            <button className="linkButton" onClick={(e) => handleEditItem(e, el.id)}>
-                              <img id={el.id} src={edit} alt="edit" />
-                            </button>
-                          </td> */}
                         </tr> 
                       ))}
                     </tbody>

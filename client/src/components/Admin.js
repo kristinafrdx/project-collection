@@ -34,6 +34,9 @@ const Admin = () => {
     const resp = await axios.post("http://localhost:3030/deleteUsers", { selected });
     setUsers(resp.data.new)
     setSelected(null)
+    if (Number(selected) === Number(userId)) {
+      navigate('/')
+    }
   }
 
   const handleSelect = (id) => {

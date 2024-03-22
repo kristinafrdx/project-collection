@@ -100,7 +100,7 @@ const Login = () => {
               </p>)}
             {errBlock && (
               <p className="text-danger mb-0">
-                You are blocked.
+                {t('login.block')}
               </p>
             )}
             <div className="d-flex justify-content-between mt-4 flex-row gap-2">

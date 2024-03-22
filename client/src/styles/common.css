@@ -241,9 +241,9 @@ tr:first-child {
 }
 .ReactTags__tagInput input.ReactTags__tagInputField,
 .ReactTags__tagInput input.ReactTags__tagInputField:focus {
-  height: 31px;
+  /* height: 31px;
   margin: 0;
-  font-size: 12px;
+  font-size: 12px; */
   width: 100%;
 }
 
@@ -255,6 +255,12 @@ tr:first-child {
   display: inline-flex;
 }
 
+.ReactTags__tagInputField {
+  outline: none;
+}
+.ReactTags__tagInputField:focus-visible {
+  outline: none;
+}
 .ReactTags__tagInputField:focus {
   box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25);
   border-color: #86b7fe;
@@ -298,12 +304,12 @@ tr:first-child {
   background-color: unset;
   padding: 0;
   margin: 0;
-  color: #545252;
+  color: #9c9c9c;
 }
 .ReactTags__suggestions li {
   text-align: left;
   width: fit-content;
-  color: #545252;
+  color: #9c9c9c;
   border-radius: 20%;
   padding: 3px 5px;
   text-decoration: underline;
@@ -314,4 +320,8 @@ tr:first-child {
   cursor: pointer;
   background: none;
   color: white;
+}
+
+.ReactTags__tagInputField:focus {
+  outline: none;
 }

@@ -25,7 +25,6 @@ const CreateColl = () => {
   const [success, setSuccss] = useState(false);
   const [showText, setShowText] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
-  // const [imgLink, setImgLink] = useState(null);
   const [err, setErr] = useState('');
   const [loading, setLoading] = useState(false);
   const [showInputCategory, setShowInputCategory] = useState(false);
@@ -163,7 +162,7 @@ const CreateColl = () => {
                 {showInputCategory ? (
                   <div>
                     <label htmlFor="categoryOther" className="fw-bold mb-2">
-                      Your category:
+                    {t('create.yourCategory')}
                     </label>
                   <input onChange={handleOtherCategory} id="categoryOther" className='mb-4 form-control'></input>
                   </div>
@@ -207,11 +206,6 @@ const CreateColl = () => {
                     </p>
                   )}
                    {err ? (<p>{err}</p>) : null}
-                  {/* {err ? (<p>{err}</p>) : (
-                    imgLink ? (
-                      <img src={imgLink} style={{width: '300px', height:'auto'}} alt='uploaded' />
-                    ) : null
-                  )}   */}
                 </div>
 
                 { inputs.length < maxFields ? (

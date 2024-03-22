@@ -230,3 +230,11 @@ export const isBlock = async (idUser, status) => {
       , [idUser, status])
       return data;
 }
+
+export const lastFiveItems = async () => {
+  const [items] = await pool.query(`
+  SELECT * FROM items
+  ORDER BY date DESC
+  LIMIT 5`)
+  return items;
+}

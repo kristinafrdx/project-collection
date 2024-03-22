@@ -8,7 +8,8 @@ const translation = {
       "signIn": "Sign in",
       "guest": "I'm guest",
       "haveNotAccount": "Don't have an account?",
-      "errorIncorrect": "Incorrect username or password. Try again"
+      "errorIncorrect": "Incorrect username or password. Try again",
+      "block": "You are blocked."
     },
     "registration": {
       "name": "Your email:",
@@ -25,7 +26,10 @@ const translation = {
       "create": "Create",
       "my": "My collections",
       "empty": "You have no collections.",
-      "delete": "Delete"
+      "delete": "Delete",
+      "collection": "Collection: #",
+      "date": "Date:",
+      "last": "Last items:"
     },
     "create": {
       "add": "Add collection",
@@ -41,6 +45,7 @@ const translation = {
       "seeMy": "See my collection",
       "loading": "Loading...",
       "newFields": "New fields for items:",
+      "yourCategory": "Your category:"
     },
     "page": {
       "edit": "Edit",

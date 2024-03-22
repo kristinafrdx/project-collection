@@ -8,7 +8,8 @@ const translation = {
       "signIn": "Iniciar sesión",
       "guest": "Soy invitado",
       "haveNotAccount": "¿No tienes una cuenta?",
-      "errorIncorrect": "Nombre de usuario o contraseña incorrectos. Inténtalo de nuevo"
+      "errorIncorrect": "Nombre de usuario o contraseña incorrectos. Inténtalo de nuevo",
+      "block": "Estás bloqueado."
     },
     "registration": {
       "name": "Tu correo electrónico:",
@@ -25,7 +26,10 @@ const translation = {
       "create": "Crear",
       "my": "Mis colecciones",
       "empty": "No tienes colecciones.",
-      "delete": "Borrar"
+      "delete": "Borrar",
+      "collection": "Recopilación: #",
+      "date": "Fecha:",
+      "last": "Últimos artículos:"
     },
     "create": {
       "add": "Agregar colección",
@@ -41,6 +45,7 @@ const translation = {
       "seeMy": "Ver mi colección",
       "loading": "Cargando…",
       "newFields": "Nuevos campos para artículos:",
+      "yourCategory": "Tu categoría:"
     },
     "page": {
       "edit": "Editar",
