@@ -238,3 +238,25 @@ export const lastFiveItems = async () => {
   LIMIT 5`)
   return items;
 }
+
+export const countItem = async (idColl) => {
+  await pool.execute(`
+  UPDATE collections SET countItems = countItems + 1
+  WHERE id = ?`,
+  [idColl]);
+}
+
+export const deleteItemCount = async (idColl) => {
+  await pool.execute(`
+  UPDATE collections SET countItems = countItems - 1
+  WHERE id = ?`,
+  [idColl]);
+}
+
+export const getLargestCollections = async () => {
+  const [coll] = await pool.query(`
+  SELECT * FROM collections
+  ORDER BY countItems DESC
+  LIMIT 5`)
+  return coll;
+}

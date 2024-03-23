@@ -7,6 +7,8 @@ import Header from "./Header";
 import { useUser } from "./context/UserContext";
 import { useAuth } from "./context/IsloggedContext";
 
+const host = 'http://localhost:3030';
+
 const Login = () => {
   const { darkMode } = useTheme();
   const { t } = useTranslation();
@@ -22,7 +24,7 @@ const Login = () => {
 
   const fetchUser = async (data) => {
     try {
-      const resp = await axios.post('http://localhost:3030/login', data)
+      const resp = await axios.post(`${host}/login`, data)
       if (resp.data.message === "data is't correct") {
        setError(true);
        setErrorBlock(false)

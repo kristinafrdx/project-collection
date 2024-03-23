@@ -30,7 +30,9 @@ const translation = {
       "collection": "Collection: #",
       "date": "Date:",
       "last": "Last items:",
-      "createdBy": "Created by:"
+      "createdBy": "Created by:",
+      "all": "All collections",
+      "largest": "The largest collections:"
     },
     "create": {
       "add": "Add collection",

@@ -9,6 +9,8 @@ import unlock from '../logo/unlock.svg';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './context/IsloggedContext';
 
+const host = 'http://localhost:3030';
+
 const Admin = () => {
   const [users, setUsers] = useState([]);
   const { setUserRole, userId } = useUser();
@@ -23,7 +25,7 @@ const Admin = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const resp = await axios.get('http://localhost:3030/admin')
+      const resp = await axios.get(`${host}/admin`)
       const us = resp.data.users;
       setUsers((prev) => [...prev, ...us]);
     }
@@ -31,7 +33,7 @@ const Admin = () => {
   }, [])
 
   const deleteUser = async () => {
-    const resp = await axios.post("http://localhost:3030/deleteUsers", { selected });
+    const resp = await axios.post(`${host}/deleteUsers`, { selected });
     setUsers(resp.data.new)
     setSelected(null)
     if (Number(selected) === Number(userId)) {
@@ -63,7 +65,7 @@ const Admin = () => {
   }
 
   const handleMakeAdmin = async (id, status, userRole) => {
-    const resp = await axios.post('http://localhost:3030/makeAdmin', { id, status })
+    const resp = await axios.post(`${host}/makeAdmin`, { id, status })
     const update = resp.data.update;
     setUserRole(userRole);
     setUsers(update);
@@ -73,7 +75,7 @@ const Admin = () => {
   const handleBlock = async (selected, newStatus) => {
     if (newStatus === 'block') {
       try {
-        const resp = await axios.post('http://localhost:3030/block', { selected, newStatus })
+        const resp = await axios.post(`${host}/block`, { selected, newStatus })
         const updateUsers = resp.data.updateUsers;
         setUsers(updateUsers);
         if (Number(userId) === Number(selected)) {
@@ -84,7 +86,7 @@ const Admin = () => {
         console.log(e)
       }
     } else if (newStatus === 'unblock') {
-      const resp = await axios.post('http://localhost:3030/block', { selected, newStatus })
+      const resp = await axios.post(`${host}/block`, { selected, newStatus })
       const updateUsers = resp.data.updateUsers;
       setUsers(updateUsers)
     }

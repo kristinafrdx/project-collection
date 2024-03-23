@@ -6,6 +6,8 @@ import axios from "axios";
 import { useUser } from "./context/UserContext";
 import { useTranslation} from "react-i18next";
 
+const host = 'http://localhost:3030';
+
 const MyCollections = () => {
   const { darkMode } = useTheme();
   const { userId, userRole } = useUser();
@@ -21,7 +23,7 @@ const MyCollections = () => {
   useEffect(() => {
     const getCollections = async () => {
       try {
-        const resp = await axios.post('http://localhost:3030/mycollections', { userId });
+        const resp = await axios.post(`${host}/mycollections`, { userId });
         const likes = resp.data.getMy.likes
         setMyColl(resp.data.getMy);
       } catch (e) {
@@ -54,7 +56,7 @@ const MyCollections = () => {
   }
  
   const deleteColl = async (id) => {
-    const resp = await axios.post('http://localhost:3030/deleteColl', { id })
+    const resp = await axios.post(`${host}/deleteColl`, { id })
     setMyColl(resp.data.updateColl)
     setShowDelete(false);
   }

@@ -9,6 +9,8 @@ import { useUser } from "./context/UserContext";
 import { WithContext as ReactTags } from 'react-tag-input';
 import options from "./tags";
 
+const host = 'http://localhost:3030';
+
 const AddItem = () => {
   const { darkMode } = useTheme();
   const { userRole, userId } = useUser();
@@ -59,7 +61,7 @@ const AddItem = () => {
 
     const fetchFields = async () => {
       try {
-        const resp = await axios.post('http://localhost:3030/addItem', { nameItem: name, tag: tags, idC: id, valueField, userId});
+        const resp = await axios.post(`${host}/addItem`, { nameItem: name, tag: tags, idC: id, valueField, userId});
         if (resp.data.message === 'ok') {
           navigate('/success')
         }

@@ -8,6 +8,8 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from "./context/IsloggedContext";
 import { useUser } from "./context/UserContext";
 
+const host = 'http://localhost:3030';
+
 const Registration = () => {
   const { darkMode } = useTheme();
   const { t } = useTranslation();
@@ -28,7 +30,7 @@ const Registration = () => {
       login,
       password,
     };
-    const resp = await axios.post('http://localhost:3030/registration', dataUser);
+    const resp = await axios.post(`${host}/registration`, dataUser);
     if (resp.data.message === 'exist') {
       setError(true)
       setEmail("");

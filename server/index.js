@@ -73,7 +73,8 @@ app.get('/collections', async (req, res) => {
   const collections = await database.getCollections();
   const likes = await database.getLikes();
   const last = await database.lastFiveItems();
-  res.json({collections, likes, last});
+  const largest = await database.getLargestCollections();
+  res.json({collections, likes, last, largest});
 })
 
 app.post('/myCollections', async (req, res) => {
@@ -150,6 +151,7 @@ app.post('/addItem', async (req, res) => {
   const tagText = tag.map((el) => el.text);
   const tags = tagText.map((el) => el.startsWith('#') ? el : `#${el}`);
   await database.addItem(name, tags.join(' '), id, values[0], values[1], values[2], login);
+  await database.countItem(id);
   res.json({message: 'ok'});
 })
 
@@ -164,6 +166,7 @@ app.post('/deleteItem', async (req, res) => {
   const idItem = req.body.id;
   const idColl = req.body.idC;
   await database.deleteItem(idItem);
+  await database.deleteItemCount(idColl)
   const update = await database.getItems(idColl)
   res.json({message: 'ok', items: update});
 })

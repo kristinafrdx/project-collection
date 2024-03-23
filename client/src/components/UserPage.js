@@ -5,6 +5,8 @@ import Header from './Header'
 import { useTheme } from './context/ThemeContext';
 import { useTranslation } from 'react-i18next';
 
+const host = 'http://localhost:3030';
+
 const UserPage = () => {
   const [collections, setCollections] = useState([]);
   const [data, setData] = useState([]);
@@ -16,7 +18,7 @@ const UserPage = () => {
   useEffect(() => {
     const fetchUser = async (id) => {
       try {
-        const resp = await axios.post('http://localhost:3030/userPage', { id });
+        const resp = await axios.post(`${host}/userPage`, { id });
         setData(resp.data.dataUser);
         setCollections(resp.data.collections);
       } catch (e) {

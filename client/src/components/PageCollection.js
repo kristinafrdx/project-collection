@@ -7,6 +7,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "./context/ThemeContext";
 import ReactMarkdown from 'react-markdown';
 
+const host = 'http://localhost:3030';
+
 const PageCollection = () => {
   const { t } = useTranslation();
   const { darkMode } = useTheme();
@@ -57,7 +59,7 @@ const PageCollection = () => {
   
   const deleteItem = async (id) => {
     try {
-      const resp = await axios.post('http://localhost:3030/deleteItem', { id, idC: idColl });
+      const resp = await axios.post(`${host}/deleteItem`, { id, idC: idColl });
       const updateItems = resp.data.items;
       setItems(updateItems)
     } catch (e) {
@@ -79,7 +81,7 @@ const PageCollection = () => {
     const getCollections = async () => {
       try {
         if (idColl !== null) {
-          const resp = await axios.post('http://localhost:3030/getcollection', { idColl });
+          const resp = await axios.post(`${host}/getcollection`, { idColl });
           const items = resp.data.items;
           const collection = resp.data.collection[0];
           const linkToImage = collection.linkToImage;

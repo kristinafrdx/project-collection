@@ -10,6 +10,9 @@ import axios from "axios";
 import SuccessColl from '../components/SuccessColl';
 import Select from 'react-select';
 import ReactMarkdown from 'react-markdown'
+import options from "./category";
+
+const host = 'http://localhost:3030';
 
 const CreateColl = () => {
   const { t } = useTranslation();
@@ -46,20 +49,6 @@ const CreateColl = () => {
     setNameField(e.target.value)
   }
 
-  const options = [
-    {value: 'Art', label: 'Art'},
-    {value: 'Stamps', label: 'Stamps'},
-    {value: 'Cars', label: 'Cars'},
-    {value: 'Coins', label: 'Coins'},
-    {value: 'Films', label: 'Films'},
-    {value: 'Stickers', label: 'Stickers'},
-    {value: 'Candy wrapper', label: 'Candy wrapper'},
-    {value: 'Stones', label: 'Stones'},
-    {value: 'Books', label: 'Books'},
-    {value: 'Songs', label: 'Songs'},
-    {value: 'Other', label: 'Other'}
-  ]
-
   const customDarkStyles = {
     menu: (provided, state) => ({
       ...provided,
@@ -88,7 +77,7 @@ const CreateColl = () => {
       const formData = new FormData();
       formData.append('file', selectedFile, selectedFile.name);
       try {
-       const resp = await axios.post('http://localhost:3030/upload', formData, {
+       const resp = await axios.post(`${host}/upload`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -120,7 +109,7 @@ const CreateColl = () => {
     });
 
     try {
-      const resp = await axios.post('http://localhost:3030/createcoll', { data, inputs });
+      const resp = await axios.post(`${host}/createcoll`, { data, inputs });
       if (resp.data.message === 'ok') {
         setSuccss(true);
       }
@@ -155,7 +144,7 @@ const CreateColl = () => {
       { success ? <SuccessColl /> : (
         <div>
           <Header showExit={true} app={userRole === 'admin'} path={'/admin'}/>
-          <div className={`d-flex align-items-center flex-column ${darkMode ? 'dark-theme' : 'light-theme'}`} style={{height: '100%', paddingBottom: '100px', padding: '10px', height: '100%'}}>
+          <div className={`d-flex align-items-center flex-column ${darkMode ? 'dark-theme' : 'light-theme'}`} style={{height: '100%', paddingBottom: '100px', padding: '10px', minHeight: '100vh'}}>
             <h2 className="pb-3 pt-4">
               {t('create.add')}
             </h2>
