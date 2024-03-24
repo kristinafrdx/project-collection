@@ -17,7 +17,8 @@ import AllColl from "./components/AllColl";
 function App() {
   const { isLogged } = useAuth();
   const { userRole } = useUser();
-  
+
+  console.log(userRole)
   return (
     <div className="App">
         <Router>

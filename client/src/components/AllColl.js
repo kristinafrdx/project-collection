@@ -104,7 +104,8 @@ const AllColl = () => {
               </div>
                 <ul className='d-flex justify-content-between' id={el.id}>
                   <li className='nameColl' onClick={() => navigate('/page', { state: { id: el.id }})}>{el.name}</li>
-                  <li>{ userRole !== 'guest' ? (
+                  <li>
+                    { userRole !== 'guest' ? (
                     <div className='containerLikes d-flex align-items-baseline'>
                       <button className='linkButton d-flex' type="button" onClick={(e) => handleLike(e, userId, el.id)}>
                         {likesSt.includes(el.id) ? (

@@ -55,15 +55,14 @@ app.post('/like', async (req, res) => {
   if (like) {
     await database.makeLike(idUser, idColl)
     await database.addLike(idColl)
-    const updateColl = await database.getCollections();
+    const updateColl = await database.getLargestCollections();
     res.json({updateColl})
   } 
   else {
     const likeId = await database.getLike(idUser, idColl);
     await database.deleteLike(likeId[0].id)
     await database.deleteLikeColl(idColl);
-
-    const updateColl = await database.getCollections();
+    const updateColl = await database.getLargestCollections();
     res.json({updateColl})
   }
   res.end();
@@ -124,6 +123,7 @@ app.post('/deleteColl', async (req, res) => {
   await database.deleteCollection(id);
   const updateColl = await database.getCollections();
   await database.deleteItems(id);
+  await database.deleteLikes(id);
   res.json({message: 'ok', updateColl});
   
 })
@@ -211,6 +211,7 @@ app.post('/userPage', async (req, res) => {
   res.json({collections, dataUser})
   res.end()
 })
+
 app.listen(PORT, () => {
   console.log(`SERVER IS LISTENING ON PORT: ${PORT}`)
 })

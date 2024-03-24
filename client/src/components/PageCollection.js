@@ -5,7 +5,7 @@ import { useTranslation} from "react-i18next";
 import Header from "./Header";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "./context/ThemeContext";
-import ReactMarkdown from 'react-markdown';
+import Markdown from 'react-markdown';
 
 const host = 'http://localhost:3030';
 
@@ -113,13 +113,13 @@ const PageCollection = () => {
           }
         }
       } catch (e) {
-        console.error(e)
+        console.log(e)
       } finally {
         setLoading(false)
       }
     }
    getCollections(idColl)
-  }, [idColl])
+  }, [idColl, admin, userId])
 
 
   useEffect(() => {
@@ -208,7 +208,7 @@ const PageCollection = () => {
                   <h3>
                     {t('page.description')}
                   </h3>
-                  <ReactMarkdown>{descr}</ReactMarkdown>
+                  <Markdown>`{descr}`</Markdown>
                 </div>
                 ) : null}
               </div>
@@ -247,7 +247,7 @@ const PageCollection = () => {
                         <tr key={el.id} onClick={() => handleCard(el.id)}>
                           { showButtons || admin ? (
                             <td className={`${darkMode ? '' : 'light-theme'}`} style={{textAlign: 'end', width: '30px'}}>
-                              <input className={`checkbox ${darkMode ? 'select-dark' : ''}`} type="radio" checked={selectedItem === el.id} onChange={() => handleCard(el.id)}/>
+                              <input id={el.id} className={`checkbox ${darkMode ? 'select-dark' : ''}`} type="radio" checked={selectedItem === el.id} onChange={() => handleCard(el.id)}/>
                               <label htmlFor={el.id}></label>
                             </td>
                           ) : null }

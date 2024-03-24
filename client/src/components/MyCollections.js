@@ -38,20 +38,20 @@ const MyCollections = () => {
   const handleCard = (id) => {
     if (selectedColl === id) {
       setSelectedColl(null);
-      setCheckboxChecked(false)
-      setShowDelete(false)
+      setCheckboxChecked(false);
+      setShowDelete(false);
     } else {
       setCheckboxChecked(!checkboxChecked);
       setSelectedColl(Number(id));
-      setShowDelete(true)
+      setShowDelete(true);
     }
   }
 
   const handleReset = (e) => {
     const elem = e.target.closest('.card');
     if (!elem && e.target.tagName !== 'BUTTON') {
-      setSelectedColl(null)
-      setShowDelete(false)
+      setSelectedColl(null);
+      setShowDelete(false);
     } 
   }
  
@@ -111,7 +111,8 @@ const MyCollections = () => {
                     <label htmlFor={el.id}></label>
                     <input 
                       className={'checkbox'} 
-                      id={el.id} type="radio" 
+                      id={el.id} 
+                      type="radio" 
                       checked={selectedColl === el.id} 
                       onChange={() => handleCard(el.id)}
                     />

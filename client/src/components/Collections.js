@@ -49,18 +49,18 @@ const Collections = () => {
         const idC = likeIdCurrentUser.map((el) => el.idCollection);
         const lastItems = resp.data.last;
         setLastItems([...lastItems]);
-        setLikes([...likesSt, ...idC]);
+        setLikes((prev) => [...prev, ...idC]);
         setCollections(allColl);
       } catch (e) {
         console.error(e)
       }
     }
     getCollections();
-  }, [])
+  }, [userId])
 
   const navigate = useNavigate();
  
-  const handleCard = (e, id) => {
+  const handleCard = (id) => {
     if (admin) {
       setCheckboxChecked(!checkboxChecked);
       setSelectedColl(Number(id));
@@ -184,6 +184,7 @@ const Collections = () => {
                           type="radio" 
                           checked={selectedColl === el.id} 
                           onChange={() => setSelectedColl(el.id)}
+                          id={el.id}
                         />
                       </div>
                     ) : null }

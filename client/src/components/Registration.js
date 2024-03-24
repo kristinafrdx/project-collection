@@ -79,7 +79,7 @@ const Registration = () => {
                 autoFocus
                 required
               />
-              <label htmlFor="username" className="fw-bold mb-2 mt-2">
+              <label htmlFor="email" className="fw-bold mb-2 mt-2">
                 {t('registration.email')}
               </label>
               <input

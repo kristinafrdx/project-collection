@@ -260,3 +260,10 @@ export const getLargestCollections = async () => {
   LIMIT 5`)
   return coll;
 }
+
+export const deleteLikes = async (idColl) => {
+  await pool.execute(`
+  DELETE FROM likes
+  WHERE idCollection = ?`,
+  [idColl])
+}

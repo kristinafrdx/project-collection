@@ -83,7 +83,7 @@ const AddItem = () => {
           </h2>
           <form className="p-4 pt-2">
             <div className="form-group mb-3">
-              <label htmlFor="username" className="fw-bold mb-2">
+              <label htmlFor="nameItem" className="fw-bold mb-2">
               {t('addItem.name')}
               </label>
               <input
@@ -95,7 +95,7 @@ const AddItem = () => {
                 autoFocus
                 required
               />
-              <label htmlFor="username" className="fw-bold mb-2 mt-2">
+              <label htmlFor="tags" className="fw-bold mb-2 mt-2">
               {t('addItem.tags')}
               </label>
               <ReactTags
@@ -106,6 +106,7 @@ const AddItem = () => {
                 autocomplete
                 tags={tags}
                 placeholder=""
+                id="tags"
               />
               { inputs ? (
                 inputs.map((el) => (
@@ -115,6 +116,7 @@ const AddItem = () => {
                       {el}
                     </label>
                     <input
+                      id={el}
                       name={el}
                       type="text"
                       className="form-control w-100 p-2"

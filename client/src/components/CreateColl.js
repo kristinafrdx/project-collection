@@ -9,7 +9,7 @@ import { useUser } from "./context/UserContext";
 import axios from "axios";
 import SuccessColl from '../components/SuccessColl';
 import Select from 'react-select';
-import ReactMarkdown from 'react-markdown'
+import Markdown from 'react-markdown'
 import options from "./category";
 
 const host = 'http://localhost:3030';
@@ -158,7 +158,7 @@ const CreateColl = () => {
                <label htmlFor="category" className="fw-bold mb-2">
                   {t('create.category')}
                 </label>
-                <Select styles={darkMode ? customDarkStyles : ''} onChange={(e) => handleCategory(e)} className="mb-4 darkCategory" options={options}></Select>
+                <Select id={category} styles={darkMode ? customDarkStyles : ''} onChange={(e) => handleCategory(e)} className="mb-4 darkCategory" options={options}></Select>
                 {showInputCategory ? (
                   <div>
                     <label htmlFor="categoryOther" className="fw-bold mb-2">
@@ -179,7 +179,7 @@ const CreateColl = () => {
                   value={description}
                 /> 
                 <div>
-                  <ReactMarkdown>{description}</ReactMarkdown>
+                  <Markdown>{description}</Markdown>
                 </div>
                 
                 {showText ? (
@@ -210,7 +210,7 @@ const CreateColl = () => {
 
                 { inputs.length < maxFields ? (
                   <div>
-                    <label className="mb-2 fw-bold">
+                    <label htmlFor="nameField" className="mb-2 fw-bold">
                       {t('create.addedFieldName')}
                     </label>
                     <div className="d-flex flex-row justify-content-between mb-2" style={{gap: '5px'}}>

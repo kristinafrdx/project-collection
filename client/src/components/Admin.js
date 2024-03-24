@@ -67,9 +67,15 @@ const Admin = () => {
   const handleMakeAdmin = async (id, status, userRole) => {
     const resp = await axios.post(`${host}/makeAdmin`, { id, status })
     const update = resp.data.update;
-    setUserRole(userRole);
-    setUsers(update);
-    setSelected(null);
+    if (Number(userId) === Number(id)) {
+      setUserRole(userRole);
+      setUsers(update);
+      setSelected(null);
+    } else {
+      setUsers(update);
+      setSelected(null);
+    }
+    
   }
 
   const handleBlock = async (selected, newStatus) => {
@@ -165,8 +171,8 @@ const Admin = () => {
           {users.map((user) => (
             <tr key={user.id} onClick={() => handleSelect(user.id)}>
               <td className={`${darkMode ? '' : 'light-theme'}`} style={{textAlign: 'end', width: '30px'}}>
-                <input className={`checkbox ${darkMode ? 'select-dark' : ''}`} type="radio" checked={selected === user.id} onChange={() => handleSelect(user.id)}/>
-                <label></label>
+                <input id={user.id} className={`checkbox ${darkMode ? 'select-dark' : ''}`} type="radio" checked={selected === user.id} onChange={() => handleSelect(user.id)}/>
+                <label htmlFor={user.id}></label>
               </td>
               <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>{user.id}</td>
               <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>
