@@ -85,6 +85,19 @@ const translation = {
       "notFound": "User has no any collections.",
       "password": "Password",
       "collOfUser": "Collections of user #"
+    },
+    "options": {
+      "art": "Art",
+      "stamps": "Stamps",
+      "cars": "Cars",
+      "coins": "Coins",
+      "films": "Films",
+      "stickers": "Stickers",
+      "candyWrapper": "Candy wrapper",
+      "stones": "Stones",
+      "books": "Books",
+      "songs": "Songs",
+      "other": "Other"
     }
   }
 } 

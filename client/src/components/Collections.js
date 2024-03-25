@@ -163,7 +163,7 @@ const Collections = () => {
              </div>
           ) : null}
 
-          <div style={{marginLeft: '20px', paddingTop: '30px'}}>
+          <div className='items-wrap' style={{paddingTop: '30px'}}>
             <h5 className='largestText' style={{paddingBottom: '20px'}}>
               {t('collections.largest')}
             </h5>

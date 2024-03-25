@@ -10,7 +10,7 @@ import axios from "axios";
 import SuccessColl from '../components/SuccessColl';
 import Select from 'react-select';
 import Markdown from 'react-markdown'
-import options from "./category";
+import Options from "./Category";
 
 const host = 'http://localhost:3030';
 
@@ -34,7 +34,8 @@ const CreateColl = () => {
 
   const maxFields = 3;
   const navigate = useNavigate();
-
+  const options = Options();
+  
   const addField = () => {
     setShowText(true);
     if (inputs.length < maxFields) {

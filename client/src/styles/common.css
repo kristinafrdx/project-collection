@@ -339,6 +339,10 @@ tr:first-child {
   width: 100%;
 }
 
+.items-wrap {
+  margin-left: 20px;
+}
+
 @media screen and (max-width: 440px) {
   .wrap {
     flex-wrap: wrap;
@@ -355,6 +359,7 @@ tr:first-child {
     flex-direction: row;
     gap: 15px;
     align-items: center;
+    margin-bottom: 10px;
   }
   .items {
     display: flex;
@@ -365,6 +370,9 @@ tr:first-child {
   .ulItems {
     width: 40%;
   }
+  .items-wrap {
+    margin: 0 auto;
+  }
 }
 
 @media screen and (max-width: 635px) {
@@ -373,5 +381,6 @@ tr:first-child {
   }
   .coll {
     justify-content: center;
+    margin: 0 auto;
   }
 }

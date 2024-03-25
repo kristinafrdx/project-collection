@@ -23,11 +23,11 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<Login />} />
-            <Route path="/collections" element={<Collections />} />
+            <Route path="/collections" element={isLogged || userRole === 'guest' ? <Collections /> : <Navigate to={'/'}/> } />
             <Route path="/registration" element={<Registration />} />
-            <Route path="/myCollections" element={isLogged ? <MyCollections /> : <Navigate to={"/"} />} />
+            <Route path="/myCollections" element={isLogged ? <MyCollections /> : <Navigate to={'/'} />} />
             <Route path="/createColl" element={isLogged ? <CreateColl /> : <Navigate to='/'/>} />
-            <Route path="/page" element={<PageCollection /> }/>
+            <Route path="/page" element={isLogged || userRole === 'guest' ? <PageCollection /> : <Navigate to={'/'} /> }/>
             <Route path="/success" element={isLogged ? <SuccessColl /> : <Navigate to='/'/>} />
             <Route path="/addItem" element={isLogged ? <AddItem /> : <Navigate to='/registration' />}/>
             <Route path="/admin" element={userRole === 'admin' ? <Admin /> : <Navigate to='/collections' />} />
@@ -38,6 +38,5 @@ function App() {
     </div>
   );
 }
-// export const useAuth = () => useContext(AuthContext);
 
 export default App;

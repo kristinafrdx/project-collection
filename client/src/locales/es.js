@@ -85,6 +85,19 @@ const translation = {
       "notFound": "El usuario no tiene ninguna colección.",
       "password": "Contraseña",
       "collOfUser": "Colecciones de usuario #"
+    },
+    "options": {
+      "art": "Arte",
+      "stamps": "Sellos",
+      "cars": "Carros",
+      "coins": "Monedas",
+      "films": "Película",
+      "stickers": "Pegatinas",
+      "candyWrapper": "Envoltura de dulces",
+      "stones": "Piedras",
+      "books": "Libros",
+      "songs": "Cancioness",
+      "other": "Otro"
     }
   }
 };
