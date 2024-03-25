@@ -24,7 +24,6 @@ const MyCollections = () => {
     const getCollections = async () => {
       try {
         const resp = await axios.post(`${host}/mycollections`, { userId });
-        const likes = resp.data.getMy.likes
         setMyColl(resp.data.getMy);
       } catch (e) {
         console.error(e)
@@ -38,20 +37,20 @@ const MyCollections = () => {
   const handleCard = (id) => {
     if (selectedColl === id) {
       setSelectedColl(null);
-      setCheckboxChecked(false);
-      setShowDelete(false);
+      setCheckboxChecked(false)
+      setShowDelete(false)
     } else {
       setCheckboxChecked(!checkboxChecked);
       setSelectedColl(Number(id));
-      setShowDelete(true);
+      setShowDelete(true)
     }
   }
 
   const handleReset = (e) => {
     const elem = e.target.closest('.card');
     if (!elem && e.target.tagName !== 'BUTTON') {
-      setSelectedColl(null);
-      setShowDelete(false);
+      setSelectedColl(null)
+      setShowDelete(false)
     } 
   }
  
@@ -67,6 +66,7 @@ const MyCollections = () => {
       <div 
         className={`wrap ${myColl.length < 1 ? 'coll-height' : ''} ${darkMode ? 'dark-theme' : '' }`} 
         onClick={(e) => handleReset(e)}
+        style={{alignContent: "baseline"}}
       >
         <div className='link'>
           <button 
@@ -93,7 +93,7 @@ const MyCollections = () => {
             </button>
           ) : null}
         </div>
-        <div className={`coll`}>
+        <div className={`coll`} style={{marginLeft: '20px', marginRight: '20px'}}>
           {loading ? null : (
             myColl.length > 0 ? (
               myColl.map((el) => (
@@ -111,8 +111,7 @@ const MyCollections = () => {
                     <label htmlFor={el.id}></label>
                     <input 
                       className={'checkbox'} 
-                      id={el.id} 
-                      type="radio" 
+                      id={el.id} type="radio" 
                       checked={selectedColl === el.id} 
                       onChange={() => handleCard(el.id)}
                     />

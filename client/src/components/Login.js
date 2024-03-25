@@ -89,11 +89,11 @@ const Login = () => {
               <label htmlFor="username" className="fw-bold mb-2">
                 {t('login.enterLogin')}
               </label>
-              <input type="text" className={`form-control w-100 pt-2 ${darkMode ? 'input-dark' : 'light-theme'}`} autoFocus id="username" placeholder="siginur@mail.ru" value={login} onChange={handleLogin} required />
+              <input type="text" className={`form-control w-100 pt-2 ${darkMode ? 'input-dark' : 'light-theme'}`} autoFocus id="username" value={login} onChange={handleLogin} required />
               <label htmlFor="password" className="fw-bold mb-2 mt-2">
                 {t('login.enterPassword')}
               </label>
-              <input type="password" className={`form-control w-100 pt-2 ${darkMode ? 'input-dark' : 'light-theme'}`} id="password" placeholder="qwerty12345" value={password} onChange={handlePassword} required/>
+              <input type="password" className={`form-control w-100 pt-2 ${darkMode ? 'input-dark' : 'light-theme'}`} id="password" value={password} onChange={handlePassword} required/>
             </div>
             {err && (
               <p className="text-danger mb-0">

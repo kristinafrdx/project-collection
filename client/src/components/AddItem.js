@@ -116,13 +116,13 @@ const AddItem = () => {
                       {el}
                     </label>
                     <input
-                      id={el}
                       name={el}
                       type="text"
                       className="form-control w-100 p-2"
                       required
                       value={valueField[el] || ''}
                       onChange={handleField}
+                      id={el}
                     />
                   </div>)
                 ))

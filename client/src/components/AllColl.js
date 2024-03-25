@@ -16,9 +16,8 @@ const AllColl = () => {
   const { userRole, userId } = useUser();
 
   const [collections, setCollections] = useState([]);
-  const [admin] = useState(false);
   
-  const [, setSelectedColl] = useState(null)
+  const [selectedColl, setSelectedColl] = useState(null)
   const [checkboxChecked, setCheckboxChecked] = useState(false);
   const [likesSt, setLikes] = useState([]);
 
@@ -30,14 +29,14 @@ const AllColl = () => {
         const likes = resp.data.likes;
         const likeIdCurrentUser = likes.filter((el) => Number(el.idUser) === Number(userId));
         const idC = likeIdCurrentUser.map((el) => el.idCollection);
-        setLikes([...likesSt, ...idC]);
+        setLikes((prev) => [...prev, ...idC]);
         setCollections(allColl);
       } catch (e) {
         console.error(e)
       }
     }
     getCollections();
-  }, [])
+  }, [userId])
 
   const navigate = useNavigate();
 
@@ -62,27 +61,51 @@ const AllColl = () => {
   }
 
   const handleCard = (e, id) => {
-    if (admin) {
+    if (userRole === 'admin') {
       setCheckboxChecked(!checkboxChecked);
       setSelectedColl(Number(id));
     }
   }
 
+  const handleReset = (e) => {
+    const elem = e.target.closest('.card');
+    if (!elem) {
+      setSelectedColl(null)
+    } 
+  }
+
+  const deleteColl = async (id) => {
+    const resp = await axios.post(`${host}/deleteColl`, { id })
+    setCollections(resp.data.updateColl)
+  }
+
   return (
-    <div>
-      <Header showExit={true} app={userRole === 'admin'} path={'/admin'}/>
-      <div className={`${darkMode ? 'dark-theme' : '' } pb-5`} style={{minHeight: '100vh', height: 'fit-content'}}>
+      <div>
+       <Header showExit={true} app={userRole === 'admin'} path={'/admin'}/>
+        <div className={`${darkMode ? 'dark-theme' : '' } pb-5`} style={{minHeight: '100vh', height: 'fit-content'}} onClick={(e) => handleReset(e)}>
         <div className='d-flex justify-content-between coll' style={{marginRight: '50px', marginLeft: '50px', paddingTop: '30px', paddingBottom: '20px'}}>
           <h5 className='m-0'>
-            {t('collections.all')}:
-          </h5>
+             {t('collections.all')}:
+           </h5>
+           <div className='d-flex justify-content-end' style={{gap: '15px'}}>
+           {selectedColl ? (
+              <button 
+                type='button' 
+                className={`linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} 
+                onClick={(e) => deleteColl(selectedColl)}
+                style={{fontSize: '1.25rem'}}
+              >     
+                {t("collections.delete")}
+              </button>
+            ): null}
           <button 
-            className={`linkButton`} 
+            className={`linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} 
             onClick={() => navigate('/collections')}
             style={{fontSize: '1.25rem'}}
           >
             {t('registration.back')}
           </button>
+          </div>
         </div>
       
       <div className="coll pt-0">
@@ -100,12 +123,25 @@ const AllColl = () => {
                   className='d-flex justify-content-end' 
                   style={{width: '100%', padding: '10px', position:'absolute', height: '100%'}} 
                 >
+                  <div className='d-flex flex-column justify-content-between'>
+                    { userRole === 'admin' ? (
+                      <div className='d-flex justify-content-end'>
+                        <label htmlFor={el.id}></label>
+                        <input 
+                          className={'checkbox'} 
+                          type="radio" 
+                          checked={selectedColl === el.id} 
+                          onChange={() => setSelectedColl(el.id)}
+                          id={el.id}
+                        />
+                      </div>
+                    ) : null }
+                    </div>
                 </div>
               </div>
                 <ul className='d-flex justify-content-between' id={el.id}>
                   <li className='nameColl' onClick={() => navigate('/page', { state: { id: el.id }})}>{el.name}</li>
-                  <li>
-                    { userRole !== 'guest' ? (
+                  <li>{ userRole !== 'guest' ? (
                     <div className='containerLikes d-flex align-items-baseline'>
                       <button className='linkButton d-flex' type="button" onClick={(e) => handleLike(e, userId, el.id)}>
                         {likesSt.includes(el.id) ? (
@@ -122,7 +158,8 @@ const AllColl = () => {
                         {el.likes}
                       </h5>
                     </div>
-                  ) : null}</li>
+                  ) : null}
+                  </li>
                 </ul>
             </div>
           ))

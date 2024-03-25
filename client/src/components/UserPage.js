@@ -38,7 +38,7 @@ const UserPage = () => {
             <div>
               <h2 style={{fontSize: '20px'}}>{t('userPage.collOfUser')}{id}:</h2>
             </div>
-            <div className='d-flex' style={{gap: '15px'}}>
+            <div className='d-flex flex-wrap' style={{gap: '15px'}}>
               <h3 style={{fontSize: '20px'}}>{t('admin.id')}: {el.id}</h3>
               <h3 style={{fontSize: '20px'}}>{t('admin.name')}: {el.name}</h3>
               <h3 style={{fontSize: '20px'}}>{t('admin.login')}: {el.login}</h3>
@@ -49,8 +49,8 @@ const UserPage = () => {
       ) : null}
       { collections.length > 0 ? (
         <div>
-         <div className='d-flex justify-content-center container'>
-          <table style={{width: '100%', marginTop: '20px', paddingLeft: '0', paddingRight: '0'}}>
+         <div className='d-flex container' style={{overflowX: 'auto'}}>
+          <table style={{width: '100%', marginTop: '20px', marginLeft: '10px', marginRight: '10px'}}>
             <thead>
               <tr>
                 <th className={`th ${darkMode ? 'adminHeadTable-dark' : ''}`}>№</th>

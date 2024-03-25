@@ -55,15 +55,17 @@ app.post('/like', async (req, res) => {
   if (like) {
     await database.makeLike(idUser, idColl)
     await database.addLike(idColl)
-    const updateColl = await database.getLargestCollections();
-    res.json({updateColl})
+    const updateLargest = await database.getLargestCollections();
+    const updateColl = await database.getCollections();
+    res.json({updateLargest, updateColl})
   } 
   else {
     const likeId = await database.getLike(idUser, idColl);
     await database.deleteLike(likeId[0].id)
     await database.deleteLikeColl(idColl);
-    const updateColl = await database.getLargestCollections();
-    res.json({updateColl})
+    const updateLargest = await database.getLargestCollections();
+    const updateColl = await database.getCollections();
+    res.json({updateLargest, updateColl})
   }
   res.end();
 })
@@ -121,7 +123,7 @@ app.post('/registration', async (req, res) => {
 app.post('/deleteColl', async (req, res) => {
   const { id } = req.body
   await database.deleteCollection(id);
-  const updateColl = await database.getCollections();
+  const updateColl = await database.getLargestCollections();
   await database.deleteItems(id);
   await database.deleteLikes(id);
   res.json({message: 'ok', updateColl});

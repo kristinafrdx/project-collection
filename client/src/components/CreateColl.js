@@ -59,6 +59,7 @@ const CreateColl = () => {
       backgroundColor: state.isFocused ? '#6d6d6d' :'transporant' 
     })
   }
+  
   const handleRemoveField = (index) => {
     setInputs(inputs.filter((_, i) => i!== index));
     setValues(values.filter((_, i) => i!== index));
@@ -158,7 +159,7 @@ const CreateColl = () => {
                <label htmlFor="category" className="fw-bold mb-2">
                   {t('create.category')}
                 </label>
-                <Select id={category} styles={darkMode ? customDarkStyles : ''} onChange={(e) => handleCategory(e)} className="mb-4 darkCategory" options={options}></Select>
+                <Select id="category" styles={darkMode ? customDarkStyles : ''} onChange={(e) => handleCategory(e)} className="mb-4 darkCategory" options={options}></Select>
                 {showInputCategory ? (
                   <div>
                     <label htmlFor="categoryOther" className="fw-bold mb-2">
@@ -168,7 +169,7 @@ const CreateColl = () => {
                   </div>
                 ) : null}
 
-                <label htmlFor="description" className="fw-bold mb-2">
+                 <label htmlFor="description" className="fw-bold mb-2">
                   {t('create.description')}
                 </label>
                  <textarea
@@ -178,6 +179,7 @@ const CreateColl = () => {
                   className='form-control last-input mb-4'
                   value={description}
                 /> 
+             
                 <div>
                   <Markdown>{description}</Markdown>
                 </div>

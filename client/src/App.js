@@ -18,7 +18,6 @@ function App() {
   const { isLogged } = useAuth();
   const { userRole } = useUser();
 
-  console.log(userRole)
   return (
     <div className="App">
         <Router>

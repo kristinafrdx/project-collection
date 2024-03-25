@@ -12,6 +12,7 @@ import likeFill from '../logo/likeFill.svg';
 const host = 'http://localhost:3030';
 
 const Collections = () => {
+    
   const { t } = useTranslation();
   const { isLogged } = useAuth();
   const { darkMode } = useTheme();
@@ -60,7 +61,7 @@ const Collections = () => {
 
   const navigate = useNavigate();
  
-  const handleCard = (id) => {
+  const handleCard = (e, id) => {
     if (admin) {
       setCheckboxChecked(!checkboxChecked);
       setSelectedColl(Number(id));
@@ -83,7 +84,7 @@ const Collections = () => {
     const fetchLikes = async (like) => {
       try {
         const resp = await axios.post(`${host}/like`, { idU: idUser, idC: idColl, like })
-        const newColl = resp.data.updateColl;
+        const newColl = resp.data.updateLargest;
         setCollections(newColl)
       } catch (e) {
         console.log(e)
@@ -97,15 +98,15 @@ const Collections = () => {
     setLikes([...likesSt, idColl]);
     fetchLikes(true);
   }
-  }
-
+  };
+  
   return (
-    <div className='d-flex flex-column align-items-end'>
-      <Header showRegistration={guest} showExit={isLogged} app={admin} path={'/admin'}/>
-        <div className={`wrap ${darkMode ? 'dark-theme' : '' }`} onClick={(e) => handleReset(e)}>
-          {!guest ? (
+   <div className='d-flex flex-column align-items-end'>
+       <Header showRegistration={guest} showExit={isLogged} app={admin} path={'/admin'}/>
+         <div className={`wrap ${darkMode ? 'dark-theme' : '' }`} onClick={(e) => handleReset(e)}>
+           {!guest ? (
             <div className='link'>
-              <div className='d-flex flex-column align-items-center'>
+              <div className='d-flex flex-column align-items-center' style={{maxWidth: '200px'}}>
                 <button 
                   type="button" 
                   className={`pb-2 linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} 
@@ -142,7 +143,7 @@ const Collections = () => {
                 </h5>
                 { items.length > 0 ? (
                     items.map((el) => (
-                      <ul key={el.id} className={`${darkMode ? 'lastItems-dark' : 'lastItems-light'}`}style={{marginBottom:'10px'}}>
+                      <ul key={el.id} className={`${darkMode ? 'lastItems-dark' : 'lastItems-light'}`} style={{marginBottom:'10px', width: '100%'}}>
                         <li>{t('page.name')} {el.name}</li>
                         {el.tag ? (<li>{t('page.tags')}: {el.tag}</li>) : null}
                         <li>{t('collections.collection')}{el.idCollection}</li>
@@ -154,13 +155,13 @@ const Collections = () => {
                 <p>{t('page.notFound')}</p>}
               </div>
              </div>
-           ) : null}
+          ) : null}
 
-          <div>
-            <h5 style={{marginLeft: '50px', paddingTop: '30px', paddingBottom: '20px'}}>
+          <div style={{marginLeft: '20px', paddingTop: '30px', maxWidth: '600px'}}>
+            <h5 styles={{paddingBottom: '20px'}}>
               {t('collections.largest')}
             </h5>
-            <div className="coll pt-0">
+            <div className="coll pt-0" style={{marginLeft: '0'}}>
               { collections && collections.length > 0 ? (
                 collections.map((el) => (
                 <div key={el.id}>
@@ -220,6 +221,6 @@ const Collections = () => {
         </div>
     </div>
 )
-}
+};
 
 export default Collections;

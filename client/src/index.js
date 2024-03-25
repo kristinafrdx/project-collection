@@ -12,7 +12,6 @@ import { IsLoggedProvider } from './components/context/IsloggedContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  // <React.StrictMode>
   <I18nextProvider i18n={i18next}>
     <LanguageProvider>
       <ThemeProvider>
@@ -24,6 +23,5 @@ root.render(
       </ThemeProvider>
     </LanguageProvider>
   </I18nextProvider>
-  // </React.StrictMode>
 );
 

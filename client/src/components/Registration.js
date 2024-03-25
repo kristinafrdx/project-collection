@@ -73,7 +73,6 @@ const Registration = () => {
                 type="text"
                 className="form-control w-100 p-2"
                 id="username"
-                placeholder="Kristina"
                 value={name}
                 onChange={handleName}
                 autoFocus
@@ -86,7 +85,6 @@ const Registration = () => {
                 type="text"
                 className="form-control w-100 p-2"
                 id="email"
-                placeholder="siginur@mail.ru"
                 value={login}
                 onChange={handleMail}
                 required
@@ -98,7 +96,6 @@ const Registration = () => {
                 type="password"
                 className="form-control w-100 p-2"
                 id="password"
-                placeholder="qwerty12345"
                 value={password}
                 onChange={handlePassword}
                 required

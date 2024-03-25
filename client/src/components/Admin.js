@@ -30,7 +30,7 @@ const Admin = () => {
       setUsers((prev) => [...prev, ...us]);
     }
     fetchUsers();
-  }, [])
+  }, []);
 
   const deleteUser = async () => {
     const resp = await axios.post(`${host}/deleteUsers`, { selected });
@@ -67,15 +67,14 @@ const Admin = () => {
   const handleMakeAdmin = async (id, status, userRole) => {
     const resp = await axios.post(`${host}/makeAdmin`, { id, status })
     const update = resp.data.update;
-    if (Number(userId) === Number(id)) {
-      setUserRole(userRole);
-      setUsers(update);
-      setSelected(null);
-    } else {
-      setUsers(update);
-      setSelected(null);
-    }
-    
+      if (Number(userId) === Number(id)) {
+        setUserRole(userRole);
+        setUsers(update);
+        setSelected(null);
+      } else {
+          setUsers(update);
+          setSelected(null);
+      };
   }
 
   const handleBlock = async (selected, newStatus) => {
@@ -155,7 +154,7 @@ const Admin = () => {
           {t('admin.users')}
         </h2>
       </div>
-      <div className='d-flex justify-content-center container'>
+      <div className='d-flex container' style={{overflowX: 'auto'}}>
       <table style={{width: '100%', marginTop: '20px', paddingLeft: '0', paddingRight: '0'}}>
         <thead>
           <tr>

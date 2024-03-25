@@ -325,3 +325,27 @@ tr:first-child {
 .ReactTags__tagInputField:focus {
   outline: none;
 }
+
+.wrap-text {
+  overflow-wrap: 'anywhere';
+}
+/* 
+@media screen and (max-width: 840px) {
+  .wrap {
+    justify-content: center;
+    flex-wrap: wrap
+  }
+  .collections-area {
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 0;
+  }
+  .coll {
+    justify-content: center;
+    margin-left: 0;
+  }
+  .collections-text {
+    margin: 0;
+  }
+} */

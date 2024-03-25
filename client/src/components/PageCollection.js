@@ -208,7 +208,9 @@ const PageCollection = () => {
                   <h3>
                     {t('page.description')}
                   </h3>
-                  <Markdown>`{descr}`</Markdown>
+                  
+                  <Markdown>{descr}</Markdown>
+                  
                 </div>
                 ) : null}
               </div>
@@ -222,7 +224,7 @@ const PageCollection = () => {
                 <h2 style={{fontSize: '15px', textDecorationLine: 'underline'}}>
                   {t('page.yourItems')}
                 </h2>   
-                <div className="d-flex mt-3" style={{paddingBottom: '20px', overflow: 'hidden'}}>
+                <div className="d-flex mt-3" style={{paddingBottom: '20px', overflowX: 'auto'}}>
                   <table style={{width: '90%'}}>
                     <thead>
                       <tr>
