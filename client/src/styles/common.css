@@ -329,23 +329,49 @@ tr:first-child {
 .wrap-text {
   overflow-wrap: 'anywhere';
 }
-/* 
-@media screen and (max-width: 840px) {
+
+.links {
+  display: flex;
+  flex-direction: column;
+}
+
+.ulItems {
+  width: 100%;
+}
+
+@media screen and (max-width: 440px) {
   .wrap {
+    flex-wrap: wrap;
+    width: 100%;
     justify-content: center;
-    flex-wrap: wrap
   }
-  .collections-area {
-    justify-content: center;
+  .link {
+    max-width: 100%;
+    margin-left: 0;
+    padding: 30px 15px 0;
+  }
+  .links {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    align-items: center;
+  }
+  .items {
     display: flex;
     flex-wrap: wrap;
-    margin-left: 0;
+    gap: 10px;
+    justify-content: space-around;
+  }
+  .ulItems {
+    width: 40%;
+  }
+}
+
+@media screen and (max-width: 635px) {
+  .largestText {
+    text-align: center;
   }
   .coll {
     justify-content: center;
-    margin-left: 0;
   }
-  .collections-text {
-    margin: 0;
-  }
-} */
+}

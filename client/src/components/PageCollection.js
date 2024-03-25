@@ -208,9 +208,7 @@ const PageCollection = () => {
                   <h3>
                     {t('page.description')}
                   </h3>
-                  
                   <Markdown>{descr}</Markdown>
-                  
                 </div>
                 ) : null}
               </div>

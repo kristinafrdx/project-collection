@@ -106,59 +106,65 @@ const Collections = () => {
          <div className={`wrap ${darkMode ? 'dark-theme' : '' }`} onClick={(e) => handleReset(e)}>
            {!guest ? (
             <div className='link'>
-              <div className='d-flex flex-column align-items-center' style={{maxWidth: '200px'}}>
-                <button 
-                  type="button" 
-                  className={`pb-2 linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} 
-                  onClick={() => navigate('/createColl')}
-                >
-                  {t("collections.create")}
-                </button>
-                <button 
-                  type="button" 
-                  className={`pb-2 linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} 
-                  onClick={() => navigate('/mycollections')}
-                >
-                  {t("collections.my")}
-                </button>
-                <button 
-                  type="button" 
-                  className={`pb-2 linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} 
-                  onClick={() => navigate('/allColl')}
-                >
-                  {t('collections.all')}
-                </button>
-                {selectedColl ? (
+              <div className='d-flex flex-column align-items-center'>
+                <div className='links'>
                   <button 
-                    type='button' 
+                    type="button" 
                     className={`pb-2 linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} 
-                    onClick={(e) => deleteColl(selectedColl)}
+                    onClick={() => navigate('/createColl')}
                   >
-                    {t("collections.delete")}
+                    {t("collections.create")}
                   </button>
-                ): null}
-                <h5 className={`${darkMode ? 'lastItems-dark-text' : 'lastItems-light-text'}`} 
-                  style={{textAlign: 'center', fontWeight: '300', marginBottom: '10px'}}>
-                    {t('collections.last')}
-                </h5>
-                { items.length > 0 ? (
-                    items.map((el) => (
-                      <ul key={el.id} className={`${darkMode ? 'lastItems-dark' : 'lastItems-light'}`} style={{marginBottom:'10px', width: '100%'}}>
-                        <li>{t('page.name')} {el.name}</li>
-                        {el.tag ? (<li>{t('page.tags')}: {el.tag}</li>) : null}
-                        <li>{t('collections.collection')}{el.idCollection}</li>
-                        <li>{t('collections.createdBy')} {el.createdBy}</li>
-                        <li>{t('collections.date')} {new Date(el.date).toLocaleString()}</li>
-                      </ul>
-                    ))
-                ) : 
-                <p>{t('page.notFound')}</p>}
+                  <button 
+                    type="button" 
+                    className={`pb-2 linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} 
+                    onClick={() => navigate('/mycollections')}
+                  >
+                    {t("collections.my")}
+                  </button>
+                  <button 
+                    type="button" 
+                    className={`pb-2 linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} 
+                    onClick={() => navigate('/allColl')}
+                  >
+                    {t('collections.all')}
+                  </button>
+                  {selectedColl ? (
+                    <button 
+                      type='button' 
+                      className={`pb-2 linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} 
+                      onClick={(e) => deleteColl(selectedColl)}
+                    >
+                      {t("collections.delete")}
+                    </button>
+                  ): null}
+                  </div>
+                  <div className='items-cont'>
+                    <h5 className={`${darkMode ? 'lastItems-dark-text' : 'lastItems-light-text'}`} 
+                      style={{textAlign: 'center', fontWeight: '300', marginBottom: '10px'}}>
+                        {t('collections.last')}
+                    </h5>
+                    { items.length > 0 ? (
+                      <div className='items'>
+                        {items.map((el) => (
+                            <ul key={el.id} className={`ulItems ${darkMode ? 'lastItems-dark' : 'lastItems-light'} p-1`} style={{marginBottom:'10px'}}>
+                              <li>{t('page.name')} {el.name}</li>
+                              {el.tag ? (<li>{t('page.tags')}: {el.tag}</li>) : null}
+                              <li>{t('collections.collection')}{el.idCollection}</li>
+                              <li>{t('collections.createdBy')} {el.createdBy}</li>
+                              <li>{t('collections.date')} {new Date(el.date).toLocaleString()}</li>
+                            </ul>
+                          ))}
+                      </div>
+                    ) : 
+                    (<p>{t('page.notFound')}</p>)}
+                  </div>
               </div>
              </div>
           ) : null}
 
-          <div style={{marginLeft: '20px', paddingTop: '30px', maxWidth: '600px'}}>
-            <h5 styles={{paddingBottom: '20px'}}>
+          <div style={{marginLeft: '20px', paddingTop: '30px'}}>
+            <h5 className='largestText' style={{paddingBottom: '20px'}}>
               {t('collections.largest')}
             </h5>
             <div className="coll pt-0" style={{marginLeft: '0'}}>

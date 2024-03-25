@@ -10,6 +10,7 @@ import logout from "../logo/logout.svg"
 import { useAuth } from "./context/IsloggedContext";
 import { useUser } from "./context/UserContext";
 import apps from "../logo/apps.svg";
+import home from '../logo/homee.png';
 
 const Header = ({ showRegistration, showExit, app, path }) => {
   const {t, i18n} = useTranslation();
@@ -36,7 +37,12 @@ const Header = ({ showRegistration, showExit, app, path }) => {
 
   return (
     <header className={`header m-0 ${darkMode ? 'header-dark' : 'header-light'}`}>
-      <h5 className="text-left createColl">{t('header.createCollections')}</h5>
+      <div className="d-flex align-items-center" style={{gap: '10px'}}>
+        <button className="linkButton" onClick={() => navigation('/collections')}>
+          <img src={home} alt="home" />
+        </button>
+        <h5 className="text-left createColl">{t('header.createCollections')}</h5>
+      </div>
       <div className="themes">
         {showRegistration && (
           <div>
