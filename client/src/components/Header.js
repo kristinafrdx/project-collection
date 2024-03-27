@@ -44,21 +44,21 @@ const Header = ({ showRegistration, showExit, app, path }) => {
         <h5 className="text-left createColl">{t('header.createCollections')}</h5>
       </div>
       <div className="themes">
-        {showRegistration && (
+        { showRegistration && (
           <div>
             <button type="button" className="linkButton" onClick={() => navigation('/registration')}>
               <img className="registration" src={registration} alt="registration"></img>
             </button>
           </div>
         )}
-        {showExit && (
+        { showExit && (
           <div>
             <button type="button" className="linkButton" onClick={handleResetLogged}>
               <img className={`logout ${darkMode ? 'logout-dark' : ''}`} src={logout} alt="logout"></img>
             </button>
           </div>
         )}
-        {app && (
+        { app && (
           <div>
             <button type="button" className="linkButton" onClick={() => navigation(path)}>
               <img className={`apps ${darkMode ? 'logout-dark' : ''}`} src={apps} alt="apps"></img>

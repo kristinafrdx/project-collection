@@ -24,13 +24,13 @@ const Login = () => {
 
   const fetchUser = async (data) => {
     try {
-      const resp = await axios.post(`${host}/login`, data)
+      const resp = await axios.post(`${host}/login`, data);
       if (resp.data.message === "data is't correct") {
        setError(true);
-       setErrorBlock(false)
+       setErrorBlock(false);
       } else if (resp.data.message === 'blocked') {
-        setErrorBlock(true)
-        setError(false)
+        setErrorBlock(true);
+        setError(false);
       } else {
         const isAdmin = resp.data.isAdmin;
         const id = resp.data.userId;
@@ -46,35 +46,35 @@ const Login = () => {
     } catch (e) {
       console.error(`Network error: ${e}`);
     }
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = {
       login,
       password,
-    }
+    };
     await fetchUser(data);
-  }
+  };
 
   const handleLogin = (event) => {
-    setLogin(event.target.value)
-  }
+    setLogin(event.target.value);
+  };
 
   const handlePassword = (event) => {
-    setPassword(event.target.value)
-  }
+    setPassword(event.target.value);
+  };
 
   const handleCreate = () => {
-    navigate('/registration')
-  }
+    navigate('/registration');
+  };
 
   const handleGuest = () => {
     setUserRole('guest');
     setLogged(false);
     setUserId(null);
     navigate('/collections');
-  }
+  };
 
   return (
     <div className="d-flex flex-column">
@@ -90,16 +90,17 @@ const Login = () => {
                 {t('login.enterLogin')}
               </label>
               <input type="text" className={`form-control w-100 pt-2 ${darkMode ? 'input-dark' : 'light-theme'}`} autoFocus id="username" value={login} onChange={handleLogin} required />
+              
               <label htmlFor="password" className="fw-bold mb-2 mt-2">
                 {t('login.enterPassword')}
               </label>
               <input type="password" className={`form-control w-100 pt-2 ${darkMode ? 'input-dark' : 'light-theme'}`} id="password" value={password} onChange={handlePassword} required/>
             </div>
-            {err && (
+            { err && (
               <p className="text-danger mb-0">
-              {t('login.errorIncorrect')}
+                {t('login.errorIncorrect')}
               </p>)}
-            {errBlock && (
+            { errBlock && (
               <p className="text-danger mb-0">
                 {t('login.block')}
               </p>

@@ -15,17 +15,18 @@ const AddItem = () => {
   const { darkMode } = useTheme();
   const { userRole, userId } = useUser();
   const { t } = useTranslation();
+
   const [name, setName] = useState('');
   const [tags, setTags] = useState([]);
   const [valueField, setValueField] = useState([]);
-
   const [id, setId] = useState(null);
 
   const navigate = useNavigate();
   const location = useLocation();
+
   const idColl = location?.state?.id;
   const objFields = location?.state?.fields;
-  const inputs = Object.values(objFields)
+  const inputs = Object.values(objFields);
 
   const handleDelete = i => {
     setTags(tags.filter((tag, index) => index !== i));
@@ -44,7 +45,7 @@ const AddItem = () => {
 
   useEffect(() => {
     setId(idColl)
-  }, [idColl])
+  }, [idColl]);
 
   const handleName = (event) => {
     setName(event.target.value);
@@ -52,23 +53,23 @@ const AddItem = () => {
 
   const handleField = (event) => {
     const {name, value} = event.target;
-    setValueField({...valueField, [name]: value})
-  }
+    setValueField({...valueField, [name]: value});
+  };
 
   const handleBack = () => {
-    navigate('/mycollections')
+    navigate('/mycollections');
   }
 
-    const fetchFields = async () => {
-      try {
-        const resp = await axios.post(`${host}/addItem`, { nameItem: name, tag: tags, idC: id, valueField, userId});
-        if (resp.data.message === 'ok') {
-          navigate('/success')
-        }
-      } catch (e) {
-        console.log(e)
-      }
-    }
+  const fetchFields = async () => {
+    try {
+      const resp = await axios.post(`${host}/addItem`, { nameItem: name, tag: tags, idC: id, valueField, userId});
+      if (resp.data.message === 'ok') {
+        navigate('/success');
+      };
+    } catch (e) {
+      console.log(e);
+    };
+  };
     
   return (
     <div className="d-flex flex-column">
@@ -96,17 +97,19 @@ const AddItem = () => {
                 required
               />
               <label htmlFor="tags" className="fw-bold mb-2 mt-2">
-              {t('addItem.tags')}
+                {t('addItem.tags')}
               </label>
               <ReactTags
                 suggestions={suggestions}
+                autofocus={false}
                 handleDelete={handleDelete}
                 handleAddition={handleAddition}
                 inputFieldPosition="top"
-                autocomplete
+                autocomplete={true}
+                minQueryLength={3}
                 tags={tags}
-                placeholder=""
-                id="tags"
+                placeholder={t('page.placeholder')}
+                id="tags"  
               />
               { inputs ? (
                 inputs.map((el) => (

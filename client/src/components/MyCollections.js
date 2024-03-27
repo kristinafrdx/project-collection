@@ -11,14 +11,15 @@ const host = 'http://localhost:3030';
 const MyCollections = () => {
   const { darkMode } = useTheme();
   const { userId, userRole } = useUser();
-
-  const navigate = useNavigate();
-  const [myColl, setMyColl] = useState([]);
   const { t } = useTranslation();
+  const [myColl, setMyColl] = useState([]);
+
   const [selectedColl, setSelectedColl] = useState(null)
   const [checkboxChecked, setCheckboxChecked] = useState(false);
   const [showDeleteButton, setShowDelete] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getCollections = async () => {
@@ -26,39 +27,39 @@ const MyCollections = () => {
         const resp = await axios.post(`${host}/mycollections`, { userId });
         setMyColl(resp.data.getMy);
       } catch (e) {
-        console.error(e)
+        console.log(e)
       } finally {
         setLoading(false);
-      }
-    }
+      };
+    };
     getCollections();
-  }, [userId])
+  }, [userId]);
  
   const handleCard = (id) => {
     if (selectedColl === id) {
       setSelectedColl(null);
-      setCheckboxChecked(false)
-      setShowDelete(false)
+      setCheckboxChecked(false);
+      setShowDelete(false);
     } else {
       setCheckboxChecked(!checkboxChecked);
       setSelectedColl(Number(id));
-      setShowDelete(true)
-    }
-  }
+      setShowDelete(true);
+    };
+  };
 
   const handleReset = (e) => {
     const elem = e.target.closest('.card');
     if (!elem && e.target.tagName !== 'BUTTON') {
-      setSelectedColl(null)
-      setShowDelete(false)
-    } 
-  }
+      setSelectedColl(null);
+      setShowDelete(false);
+    }
+  };
  
   const deleteColl = async (id) => {
-    const resp = await axios.post(`${host}/deleteColl`, { id })
-    setMyColl(resp.data.updateColl)
+    const resp = await axios.post(`${host}/deleteColl`, { id });
+    setMyColl(resp.data.updateColl);
     setShowDelete(false);
-  }
+  };
 
   return (
     <div className='d-flex flex-column align-items-end'>
@@ -83,7 +84,7 @@ const MyCollections = () => {
           >
             {t("registration.back")}
           </button>
-          {showDeleteButton ? (
+          { showDeleteButton ? (
             <button 
               type='button' 
               className={`linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} 
@@ -94,50 +95,51 @@ const MyCollections = () => {
           ) : null}
         </div>
         <div className={`coll`} style={{marginLeft: '20px', marginRight: '20px'}}>
-          {loading ? null : (
+          { loading ? null : (
             myColl.length > 0 ? (
               myColl.map((el) => (
                 <div key={el.id}>
-                <div 
-                  className={`card shadow-lg ${darkMode ? 'inner-dark linkButton-dark' : 'linkButton-light light-theme'}`} 
-                  onClick={() => handleCard(el.id)}
-                >
-                  {el.linkToImage ? (
-                    <img style={{ width: '200px', height: '200px' }} src={ el.linkToImage } alt='imageColl' />
-                  ) : null} 
                   <div 
-                    className='d-flex justify-content-end' 
-                    style={{ width: '100%', padding: '10px', position: 'absolute' }}>
-                    <label htmlFor={el.id}></label>
-                    <input 
-                      className={'checkbox'} 
-                      id={el.id} type="radio" 
-                      checked={selectedColl === el.id} 
-                      onChange={() => handleCard(el.id)}
-                    />
-                  </div>
-                </div>
-                <ul className='text-coll'>
-                  <li 
-                    className={`nameColl ${darkMode ? 'li-dark' : 'li-light'}}`} 
-                    onClick={() => navigate('/page', { state: { id: el.id }})}
+                    className={`card shadow-lg ${darkMode ? 'inner-dark linkButton-dark' : 'linkButton-light light-theme'}`} 
+                    onClick={() => handleCard(el.id)}
                   >
-                    {el.name}
-                  </li>
-                </ul>
-              </div>
+                    { el.linkToImage ? (
+                      <img style={{ width: '200px', height: '200px' }} src={ el.linkToImage } alt='imageColl' />
+                    ) : null } 
+                    <div 
+                      className='d-flex justify-content-end' 
+                      style={{ width: '100%', padding: '10px', position: 'absolute' }}
+                    >
+                      <label htmlFor={el.id}></label>
+                      <input 
+                        className={'checkbox'} 
+                        id={el.id} type="radio" 
+                        checked={selectedColl === el.id} 
+                        onChange={() => handleCard(el.id)}
+                      />
+                    </div>
+                  </div>
+                  <ul className='text-coll'>
+                    <li 
+                      className={`nameColl ${darkMode ? 'li-dark' : 'li-light'}}`} 
+                      onClick={() => navigate('/page', { state: { id: el.id }})}
+                    >
+                      {el.name}
+                    </li>
+                  </ul>
+                </div>
               ))
             ) : (
-            <div>
-              <h5 className={`${darkMode ? 'empty-coll-dark' : 'empty-coll-light'}`}>{t('collections.empty')}</h5>
-              <button 
-                type='button' 
-                className={`linkButton text-underline ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} 
-                onClick={(e) => navigate('/createColl')}
-              >
-                {t("collections.create")}
-              </button>
-            </div>
+              <div>
+                <h5 className={`${darkMode ? 'empty-coll-dark' : 'empty-coll-light'}`}>{t('collections.empty')}</h5>
+                <button 
+                  type='button' 
+                  className={`linkButton text-underline ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} 
+                  onClick={(e) => navigate('/createColl')}
+                >
+                  {t("collections.create")}
+                </button>
+              </div>
             )
           )}
         </div>

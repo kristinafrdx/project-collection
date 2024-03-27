@@ -32,7 +32,7 @@ const Registration = () => {
     };
     const resp = await axios.post(`${host}/registration`, dataUser);
     if (resp.data.message === 'exist') {
-      setError(true)
+      setError(true);
       setEmail("");
       setPassword("");
     } else {
@@ -78,6 +78,7 @@ const Registration = () => {
                 autoFocus
                 required
               />
+
               <label htmlFor="email" className="fw-bold mb-2 mt-2">
                 {t('registration.email')}
               </label>
@@ -89,6 +90,7 @@ const Registration = () => {
                 onChange={handleMail}
                 required
               />
+
               <label htmlFor="password" className="fw-bold mb-2 mt-2">
                 {t('registration.password')}
               </label>
@@ -100,8 +102,9 @@ const Registration = () => {
                 onChange={handlePassword}
                 required
               />
+
             </div>
-            {err && (
+            { err && (
               <p className="text-danger">
                 {t('registration.errorAlreadyExist')}
               </p>

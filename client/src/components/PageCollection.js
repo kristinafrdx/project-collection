@@ -13,7 +13,6 @@ const PageCollection = () => {
   const { t } = useTranslation();
   const { darkMode } = useTheme();
   const { userRole, userId } = useUser();
-  const location = useLocation();
 
   const [guest, setGuest ] = useState(false);
   const [admin, setAdmin] = useState(false);
@@ -38,12 +37,12 @@ const PageCollection = () => {
   const [checkboxChecked, setCheckboxChecked] = useState(false);
 
   const navigate = useNavigate();
-
-  const id = location?.state?.id
+  const location = useLocation();
+  const id = location?.state?.id;
 
   useEffect(() => {
-    setIdColl(id)
-  }, [idColl, id])
+    setIdColl(id);
+  }, [idColl, id]);
 
   useEffect(() => {
     if (userRole === 'guest') {
@@ -54,18 +53,17 @@ const PageCollection = () => {
     } else {
       setUser(true);
     }
-  }, [userRole])
+  }, [userRole]);
 
-  
   const deleteItem = async (id) => {
     try {
       const resp = await axios.post(`${host}/deleteItem`, { id, idC: idColl });
       const updateItems = resp.data.items;
-      setItems(updateItems)
+      setItems(updateItems);
     } catch (e) {
       console.log(e)
-    }
-  }
+    };
+  };
 
   const handleReset = (e) => {
     const isInsideTable = e.target.closest('table');
@@ -89,13 +87,13 @@ const PageCollection = () => {
           const fiel2 = collection.field2;
           const fiel3 = collection.field3;
           const likes = collection.likes;
-          setLikes(likes)
+          setLikes(likes);
           setCategory(collection.topic);
           setNameColl(collection.name);
           setDescr(collection.description);
-          setLink(linkToImage)
+          setLink(linkToImage);
           if (fiel1) {
-            setField1(fiel1)
+            setField1(fiel1);
           } 
           if (fiel2) {
             setField2(fiel2);
@@ -103,38 +101,38 @@ const PageCollection = () => {
           if (fiel3) {
             setField3(fiel3);
           }
-          setItems(prev => [...prev, ...items])
+          setItems(prev => [...prev, ...items]);
           if (Number(collection.createdBy) === Number(userId)) {
-            setShowButtons(true)
+            setShowButtons(true);
           } else if (admin){
-            setShowButtons(true)
+            setShowButtons(true);
           } else {
-            setShowButtons(false)
-          }
+            setShowButtons(false);
+          };
         }
       } catch (e) {
-        console.log(e)
+        console.log(e);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
-   getCollections(idColl)
-  }, [idColl, admin, userId])
+    };
+   getCollections(idColl);
+  }, [idColl, admin, userId]);
 
 
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+    window.scrollTo(0, 0);
+  }, []);
   
   const handleCard = (id) => {
     if (selectedItem === id) {
       setSelectedItem(null);
-      setCheckboxChecked(false)
+      setCheckboxChecked(false);
     } else {
       setCheckboxChecked(!checkboxChecked);
       setSelectedItem(Number(id));
     }
-  }
+  };
 
   const handleAdd = async () => {
     navigate('/addItem', 
@@ -148,30 +146,51 @@ const PageCollection = () => {
         }  
       }
     })
-  }
+  };
+
+  const handleEdit = () => {
+    navigate('/edit', 
+    { state: {
+        selectedItem, 
+        fields: {
+          field1,
+          field2,
+          field3
+        }
+      } 
+    })
+  };
 
   return (
     <div>
       <Header showExit={admin || user} showRegistration={guest} app={admin}/>
       <div className={`${darkMode ? 'dark-theme' : ''}`} style={{padding: '20px 20px 0', minHeight: '100vh' }} onClick={(e) => handleReset(e)}>
         <div className="d-flex justify-content-end">
-          <div className="cont_for_button d-flex justify-content-around align-items-start" style={{justifyContent: 'space-between', gap: '50px'}}>
-              <div className="add/edit/delete d-flex" style={{gap: '50px'}}>
-                { showButtons || admin ? (
-                  <div className='d-flex' style={{gap: '50px'}}>
+          <div 
+            className="cont_for_button d-flex justify-content-around align-items-start" 
+            style={{justifyContent: 'space-between', gap: '50px'}}
+          >
+            <div className="add/edit/delete d-flex" style={{gap: '50px'}}>
+              { showButtons || admin ? (
+                <div className='d-flex' style={{gap: '50px'}}>
                   <div>
-                      { selectedItem ? (
-                      <button type='button' className={`linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} onClick={() => deleteItem(selectedItem)}>
-                        {t("collections.delete")}
-                      </button>
+                    { selectedItem ? (
+                      <div className="d-flex" style={{gap: '50px'}}>
+                        <button type='button' className={`linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} onClick={() => deleteItem(selectedItem)}>
+                          {t("collections.delete")}
+                        </button>
+                        <button type="button" className={`linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} onClick={() => handleEdit()}>
+                          {t("page.edit")}
+                        </button>
+                      </div>
                     ) : null }
                   </div>
                   <button type="button" className={`linkButton ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} onClick={handleAdd}>
                     {t('page.add')}
                   </button>
-                  </div>
-                ) : null}
-              </div>
+                </div>
+              ) : null}
+            </div>
             <div className="back" style={{paddingLeft: '10px'}}>
               <button type="button" className={`linkButton pb-2 ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} onClick={() => navigate('/collections')}>
                 {t("registration.back")}
@@ -179,15 +198,18 @@ const PageCollection = () => {
             </div>
           </div>
         </div>
+
         <div>
           <div className="leftSide mb-4">
             <div className="cont_For_Collection">
               <div className="d-flex flex-wrap align-items-start" style={{padding: '0', margin: '0', alignItems: 'start'}}>
                 { link ? (
                   <div style={{maxWidth: '100%'}}>
-                  <img style={{maxWidth: '400px', width: '100%', margin: '0 auto 10px', paddingRight: '20px', minWidth: '150px'}} src={link} alt='imageColl' />
+                    <img 
+                      style={{maxWidth: '400px', width: '100%', margin: '0 auto 10px', paddingRight: '20px', minWidth: '150px'}} 
+                      src={link} alt='imageColl' />
                   </div>
-                ) : null}
+                ) : null }
                 <div className="d-flex flex-column" style={{paddingRight: '30px'}}>
                   <div style={{minWidth: '100px'}}>
                     <h3 style={{overflowWrap: 'anywhere'}}>
@@ -195,28 +217,32 @@ const PageCollection = () => {
                     </h3>
                     <p>{nameColl}</p>
                   </div>
-                  {category ? (
-                  <div>
-                    <h4 style={{overflowWrap: 'anywhere'}}>
-                      {t('page.category')}
-                    </h4>
-                    <p>{category}</p>
-                  </div>) : null}
+                  { category ? (
+                    <div>
+                      <h4 style={{overflowWrap: 'anywhere'}}>
+                        {t('page.category')}
+                      </h4>
+                      <p>{category}</p>
+                    </div>) : null }
                 </div>
                 { descr ? (
-                <div style={{overflowWrap: 'anywhere', marginBottom: '0.5rem', maxWidth: '80%'}}>
-                  <h3>
-                    {t('page.description')}
-                  </h3>
-                  <Markdown>{descr}</Markdown>
-                </div>
+                  <div style={{overflowWrap: 'anywhere', marginBottom: '0.5rem', maxWidth: '80%'}}>
+                    <h3>
+                      {t('page.description')}
+                    </h3>
+                    <Markdown>{descr}</Markdown>
+                  </div>
                 ) : null}
               </div>
-              <div><p>{t('page.likes')}{likes}</p></div>
+              <div>
+                <p>
+                  {t('page.likes')}{likes}
+                </p>
+              </div>
             </div>
           </div>
 
-          {loading ? null : (
+          { loading ? null : (
             itemsSt && itemsSt.length > 0 ? (
               <div>
                 <h2 style={{fontSize: '15px', textDecorationLine: 'underline'}}>
@@ -226,7 +252,9 @@ const PageCollection = () => {
                   <table style={{width: '90%'}}>
                     <thead>
                       <tr>
-                      { showButtons || admin ? (<th className="firstColumn"></th>) : null}
+                      { showButtons || admin ? (
+                        <th className="firstColumn"></th>
+                      ) : null}
                         <th className={`th ${darkMode ? 'header-dark' : 'header-light'}`}>
                           №
                         </th>
@@ -236,10 +264,15 @@ const PageCollection = () => {
                         <th className={`th ${darkMode ? 'header-dark' : 'header-light'}`}>
                           {t('page.tags')}
                         </th>
-                        {field1 ? (<th className={`th ${darkMode ? 'header-dark' : 'header-light'}`}>{field1}</th>) : null}
-                        {field2 ? (<th className={`th ${darkMode ? 'header-dark' : 'header-light'}`}>{field2}</th>) : null}
-                        {field3 ? (<th className={`th ${darkMode ? 'header-dark' : 'header-light'}`}>{field3}</th>) : null}
-                        <th></th>
+                        {field1 ? (
+                          <th className={`th ${darkMode ? 'header-dark' : 'header-light'}`}>{field1}</th>
+                        ) : null}
+                        {field2 ? (
+                          <th className={`th ${darkMode ? 'header-dark' : 'header-light'}`}>{field2}</th>
+                        ) : null}
+                        {field3 ? (
+                          <th className={`th ${darkMode ? 'header-dark' : 'header-light'}`}>{field3}</th>
+                        ) : null}
                       </tr>
                     </thead>
                     <tbody>
@@ -251,21 +284,30 @@ const PageCollection = () => {
                               <label htmlFor={el.id}></label>
                             </td>
                           ) : null }
-                          <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>{index + 1}</td>
-                          <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>{el.name}</td>
-                          <td className={`th ${darkMode ? 'inner-dark dark-theme-tags' : 'light-theme light-theme-tags'}`}>{el.tag}</td>
-                          {field1 ? (
                           <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>
-                            {el.field1}
-                          </td>) : null}
-                          {field2 ? (
+                            {index + 1}
+                          </td>
                           <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>
-                            {el.field2}
-                          </td>) : null}
-                          {field3 ? (
-                          <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>
-                            {el.field3}
-                            </td>)  : null}
+                            {el.name}
+                          </td>
+                          <td className={`th ${darkMode ? 'inner-dark dark-theme-tags' : 'light-theme light-theme-tags'}`}>
+                            {el.tag}
+                          </td>
+                          { field1 ? (
+                            <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>
+                              {el.field1}
+                            </td>
+                          ) : null}
+                          { field2 ? (
+                            <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>
+                              {el.field2}
+                            </td>
+                          ) : null}
+                          { field3 ? (
+                            <td className={`th ${darkMode ? 'inner-dark' : 'light-theme'}`}>
+                              {el.field3}
+                            </td>
+                          )  : null }
                         </tr> 
                       ))}
                     </tbody>
@@ -277,17 +319,17 @@ const PageCollection = () => {
                 <h5 className={`${darkMode ? 'empty-coll-dark' : 'empty-coll-light'}`}>
                   {t('page.notFound')}
                 </h5>
-              { admin ? (
-                <button type='button' className={`linkButton text-underline ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} onClick={handleAdd}>
-                  {t('page.add')}
-                </button>
-              ) : null}
+                { admin ? (
+                  <button type='button' className={`linkButton text-underline ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} onClick={handleAdd}>
+                    {t('page.add')}
+                  </button>
+                ) : null}
               </div>
             )
           )}
         </div>
       </div>
-  </div>
+    </div>
   )
 }
 

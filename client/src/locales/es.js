@@ -51,7 +51,7 @@ const translation = {
       "yourCategory": "Tu categoría:"
     },
     "page": {
-      "edit": "Editar",
+      "save": "Ahorrar",
       "add": "Agregar",
       "notFound": "Artículos no encontrados.",
       "addItem": "Añadir artículo",
@@ -61,7 +61,9 @@ const translation = {
       "yourItems": "Tus cosas:",
       "index": "№",
       "tags": "Etiquetas",
-      "likes": "Gustos: "
+      "likes": "Gustos: ",
+      "placeholder": "Presione enter para agregar",
+      "edit": "Editor"
     },
     "addItem": {
       "add": "Añadir artículo",
@@ -98,7 +100,8 @@ const translation = {
       "books": "Libros",
       "songs": "Cancioness",
       "other": "Otro"
-    }
+    },
+    "error": "Ups algo anda mal!"
   }
 };
 

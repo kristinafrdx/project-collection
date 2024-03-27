@@ -18,7 +18,8 @@ const CreateColl = () => {
   const { t } = useTranslation();
   const { darkMode } = useTheme();
   const { userId, userRole } = useUser();
-  const [inputs, setInputs] = useState([])
+
+  const [inputs, setInputs] = useState([]);
   const [nameField, setNameField] = useState('');
   const [valueField, setValue] = useState('');
   const [values, setValues] = useState([]);
@@ -39,16 +40,16 @@ const CreateColl = () => {
   const addField = () => {
     setShowText(true);
     if (inputs.length < maxFields) {
-      setInputs([...inputs, nameField ])
+      setInputs([...inputs, nameField ]);
       setValues([...values, valueField]);
       setValue('');
-      setNameField('')
+      setNameField('');
     }
-  }
+  };
 
   const handleName = (e) => {
-    setNameField(e.target.value)
-  }
+    setNameField(e.target.value);
+  };
 
   const customDarkStyles = {
     menu: (provided, state) => ({
@@ -59,7 +60,7 @@ const CreateColl = () => {
       ...provided,
       backgroundColor: state.isFocused ? '#6d6d6d' :'transporant' 
     })
-  }
+  };
   
   const handleRemoveField = (index) => {
     setInputs(inputs.filter((_, i) => i!== index));
@@ -67,7 +68,7 @@ const CreateColl = () => {
     if (inputs.length < 2) {
       setShowText(false);
     }
-  }
+  };
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -75,25 +76,25 @@ const CreateColl = () => {
 
   const handleUpload = async () => {
     if (selectedFile) {
-      setLoading(true)
+      setLoading(true);
       const formData = new FormData();
       formData.append('file', selectedFile, selectedFile.name);
       try {
-       const resp = await axios.post(`${host}/upload`, formData, {
+        const resp = await axios.post(`${host}/upload`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
         const link = resp.data.message;
-        setLoading(false)
-        return link
+        setLoading(false);
+        return link;
       } catch (error) {
-        console.error('Error uploading file:', error);
-      }
+        console.log('error uploading file:', error);
+      };
     } else {
-      setErr('Select a file')
+      setErr('Select a file');
     }
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -117,29 +118,29 @@ const CreateColl = () => {
       }
     } catch (e) {
       console.log(e);
-    }
-  }
+    };
+  };
 
   const handleCategory = (e) => {
     if (e.value === 'Other') {
-      setShowInputCategory(true)
+      setShowInputCategory(true);
     } else {
-      setShowInputCategory(false)
+      setShowInputCategory(false);
     }
     setCategory(e.value);
-  }
+  };
 
   const handleOtherCategory = (e) => {
-    setCategory(e.target.value)
-  }
+    setCategory(e.target.value);
+  };
 
   const handleDescr = (e) => {
     setDescr(e.target.value);
-  }
+  };
 
   const handleNameColl = (e) => {
-    setName(e.target.value)
-  }
+    setName(e.target.value);
+  };
 
   return (
     <div>
@@ -161,35 +162,35 @@ const CreateColl = () => {
                   {t('create.category')}
                 </label>
                 <Select id="category" styles={darkMode ? customDarkStyles : ''} onChange={(e) => handleCategory(e)} className="mb-4 darkCategory" options={options}></Select>
-                {showInputCategory ? (
+                
+                { showInputCategory ? (
                   <div>
                     <label htmlFor="categoryOther" className="fw-bold mb-2">
                     {t('create.yourCategory')}
                     </label>
-                  <input onChange={handleOtherCategory} id="categoryOther" className='mb-4 form-control'></input>
+                    <input onChange={handleOtherCategory} id="categoryOther" className='mb-4 form-control'></input>
                   </div>
                 ) : null}
 
-                 <label htmlFor="description" className="fw-bold mb-2">
+                <label htmlFor="description" className="fw-bold mb-2">
                   {t('create.description')}
                 </label>
-                 <textarea
+                <textarea
                   onChange={handleDescr} 
                   id="description" 
                   type="text" 
                   className='form-control last-input mb-4'
                   value={description}
                 /> 
-             
                 <div>
                   <Markdown>{description}</Markdown>
                 </div>
                 
-                {showText ? (
+                { showText ? (
                   <h5 style={{margin: '0', fontSize: '1rem'}} className="fw-bold mb-2">
                     {t('create.newFields')}
                   </h5>
-                ) : null}
+                ) : null }
                 { inputs.map((el, index) => (
                   <div key={index}>
                     <div className="d-flex align-items-center mb-4 justify-content-between pt-2">
@@ -203,12 +204,14 @@ const CreateColl = () => {
                 
                 <div className="mb-3">
                   <input type="file" name='file' onChange={handleFileChange} />
-                  {!loading ? null : (
+                  { !loading ? null : (
                     <p>
                       {t('create.loading')}
                     </p>
                   )}
-                   {err ? (<p>{err}</p>) : null}
+                  {err ? (
+                    <p>{err}</p>
+                  ) : null}
                 </div>
 
                 { inputs.length < maxFields ? (
@@ -223,7 +226,7 @@ const CreateColl = () => {
                       </button>
                     </div>
                   </div>
-                ) : null}
+                ) : null }
                 <div className="d-flex justify-content-center flex-wrap" style={{marginTop: '20px', gap: '10px'}}>
                   <button type="submit" className={` btn ${darkMode ? 'button-dark' : 'btn-light'} mt-2`} style={{minWidth: '100px'}}>
                     {t('create.create')}

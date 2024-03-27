@@ -51,7 +51,7 @@ const translation = {
       "yourCategory": "Your category:"
     },
     "page": {
-      "edit": "Edit",
+      "save": "Save",
       "add": "Add",
       "notFound": "Items not found.",
       "addItem": "Add item",
@@ -61,7 +61,9 @@ const translation = {
       "yourItems": "Your items:",
       "index": "№",
       "tags": "Tags",
-      "likes": "Likes: "
+      "likes": "Likes: ",
+      "placeholder": "Press enter to add",
+      "edit": "Edit"
     },
     "addItem": {
       "add": "Add item",
@@ -98,7 +100,9 @@ const translation = {
       "books": "Books",
       "songs": "Songs",
       "other": "Other"
-    }
+    },
+    "error": "Ooops something wrong!"
   }
-} 
+};
+
 export default translation;

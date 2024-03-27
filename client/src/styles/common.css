@@ -343,6 +343,9 @@ tr:first-child {
   margin-left: 20px;
 }
 
+.inner-dark-edit {
+  border: none;
+}
 @media screen and (max-width: 440px) {
   .wrap {
     flex-wrap: wrap;
@@ -381,6 +384,6 @@ tr:first-child {
   }
   .coll {
     justify-content: center;
-    margin: 0 auto;
+    margin: 5px auto;
   }
 }

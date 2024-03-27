@@ -13,6 +13,7 @@ import Admin from "./components/Admin";
 import UserPage from "./components/UserPage";
 import { useUser } from "./components/context/UserContext";
 import AllColl from "./components/AllColl";
+import EditItem from "./components/EditItem";
 
 function App() {
   const { isLogged } = useAuth();
@@ -33,10 +34,11 @@ function App() {
             <Route path="/admin" element={userRole === 'admin' ? <Admin /> : <Navigate to='/collections' />} />
             <Route path="/user_page" element={userRole === 'admin' ? <UserPage /> : <Navigate to='/collections' />} />
             <Route path="/allColl" element={<AllColl />} />
+            <Route path="edit" element={isLogged ? <EditItem /> : <Navigate to={'/collections'} />} />
           </Routes>
         </Router>
     </div>
   );
-}
+};
 
 export default App;
