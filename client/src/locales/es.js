@@ -12,8 +12,8 @@ const translation = {
       "block": "Estás bloqueado."
     },
     "registration": {
-      "name": "Tu correo electrónico:",
-      "email": "Tu nombre:",
+      "name": "Tu nombre:",
+      "email": "Tu correo electrónico:",
       "password": "Tu contraseña:",
       "errorAlreadyExist": "Ese correo electrónico ya está registrado. Prueba con otro.",
       "signUp": "Registrarse",
