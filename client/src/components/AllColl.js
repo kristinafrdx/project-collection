@@ -76,9 +76,9 @@ const AllColl = () => {
   };
 
   const deleteColl = async (id) => {
-    await axios.post(`${host}/deleteColl`, { id })
+    await axios.post(`${host}/deleteColl`, { id, userId })
     .then((resp) => {
-      setCollections(resp.data.updateColl);
+      setCollections(resp.data.allColl);
     })
     .catch((e) => {
       console.log(`Error removing: ${e}`);

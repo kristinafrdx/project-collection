@@ -121,11 +121,13 @@ app.post('/registration', async (req, res) => {
 
 app.post('/deleteColl', async (req, res) => {
   const { id } = req.body;
+  const { userId } = req.body;
   await database.deleteCollection(id);
-  const updateColl = await database.getLargestCollections();
+  const updateColl = await database.getMyCollections(userId);
+  const allColl = await database.getCollections();
   await database.deleteItems(id);
   await database.deleteLikes(id);
-  res.json({ message: 'ok', updateColl });
+  res.json({ message: 'ok', updateColl, allColl });
 });
 
 app.post('/createcoll', async (req, res) => {

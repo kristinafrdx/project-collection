@@ -58,7 +58,7 @@ const MyCollections = () => {
   };
  
   const deleteColl = async (id) => {
-    await axios.post(`${host}/deleteColl`, { id })
+    await axios.post(`${host}/deleteColl`, { id, userId })
     .then((resp) => {
       setMyColl(resp.data.updateColl);
       setShowDelete(false);
