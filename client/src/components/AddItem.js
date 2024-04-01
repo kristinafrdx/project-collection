@@ -57,18 +57,19 @@ const AddItem = () => {
   };
 
   const handleBack = () => {
-    navigate('/mycollections');
+    navigate(-1);
   }
 
   const fetchFields = async () => {
-    try {
-      const resp = await axios.post(`${host}/addItem`, { nameItem: name, tag: tags, idC: id, valueField, userId});
+    await axios.post(`${host}/addItem`, { nameItem: name, tag: tags, idC: id, valueField, userId})
+    .then((resp) => {
       if (resp.data.message === 'ok') {
         navigate('/success');
       };
-    } catch (e) {
-      console.log(e);
-    };
+    })
+    .catch ((e) => {
+      console.log(`Error request: ${e}`);
+    })
   };
     
   return (

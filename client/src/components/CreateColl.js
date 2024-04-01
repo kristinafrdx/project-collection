@@ -79,18 +79,19 @@ const CreateColl = () => {
       setLoading(true);
       const formData = new FormData();
       formData.append('file', selectedFile, selectedFile.name);
-      try {
-        const resp = await axios.post(`${host}/upload`, formData, {
+      await axios.post(`${host}/upload`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
-        });
+      })
+      .then((resp) => {
         const link = resp.data.message;
         setLoading(false);
         return link;
-      } catch (error) {
-        console.log('error uploading file:', error);
-      };
+      })
+      .catch ((error) => {
+        console.log(`Error uploading file: ${error}`);
+      });
     } else {
       setErr('Select a file');
     }
@@ -111,14 +112,15 @@ const CreateColl = () => {
       data[key] = values[index];
     });
 
-    try {
-      const resp = await axios.post(`${host}/createcoll`, { data, inputs });
+    await axios.post(`${host}/createcoll`, { data, inputs })
+    .then((resp) => {
       if (resp.data.message === 'ok') {
         setSuccss(true);
       }
-    } catch (e) {
-      console.log(e);
-    };
+    })
+    .catch ((e) => {
+      console.log(`Error creating collection: ${e}`);
+    })
   };
 
   const handleCategory = (e) => {
@@ -231,7 +233,7 @@ const CreateColl = () => {
                   <button type="submit" className={` btn ${darkMode ? 'button-dark' : 'btn-light'} mt-2`} style={{minWidth: '100px'}}>
                     {t('create.create')}
                   </button>
-                  <button onClick={() => navigate('/collections')} className={`btn mt-2 ${darkMode ? 'button-dark' : 'btn-light'}`} style={{minWidth: '100px'}}>
+                  <button onClick={() => navigate(-1)} className={`btn mt-2 ${darkMode ? 'button-dark' : 'btn-light'}`} style={{minWidth: '100px'}}>
                     {t('registration.back')}
                   </button>
                 </div> 

@@ -38,6 +38,7 @@ const PageCollection = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
+  // console.log(location)
   const id = location?.state?.id;
 
   useEffect(() => {
@@ -77,9 +78,9 @@ const PageCollection = () => {
 
   useEffect(() => {
     const getCollections = async () => {
-      try {
-        if (idColl !== null) {
-          const resp = await axios.post(`${host}/getcollection`, { idColl });
+      if (idColl !== null) {
+        await axios.post(`${host}/getcollection`, { idColl })
+        .then((resp) => {
           const items = resp.data.items;
           const collection = resp.data.collection[0];
           const linkToImage = collection.linkToImage;
@@ -108,15 +109,17 @@ const PageCollection = () => {
             setShowButtons(true);
           } else {
             setShowButtons(false);
-          };
-        }
-      } catch (e) {
-        console.log(e);
-      } finally {
-        setLoading(false);
+          }
+        })
+        .catch ((e) => {
+          console.log(`Error request get collections: ${e}`);
+        })
+        .finally(() => {
+          setLoading(false);
+        })
       }
     };
-   getCollections(idColl);
+    getCollections(idColl);
   }, [idColl, admin, userId]);
 
 
@@ -192,7 +195,7 @@ const PageCollection = () => {
               ) : null}
             </div>
             <div className="back" style={{paddingLeft: '10px'}}>
-              <button type="button" className={`linkButton pb-2 ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} onClick={() => navigate('/collections')}>
+              <button type="button" className={`linkButton pb-2 ${darkMode ? 'linkButton-dark' : 'linkButton-light' }`} onClick={() => navigate(-1)}>
                 {t("registration.back")}
               </button>
             </div>

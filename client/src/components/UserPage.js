@@ -19,13 +19,14 @@ const UserPage = () => {
 
   useEffect(() => {
     const fetchUser = async (id) => {
-      try {
-        const resp = await axios.post(`${host}/userPage`, { id });
+      await axios.post(`${host}/userPage`, { id })
+      .then((resp) => {
         setData(resp.data.dataUser);
         setCollections(resp.data.collections);
-      } catch (e) {
-        console.log(e);
-      }
+      })
+      .catch ((e) => {
+        console.log(`Error request get user page: ${e}`);
+      })
     };
     fetchUser(id);
   });

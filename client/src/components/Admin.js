@@ -25,20 +25,30 @@ const Admin = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const resp = await axios.get(`${host}/admin`)
-      const us = resp.data.users;
-      setUsers((prev) => [...prev, ...us]);
-    }
+    await axios.get(`${host}/admin`)
+      .then((resp) => {
+        const us = resp.data.users;
+        setUsers((prev) => [...prev, ...us]);
+      })
+      .catch((e) => {
+        console.log(`Error getUsers: ${e}`)
+      })
+    };
     fetchUsers();
   }, []);
 
   const deleteUser = async () => {
-    const resp = await axios.post(`${host}/deleteUsers`, { selected });
-    setUsers(resp.data.new);
-    setSelected(null);
-    if (Number(selected) === Number(userId)) {
-      navigate('/');
-    }
+    await axios.post(`${host}/deleteUsers`, { selected })
+    .then((resp) => {
+      setUsers(resp.data.new);
+      setSelected(null);
+      if (Number(selected) === Number(userId)) {
+        navigate('/');
+      }
+    })
+    .catch((e) => {
+      console.log(`Error removing user: ${e}`);
+    });
   };
 
   const handleSelect = (id) => {
@@ -65,8 +75,9 @@ const Admin = () => {
   };
 
   const handleMakeAdmin = async (id, status, userRole) => {
-    const resp = await axios.post(`${host}/makeAdmin`, { id, status });
-    const update = resp.data.update;
+    await axios.post(`${host}/makeAdmin`, { id, status })
+    .then((resp) => {
+      const update = resp.data.update;
       if (Number(userId) === Number(id)) {
         setUserRole(userRole);
         setUsers(update);
@@ -75,26 +86,36 @@ const Admin = () => {
         setUsers(update);
         setSelected(null);
       };
+    })
+    .catch((e) => {
+      console.log(`Error making admin or user: ${e}`)
+    })
   };
 
   const handleBlock = async (selected, newStatus) => {
     if (newStatus === 'block') {
-      try {
-        const resp = await axios.post(`${host}/block`, { selected, newStatus });
+      await axios.post(`${host}/block`, { selected, newStatus })
+      .then((resp) => {
         const updateUsers = resp.data.updateUsers;
         setUsers(updateUsers);
         if (Number(userId) === Number(selected)) {
           setLogged(false);
           navigate('/');
         }
-      } catch (e) {
-        console.log(e)
-      }
+      })
+      .catch((e) => {
+        console.log(`Error blocking: ${e}`)
+      })
     } else if (newStatus === 'unblock') {
-      const resp = await axios.post(`${host}/block`, { selected, newStatus });
-      const updateUsers = resp.data.updateUsers;
-      setUsers(updateUsers);
-    }
+      await axios.post(`${host}/block`, { selected, newStatus })
+      .then((resp) => {
+        const updateUsers = resp.data.updateUsers;
+        setUsers(updateUsers);
+      })
+      .catch((e) => {
+        console.log(`Error unblocking user: ${e}`)
+      });
+    };
   };
   
   const handleUserPage = (e) => {

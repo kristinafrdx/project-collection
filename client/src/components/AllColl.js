@@ -24,33 +24,34 @@ const AllColl = () => {
 
   useEffect(() => {
     const getCollections = async () => {
-      try {
-        const resp = await axios.get(`${host}/collections`);
+      await axios.get(`${host}/collections`)
+      .then((resp) => {
         const allColl = resp.data.collections;
         const likes = resp.data.likes;
         const likeIdCurrentUser = likes.filter((el) => Number(el.idUser) === Number(userId));
         const idC = likeIdCurrentUser.map((el) => el.idCollection);
         setLikes((prev) => [...prev, ...idC]);
         setCollections(allColl);
-      } catch (e) {
+      })
+      .catch((e) => {
         console.log(e);
-      }
+      })
     };
     getCollections();
   }, [userId]);
 
   const handleLike = (e, idUser, idColl) => {
-    const fetchLikes = async (like) => {
-      try {
-        const resp = await axios.post(`${host}/like`, { idU: idUser, idC: idColl, like });
-        const newColl = resp.data.updateColl;
-        setCollections(newColl);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
     e.stopPropagation();
+    const fetchLikes = async (like) => {
+      await axios.post(`${host}/like`, { idU: idUser, idC: idColl, like })
+      .then((resp) => {
+        const newColl = resp.data.updateColl;
+          setCollections(newColl);
+      })
+      .catch((e) => {
+        console.log(e);
+      })
+    };
     if (likesSt.includes(idColl)) {
       setLikes(likesSt.filter(item => item !== idColl));
       fetchLikes(false);
@@ -75,8 +76,13 @@ const AllColl = () => {
   };
 
   const deleteColl = async (id) => {
-    const resp = await axios.post(`${host}/deleteColl`, { id });
-    setCollections(resp.data.updateColl);
+    await axios.post(`${host}/deleteColl`, { id })
+    .then((resp) => {
+      setCollections(resp.data.updateColl);
+    })
+    .catch((e) => {
+      console.log(`Error removing: ${e}`);
+    })
   }
 
   return (

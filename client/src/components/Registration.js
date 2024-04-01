@@ -30,17 +30,22 @@ const Registration = () => {
       login,
       password,
     };
-    const resp = await axios.post(`${host}/registration`, dataUser);
-    if (resp.data.message === 'exist') {
-      setError(true);
-      setEmail("");
-      setPassword("");
-    } else {
-      setLogged(true);
-      setUserRole('user');
-      setUserId(resp.data.id);
-      navigate('/collections');
-    }
+    await axios.post(`${host}/registration`, dataUser)
+    .then((resp) => {
+      if (resp.data.message === 'exist') {
+        setError(true);
+        setEmail("");
+        setPassword("");
+      } else {
+        setLogged(true);
+        setUserRole('user');
+        setUserId(resp.data.id);
+        navigate('/collections');
+      }
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   };
   
   const handleName = (event) => {

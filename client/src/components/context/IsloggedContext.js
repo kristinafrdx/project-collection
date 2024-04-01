@@ -9,9 +9,9 @@ export const IsLoggedProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    localStorage.setItem('isLogged', JSON.stringify(isLogged));
+    localStorage.setItem('isLogged', JSON.stringify(isLogged)); // 1 - key, 2 - value-obj
   }, [isLogged]);
- 
+
   return (
     <Logged.Provider value={{ isLogged, setLogged }}>
       {children}

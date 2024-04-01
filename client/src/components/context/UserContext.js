@@ -4,7 +4,7 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [userId, setUserId] = useState(null);
-  const [isInit, setIsInit] = useState(false);
+  // const [isInit, setIsInit] = useState(false);
   const [userRole, setUserRole] = useState(null);
 
   useEffect(() => {
@@ -14,15 +14,14 @@ export const UserProvider = ({ children }) => {
       setUserId(savedId);
       setUserRole(savedRole);
     }
-    setIsInit(true);
   }, []);
 
   useEffect(() => {
-    if (isInit) {
+    // if (isInit) {
       sessionStorage.setItem('userId', userId);
       sessionStorage.setItem('userRole', userRole)
-    }
-  }, [userId, isInit, userRole]
+    // }
+  }, [userId, userRole]
   );
 
   return (

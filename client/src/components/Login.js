@@ -23,11 +23,11 @@ const Login = () => {
   const navigate = useNavigate();
 
   const fetchUser = async (data) => {
-    try {
-      const resp = await axios.post(`${host}/login`, data);
+    await axios.post(`${host}/login`, data)
+    .then((resp) => {
       if (resp.data.message === "data is't correct") {
-       setError(true);
-       setErrorBlock(false);
+        setError(true);
+        setErrorBlock(false);
       } else if (resp.data.message === 'blocked') {
         setErrorBlock(true);
         setError(false);
@@ -43,9 +43,10 @@ const Login = () => {
         }
         navigate('/collections');
       }
-    } catch (e) {
+    })
+    .catch((e) => {
       console.error(`Network error: ${e}`);
-    }
+    })
   };
 
   const handleSubmit = async (e) => {

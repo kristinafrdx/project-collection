@@ -45,20 +45,25 @@ const EditItem = () => {
 
   useEffect(() => {
     const fetchItem = async (id) => {
-      const resp = await axios.post(`${host}/getItem`, { id });
-      if (resp.data.item) {
-        setName(resp.data.item.name);
-        setTags(resp.data.item.tag.split(' ').map((tag) => ({ id: tag, text: tag })));
-        setField1Value(resp.data.item.field1);
-        setField2Value(resp.data.item.field2);
-        setField3Value(resp.data.item.field3);
-        setField1Name(fields.field1);
-        setField2Name(fields.field2);
-        setField3Name(fields.field3);
-      } else {
-        setError(true);
-      }
-    }
+      await axios.post(`${host}/getItem`, { id })
+      .then((resp) => {
+        if (resp.data.item) {
+          setName(resp.data.item.name);
+          setTags(resp.data.item.tag.split(' ').map((tag) => ({ id: tag, text: tag })));
+          setField1Value(resp.data.item.field1);
+          setField2Value(resp.data.item.field2);
+          setField3Value(resp.data.item.field3);
+          setField1Name(fields.field1);
+          setField2Name(fields.field2);
+          setField3Name(fields.field3);
+        } else {
+          setError(true);
+        }
+      })
+      .catch((e) => {
+        console.log(`Error to get items: ${e}`)
+      })
+    };
     if (selected) {
       fetchItem(selected);
     }
@@ -72,8 +77,11 @@ const EditItem = () => {
     e.preventDefault();
     const fetchChange = async () => {
       const tagsValues = tags.map(el => el.text);
-      await axios.post(`${host}/changeItem`, { selected, name, tagsValues, field1Value, field2Value, field3Value });
-    }
+      await axios.post(`${host}/changeItem`, { selected, name, tagsValues, field1Value, field2Value, field3Value })
+      .catch((e) => {
+        console.log(`Error editing item: ${e}`)
+      })
+    };
     await fetchChange();
     navigate('/success');
   };

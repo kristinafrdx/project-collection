@@ -42,19 +42,20 @@ const Collections = () => {
 
   useEffect(() => {
     const getCollections = async () => {
-      try {
-        const resp = await axios.get(`${host}/collections`);
-        const allColl = resp.data.largest;
+      await axios.get(`${host}/collections`)
+      .then((resp) => {
+        const largest = resp.data.largest;
         const likes = resp.data.likes;
         const likeIdCurrentUser = likes.filter((el) => Number(el.idUser) === Number(userId));
         const idC = likeIdCurrentUser.map((el) => el.idCollection);
         const lastItems = resp.data.last;
         setLastItems([...lastItems]);
         setLikes((prev) => [...prev, ...idC]);
-        setCollections(allColl);
-      } catch (e) {
+        setCollections(largest);
+      })
+      .catch((e) => {
         console.log(e);
-      };
+      });
     };
     getCollections();
   }, [userId]);
@@ -74,21 +75,27 @@ const Collections = () => {
   };
  
   const deleteColl = async (id) => {
-    const resp = await axios.post(`${host}/deleteColl`, { id });
-    setCollections(resp.data.updateColl);
+    await axios.post(`${host}/deleteColl`, { id })
+    .then((resp) => {
+      setCollections(resp.data.updateColl);
+    })
+    .catch((e) => {
+      console.log(`Error removing: ${e}`)
+    })
   };
 
   const handleLike = (e, idUser, idColl) => {
-    const fetchLikes = async (like) => {
-      try {
-        const resp = await axios.post(`${host}/like`, { idU: idUser, idC: idColl, like });
-        const newColl = resp.data.updateLargest;
-        setCollections(newColl);
-      } catch (e) {
-        console.log(e);
-      };
-    };
     e.stopPropagation();
+    const fetchLikes = async (like) => {
+      await axios.post(`${host}/like`, { idU: idUser, idC: idColl, like })
+      .then((resp) => {
+        const newColl = resp.data.updateLargest;
+      setCollections(newColl);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    };
     if (likesSt.includes(idColl)) {
       setLikes(likesSt.filter(item => item !== idColl));
       fetchLikes(false);

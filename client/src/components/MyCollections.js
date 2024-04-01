@@ -23,14 +23,16 @@ const MyCollections = () => {
 
   useEffect(() => {
     const getCollections = async () => {
-      try {
-        const resp = await axios.post(`${host}/mycollections`, { userId });
-        setMyColl(resp.data.getMy);
-      } catch (e) {
+      await axios.post(`${host}/mycollections`, { userId })
+      .then((resp) => {
+        setMyColl(resp.data.getMy); 
+      })
+      .catch((e) => {
         console.log(e)
-      } finally {
+      })
+      .finally(() => {
         setLoading(false);
-      };
+      })
     };
     getCollections();
   }, [userId]);
@@ -56,9 +58,14 @@ const MyCollections = () => {
   };
  
   const deleteColl = async (id) => {
-    const resp = await axios.post(`${host}/deleteColl`, { id });
-    setMyColl(resp.data.updateColl);
-    setShowDelete(false);
+    await axios.post(`${host}/deleteColl`, { id })
+    .then((resp) => {
+      setMyColl(resp.data.updateColl);
+      setShowDelete(false);
+    })
+    .catch((e) => {
+      console.log(`Error removing: ${e}`)
+    })
   };
 
   return (
