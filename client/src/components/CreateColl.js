@@ -205,7 +205,7 @@ const CreateColl = () => {
                 ))}
                 
                 <div className="mb-3">
-                  <input type="file" name='file' onChange={handleFileChange} />
+                  <input type="file" name='file' accept={'image/*'} onChange={handleFileChange} />
                   { !loading ? null : (
                     <p>
                       {t('create.loading')}
